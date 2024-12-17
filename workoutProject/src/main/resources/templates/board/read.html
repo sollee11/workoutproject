@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html  lang="ko"
+       xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout/basic.html}">
+
+<!-- Main Wrapper -->
+<div layout:fragment="content" id="main-wrapper">
+  <div class="wrapper style2">
+    <div class="inner">
+      <div class="container">
+        <div id="content">
+
+          <!-- Content -->
+
+          <div class="bodytext_area box_inner">
+            <header class="major">
+              <ul class="bbsview_list">
+                <li class="bbs_title"><h3>[[${board.title}]]</h3></li>
+                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}]]</span></li>
+                <li class="bbs_date">조회수 : <span>[[${board.view}]]</span></li>
+              </ul>
+            </header>
+            <li class="bbs_content">
+              <div class="editer_content" th:utext="${board.content}"></div>
+            </li>
+            <div class="col">
+              <div class="card" th:if="${board.fileNames != null && board.fileNames.size()>0}">
+                <img class="card-img-top" th:each="fileName: ${board.fileNames}"
+                     th:src="|/view/${fileName}|">
+              </div>
+            </div>
+
+            <p class="btn_line txt_right">
+              <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn_bbs">수정</a>
+              <a href="/board/list" class="btn_bbs">목록</a>
+            </p>
+
+          </div>
+
+          <section>
+            <div class="card bg-light">
+              <div class="card-body">
+                <!-- Comment form-->
+                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="댓글을 작성하세요"></textarea></form>
+                <div class="my-4">
+                  <p class="btn_line txt_right">
+                    <input type="button" value="등록" class="btn_srch registerBtn">
+                  </p>
+                </div>
+                <ul class="list-group replyList"></ul>
+                <!-- Comment with nested comments-->
+                <div class="d-flex">
+<!--                  <tbody>-->
+<!--                  <tr th:each="board:${responseDTO.dtoList}">-->
+<!--                    <td>댓글작성자</td>-->
+<!--                    <td>댓글내용</td>-->
+<!--                  </tr>-->
+<!--                  </thead>-->
+<!--                  </tbody>-->
+                  <div class="ms-3">
+                    <div class="fw-bold">댓글 작성자</div>
+                    댓글 내용
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/assets/js/reply.js"></script>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+  const bno = [[${board.bno}]]
+
+  const replyList = document.querySelector('.replyList')
+  const replyPaging = document.querySelector('.replyPaging')
+
+  const registerBtn = document.querySelector(".registerBtn")
+  const replyText = document.querySelector(".replyText")
+  const replyer = document.querySelector(".replyer")
+
+  registerBtn.addEventListener("click", function (e) {
+    // JSON형식으로 데이터를 보내기 위해서 JavaScript 객체 생성
+    const replyObj = {
+      bno: bno,
+      replyText: replyText.value,
+      replyer: replyer.value
+    }
+    addReply(replyObj).then(result => {
+      alert(result.rno)
+      registerModal.hide()
+      replyText.value = ''
+      replyer.value = ''
+      printReplies(1, 10, true)
+    }).catch(e => {
+      alert("Exception")
+    })
+  }, false)
+
+  function printList(dtoList) {
+    let str = '';
+    if (dtoList && dtoList.length > 0) {
+      for (const dto of dtoList) {
+        str += `<li class="list-group-item d-flex replyItem">
+                    <span class="col-2">${dto.rno}</span>
+                    <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
+                    <span class="col-2">${dto.replyer}</span>
+                    <span class="col-2">${dto.regDate}</span>
+                        </li>`
+      }
+    }
+    replyList.innerHTML = str
+  }
+
+  function printReplies(page, size, goLast) {
+    getList({bno, page, size, goLast}).then(
+            data => {
+              page = data.page
+              console.log(data)
+              printList(data.dtoList)
+              printPages(data)
+            }
+    ).catch(e => {
+      console.error(e)
+    })
+  }
+
+  printReplies(1, 10, true)
+</script>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<!-- Main Wrapper -->
+<div layout:fragment="content" id="main-wrapper">
+    <div class="wrapper style2">
+        <div class="inner">
+            <div class="container">
+                <div id="content">
+                    <header class="major">
+                        <h3>새 글 등록</h3>
+                    </header>
+
+                    <!-- Content -->
+
+                    <div class="bodytext_area box_inner">
+                        <form action="/board/add" method="POST">
+                            <ul class="bbsview_list">
+                                <li class="bbs_title">
+                                    <span class="input-group-text"><h4>제목</h4></span>
+                                    <input type="text" name="title" size="110" placeholder="제목을 입력해주세요.">
+                                </li>
+                                <h1></h1>
+                                <li class="bbs_content">
+                                    <div class="editer_content">
+                                        <span class="input-group-text"><h4>내용</h4></span>
+                                        <textarea name="content" cols="110" rows="20"
+                                                  placeholder="내용을 입력해주세요."></textarea>
+                                    </div>
+                                </li>
+                                <h1></h1>
+                                <li class="bbs_writer">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"><h4>작성자</h4></span>
+                                        <input type="text" name="writer" size="50">
+                                        <!--<input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>-->
+                                    </div>
+                                </li>
+                                <h1></h1>
+                                <li>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text"><h4>이미지</h4></span>
+                                        <div class="float-end uploadHidden">
+                                            <button type="button" class="btn btn-primary uploadFileBtn">파일 추가</button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="my-4">
+                                        <p class="btn_line txt_right">
+                                            <input type="button" value="글쓰기" class="btn_srch submitBtn">
+                                            <a th:href="|@{/board/list}?${list}|" class="btn_bbs">목록</a>
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                        <div class="row mt-3">
+                            <div class="col ">
+                                <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col ">
+            <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
+        </div>
+    </div>
+    <div class="modal uploadModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">파일 업로드</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group-text mb-3">
+                        <input type="file" name="files" class="form-control" multiple>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary uploadBtn">업로드</button>
+                    <button type="button" class="btn btn-outline-dark closeUploadBtn">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/upload.js"></script>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+    const errors = [[${errors}]]
+    console.log(errors)
+    let errorMsg = ''
+    if (errors) {
+        for (let i = 0; i < errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        alert(errorMsg)
+    }
+
+    const uploadModal = new bootstrap.Modal(document.querySelector(".uploadModal"))
+    // upload modal 창 보이기
+    document.querySelector(".uploadFileBtn").addEventListener("click", function (e) {
+        e.stopPropagation()
+        e.preventDefault()
+        uploadModal.show()
+    }, false)
+    // upload modal 창 숨기기
+    document.querySelector(".closeUploadBtn").addEventListener("click", function (e) {
+        e.stopPropagation()
+        e.preventDefault()
+        uploadModal.hide()
+    }, false)
+    // Modal 창의 upload 버튼의 이벤트
+    document.querySelector(".uploadBtn").addEventListener("click", function (e) {
+        // 파일을 저장할 form 생성
+        const formObj = new FormData()
+        // input 태그의 name 속성인 files인 태그를 선택
+        const fileInput = document.querySelector("input[name='files']")
+        console.log(fileInput.files)
+        // input 태그의 type이 file일 경우 파일데이터만 저장
+        const files = fileInput.files
+        // formObj에 모든 파일 데이터를 추가
+        for (let i = 0; i < files.length; i++) {
+            formObj.append("files", files[i]);
+        }
+        // axios 파일 저장 함수 실행
+        uploadToServer(formObj).then(result => {
+            // console.log(result)
+            // 파일의 갯수만큼 반복
+            for (const uploadResult of result) {
+                // 파일의 썸네일이 나오도록 div를 생성하는 함수
+                showUploadFile(uploadResult)
+            }
+            uploadModal.hide()
+        }).catch(e => {
+            // console.log(e)
+            uploadModal.hide()
+        })
+    }, false)
+    const uploadResult = document.querySelector(".uploadResult")
+    // 파일의 div를 생성하는 함수
+    function showUploadFile({uuid, fileName, link}) {
+        // div 태그 작성
+        const str = `<div class="card col-4">
+                <div class="card-header d-flex justify-content-center">
+                    ${fileName}
+                    <button class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+                </div>
+                <div class="card-body">
+                    <img src="/view/${link}" data-src="${uuid + "_" + fileName}">
+                </div>
+                </div>`
+        uploadResult.innerHTML += str
+    }
+    // 이미지가 출력된 div 삭제 및 파일 데이터 삭제 함수
+    function removeFile(uuid,fileName,obj){
+        console.log(uuid)
+        console.log(fileName)
+        // obj는 클릭했던 버튼태그가 들어있음
+        console.log(obj)
+        //obj(클릭한 버튼)에서 가장 가까운 선택자에 일치하는 태그를 찾아 반환
+        const targetDiv=obj.closest(".card")
+        //upload 폴더의 파일을 삭제
+        removeFileToServer(uuid,fileName).then(data=>{
+            // 화면의 이미지 div 삭제
+            targetDiv.remove()
+        })
+    }
+    document.querySelector(".submitBtn").addEventListener("click",function (e){
+        e.preventDefault()
+        e.stopPropagation()
+        const target = document.querySelector(".uploadHidden")
+        const uploadFiles = uploadResult.querySelectorAll("img")
+        let str=''
+        for (let i=0; i<uploadFiles.length; i++){
+            const uploadFile = uploadFiles[i]
+            const imgLink = uploadFile.getAttribute("data-src")
+
+            str += `<input type='hidden' name='fileNames' value="${imgLink}">`
+        }
+        target.innerHTML = str;
+        document.querySelector("form").submit()
+    },false)
+
+    const auth = [[${#authentication.principal}]]
+    const errors2 = [[${error}]]
+    console.log(auth)
+    console.log(errors2)
+
+</script>
+</html>

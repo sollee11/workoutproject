@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<!--<th:block layout:fragment="link">-->
+<!--    <link rel="stylesheet" href="/assets/css/style.css">-->
+<!--</th:block>-->
+
+
+<!-- Main Wrapper -->
+<div layout:fragment="content" id="main-wrapper">
+    <div class="wrapper style2">
+        <div class="inner">
+            <div class="container">
+                <div id="content">
+                    <header class="major">
+                        <h3>자유게시판</h3>
+                    </header>
+                    <button class="button-16" role="button"><a href="/notice/add">글쓰기</a></button>
+
+                    <form action="/board/list" class="float-end">
+                        <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}" title="검색어 입력"
+                               placeholder="검색어 입력">
+                        <span class="caret"></span>
+                    </form>
+                    <h1>  </h1>
+                    <h1>  </h1>
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th><b>제목</b></th>
+                            <th><b>작성자</b></th>
+                            <th><b>작성일</b></th>
+                            <th><b>조회수</b></th>
+                        </tr>
+                        <tbody>
+                        <tr th:each="board:${responseDTO.dtoList}">
+                            <td><a th:href="@{/board/read(bno=${board.bno})}">[[${board.title}]]</a>
+                                <span class="badge progress-bar-success">[[${board.replyCount}]]</span></td>
+                            <td>[[${board.writer}]]</td>
+                            <td>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+                            <td>[[${board.view}]]</td>
+                        </tr>
+                        </thead>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <a href="javascript:;" class="firstpage pbtn" data-num="1"><img data-num="1"
+                                                                                         th:src="@{/images/btn_firstpage.png}"
+                                                                                         alt="첫 페이지로 이동"></a>
+                        <a th:if="${responseDTO.prev}" href="javascript:;" class="prevpage pbtn"
+                           th:data-num="${responseDTO.start -1}"><img th:data-num="${responseDTO.start -1}"
+                                                                      th:src="@{/images/btn_prevpage.png}" alt="이전 페이지로 이동"></a>
+                        <th:block th:each="num:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                            <a href="javascript:;">
+                                <span th:class="${responseDTO.page==num} ? 'pagenum currentpage':'pagenum'" th:data-num="${num}">[[${num}]]</span>
+                            </a>
+                        </th:block>
+                        <th:block th:if="${responseDTO.next}">
+                            <a href="javascript:;" class="nextpage pbtn" th:data-num="${responseDTO.end +1}"><img
+                                    th:data-num="${responseDTO.end +1}" th:src="@{/images/btn_nextpage.png}" alt="다음 페이지로 이동"></a>
+                        </th:block>
+
+                        <a href="javascript:;" class="lastpage  pbtn" th:data-num="${responseDTO.last}"><img
+                                th:data-num="${responseDTO.last}" th:src="@{/images/btn_lastpage.png}" alt="마지막 페이지로 이동"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper style3">
+        <div class="inner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-8 col-12-medium">
+                        <!-- Article list -->
+                        <section class="box article-list">
+                            <h2 class="icon fa-file-alt">최신 글</h2>
+                            <!-- Excerpt -->
+                            <article class="box excerpt">
+                                <a href="#" class="image left"><img src="images/pic05.jpg" alt=""/></a>
+                                <div>
+                                    <header>
+                                        <span class="date">July 18</span>
+                                        <h3><a href="#">Adventuring with a knee injury</a></h3>
+                                    </header>
+                                    <p>내용</p>
+                                </div>
+                            </article>
+
+                            <!-- Excerpt -->
+                            <article class="box excerpt">
+                                <a href="#" class="image left"><img src="images/pic06.jpg" alt=""/></a>
+                                <div>
+                                    <header>
+                                        <span class="date">July 14</span>
+                                        <h3><a href="#">Preparing for Y2K38</a></h3>
+                                    </header>
+                                    <p>내용</p>
+                                </div>
+                            </article>
+
+                        </section>
+                    </div>
+                    <div class="col-4 col-12-medium">
+
+                        <!-- Spotlight -->
+                        <section class="box spotlight">
+                            <h2 class="icon fa-file-alt">Spotlight</h2>
+                            <article>
+                                <a href="#" class="image featured"><img src="images/pic07.jpg" alt=""></a>
+                                <header>
+                                    <h3><a href="#">Neural Implants</a></h3>
+                                    <p>The pros and cons. Mostly cons.</p>
+                                </header>
+                                <p>내용</p>
+                                <footer>
+                                    <a href="#" class="button alt icon solid fa-file-alt">Continue Reading</a>
+                                </footer>
+                            </article>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+</script>
+</html>
