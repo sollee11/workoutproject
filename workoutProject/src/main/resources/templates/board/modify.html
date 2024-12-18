@@ -17,7 +17,8 @@
                     <!-- Content -->
 
                     <div>
-                        <form action="/board/modify" method="POST">
+                        <form action="/board/modify" method="POST" id="f1">
+                            <input type="hidden" name="bno" th:value="${board.bno}">
                             <ul>
                                 <li>
                                     <label style="margin-bottom: 15px;"><h5>제목</h5></label>
@@ -28,8 +29,7 @@
                                 <li>
                                     <div class="editer_content">
                                         <label style="margin-bottom: 15px;"><h5>내용</h5></label>
-                                        <textarea name="content" cols="110" rows="20" style="margin-bottom: 30px;">
-                                            [[${board.content}]]</textarea>
+                                        <textarea name="content" cols="110" rows="20" style="margin-bottom: 30px;">[[${board.content}]]</textarea>
                                     </div>
                                 </li>
                                 <h1></h1>
@@ -38,24 +38,42 @@
                                         <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
                                         <input type="text" name="writer" size="50" style="margin-bottom: 30px;"
                                                th:value="${board.writer}" readonly>
-                                        <!--                                         <input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>-->
+                                        <!--<input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>-->
                                     </div>
                                 </li>
                                 <h1></h1>
                                 <li>
                                     <div>
                                         <label style="margin-bottom: 15px;"><h5>이미지</h5></label>
-                                        <div class="float-end uploadHidden" style="margin-bottom: 30px;">
-                                            <button type="button" class="btn btn-primary uploadFileBtn"
-                                                    style="margin-left: 20px;">파일 추가
-                                            </button>
+                                        <div class="uploadHidden" style="margin-bottom: 50px;">
+                                            <input type="file" name="files" class="btn btn-default" accept="image/*"
+                                                   multiple>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
+                                                <th:block th:each="fileName:${board.fileNames}">
+                                                    <div class="card col-4" th:with="arr = ${fileName.split('_')}">
+                                                        <div class="card-header d-flex justify-content-center">
+                                                            [[${arr[1]}]]
+                                                            <button type="button" class="btn btn-danger" th:onclick="removeFile([[${arr[0]}]], [[${arr[1]}]], this)">X</button>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <img th:src="|/view/s_${fileName}|" th:data-src="${fileName}">
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
+
                                 <div style="margin: 10px 0;">
                                     <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #000;">
                                     <hr style="margin: 0; border: 0; border-top: 1px solid #000;">
                                 </div>
+
                                 <li>
                                     <div style="margin-top: 50px;">
                                         <button type="submit" style="width: 80px; height: 35px;" class="btn btn-primary modBtn">수정</button>
@@ -65,59 +83,12 @@
                                 </li>
                             </ul>
                         </form>
-                        <div class="row mt-3">
-                            <div class="col ">
-                                <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-3">
-        <div class="col">
-            <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;">
-                <th:block th:each="fileName:${board.fileNames}">
-                    <div class="card col-4" th:with="arr = ${fileName.split('_')}">
-                        <div class="card-header d-flex justify-content-center">
-                            [[${arr[1]}]]
-                            <button class="btn-sm btn-danger"
-                                    th:onclick="removeFile([[${arr[0]}]], [[${arr[1]}]], this)">X
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <img th:src="|/view/s_${fileName}|" th:data-src="${fileName}">
-                        </div>
-                    </div>
-                </th:block>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col ">
-            <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
-        </div>
-    </div>
-    <div class="modal uploadModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">파일 업로드</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group-text mb-3">
-                        <input type="file" name="files" class="form-control" multiple>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary uploadBtn">업로드</button>
-                    <button type="button" class="btn btn-outline-dark closeUploadBtn">닫기</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/upload.js"></script>
 </div>
@@ -181,65 +152,85 @@
 
     const removeFileList = []
 
-    function removeFile(uuid, fileName, obj) {
-        if (!confirm("파일을 삭제하시겠습니까?")) {
-            return
-        }
-        console.log(uuid)
-        console.log(fileName)
-        console.log(obj)
-        removeFileList.push({uuid, fileName})
-        const targetDiv = obj.closest(".card")
-        targetDiv.remove()
-    }
+    const uploadResult = document.querySelector(".uploadResult")
 
-    const uploadModal = new bootstrap.Modal(document.querySelector(".uploadModal"))
-    // upload modal 창 보이기
-    document.querySelector(".uploadFileBtn").addEventListener("click", function (e) {
-        e.stopPropagation()
-        e.preventDefault()
-        uploadModal.show()
-    }, false)
-    // upload modal 창 숨기기
-    document.querySelector(".closeUploadBtn").addEventListener("click", function (e) {
-        e.stopPropagation()
-        e.preventDefault()
-        uploadModal.hide()
-    }, false)
-    // Modal 창의 upload 버튼의 이벤트
-    document.querySelector(".uploadBtn").addEventListener("click", function (e) {
+    // 파일 업로드 이벤트 리스너
+    document.querySelector("input[name='files']").addEventListener("change", function(e) {
         const formObj = new FormData()
-        const fileInput = document.querySelector("input[name='files']")
-        console.log(fileInput.files)
-        const files = fileInput.files
+        const files = e.target.files
+
         for (let i = 0; i < files.length; i++) {
-            formObj.append("files", files[i]);
+            formObj.append("files", files[i])
         }
+
         uploadToServer(formObj).then(result => {
             for (const uploadResult of result) {
                 showUploadFile(uploadResult)
             }
-            uploadModal.hide()
         }).catch(e => {
-            // console.log(e)
-            uploadModal.hide()
+            console.error(e)
         })
     }, false)
-    const uploadResult = document.querySelector(".uploadResult")
 
-    // 파일의 div를 생성하는 함수
+    // 폼 제출 이벤트
+    document.querySelector(".submitBtn").addEventListener("click", function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = document.querySelector(".uploadHidden")
+        const uploadFiles = document.querySelectorAll(".uploadResult img")
+        let str = ''
+
+        uploadFiles.forEach(uploadFile => {
+            const imgLink = uploadFile.getAttribute("data-src")
+            str += `<input type='hidden' name='fileNames' value="${imgLink}">`
+        })
+
+        target.innerHTML = str
+        document.querySelector("form").submit()
+    }, false)
+
+    // 이미지 표시 함수
     function showUploadFile({uuid, fileName, link}) {
-        // div 태그 작성
-        const str = `<div class="card col-4">
-                <div class="card-header d-flex justify-content-center">
-                    ${fileName}
-                    <button type="button" class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
-                </div>
-                <div class="card-body">
-                    <img src="/view/${link}" data-src="${uuid + "_" + fileName}">
-                </div>
-                </div>`
-        uploadResult.innerHTML += str
+        const str = `<div class="card" style="min-width: 200px; margin-right: 10px;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="text-truncate" style="max-width: 150px;">${fileName}</span>
+            <button class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+        </div>
+        <div class="card-body">
+            <img src="/view/${link}" data-src="${uuid}_${fileName}" style="width: 100%; height: 150px; object-fit: cover;">
+        </div>
+    </div>`
+        document.querySelector(".uploadResult").innerHTML += str
     }
+
+    // 이미지가 출력된 div 삭제 및 파일 데이터 삭제 함수
+    function removeFile(uuid, fileName, obj) {
+        if (!confirm("이미지를 삭제하시겠습니까?")) {
+            return;
+        }
+
+        const targetDiv = obj.closest(".card");
+        removeFileList.push({uuid, fileName});  // 삭제 대기 목록에 추가
+        targetDiv.remove();  // 화면에서만 제거
+    }
+
+    // 실제 서버에서 파일 삭제하는 함수는 수정 버튼 클릭시에만 실행
+    async function removeFileToServer({uuid, fileName}) {
+        try {
+            const response = await axios.delete(`/remove/${uuid}_${fileName}`);
+            console.log(response.data);
+            return response.data;
+        } catch(err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    const auth = [[${#authentication.principal}]]
+    const errors2 = [[${error}]]
+    console.log(auth)
+    console.log(errors2)
+
 </script>
 </html>
