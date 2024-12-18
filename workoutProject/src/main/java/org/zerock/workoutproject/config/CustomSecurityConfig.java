@@ -56,7 +56,7 @@ public class CustomSecurityConfig {
 //    // form태그를 사용한 로그인
 //    http.formLogin().loginPage("/member/login");
 //    // CSRF 끄기 설정
-//    http.csrf().disable();
+    http.csrf().disable();
 //    // 자동로그인 설정
 //    http.rememberMe()
 //        .key("12345678")
