@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Simple Sidebar - Login</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/css/member.css}" rel="stylesheet"/>
+    <script src="member.js"></script>
+</head>
+<body class="align-middle">
+
+
+<div class="container-fluid d-flex justify-content-center" style="height: 100vh">
+    <div class="card align-self-center">
+
+        <div class="background-wrap">
+            <div class="background"></div>
+        </div>
+        <form id="accesspanel" action="join" method="post">
+            <h1 id="litheader">WORKOUT</h1>
+            <div class="inset">
+                <div class="card-body">
+                    <form id="registerForm" action="/member/join" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <input type="text" name="mid" class="form-control mid" placeholder="아이디">
+                            <button type="overlappedID"  class="btn btn-secondary idCheck">중복확인</button>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">패스워드</span>
+                            <input type="text" name="mpw" class="form-control" placeholder="비밀번호">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">패스워드 확인</span>
+                            <input type="text" name="mpwCheck" class="form-control" placeholder="비밀번호 확인">
+                            <span id="passMessage"></span>
+                        </div>
+                        <br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">이메일</span>
+                            <input type="text" name="email" class="form-control" placeholder="이메일">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">나이(선택)</span>
+                            <input type="text" name="age" class="form-control" placeholder="나이">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">키(선택)</span>
+                            <input type="text" name="height" class="form-control" placeholder="키">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">몸무게(선택)</span>
+                            <input type="text" name="weight" class="form-control" placeholder="몸무게">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">전화번호</span>
+                            <input type="text" name="phone" class="form-control" placeholder="전화번호">
+                        </div>
+
+                        <p class="p-container">
+                            <input type="submit" name="join" id="join" value="회원가입">
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/assets/js/members.js"></script>
+<script layout:fragment="script" th:inline="javascript">
+    const error = [[${error}]];
+    if (error && error === 'mid') {
+        alert("동일한 MID를 가진 계정이 존재합니다.")
+    }
+    document.querySelector(".idCheck").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let id = document.querySelector("input[name='mid']").value;
+        if (id === "") {
+            alert("ID를 입력해주세요.");
+            return;
+        }
+        checkId(id).then(result => {
+            if (result) {
+                alert("이미 존재하는 ID 입니다.");
+            } else {
+                alert("사용가능한 ID 입니다.");
+            }
+        }).catch(e => {
+            console.log(e);
+        })
+    })
+    document.querySelector("input[name='mpw']").addEventListener("change", passwordCheck);
+    document.querySelector("input[name='mpwCheck']").addEventListener("change", passwordCheck);
+    function passwordCheck(){
+        let correctColor = "#0000FF"
+        let worngColor = "#FF0000"
+        let memPassword1=document.querySelector("input[name='mpw']").value;
+        let memPassword2=document.querySelector("input[name='mpwCheck']").value;
+        let passMessage=document.querySelector("#passMessage");
+        if(memPassword1 !== memPassword2){
+            passMessage.innerHTML="비밀번호가 서로 일치하지 않습니다.";
+            passMessage.style.color=worngColor;
+        }else{
+            passMessage.innerHTML="비밀번호가 서로 일치합니다.";
+            passMessage.style.color=correctColor;
+
+        }
+    }
+</script>
+</body>
+</html>
