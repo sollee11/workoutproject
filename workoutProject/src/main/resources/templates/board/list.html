@@ -2,7 +2,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+      layout:decorate="~{layout/basic.html}" xmlns:margin="http://www.w3.org/1999/xhtml">
 <!--<th:block layout:fragment="link">-->
 <!--    <link rel="stylesheet" href="/assets/css/style.css">-->
 <!--</th:block>-->
@@ -17,16 +17,17 @@
                     <header class="major">
                         <h3>자유게시판</h3>
                     </header>
-                    <button class="button-16" role="button"><a href="/notice/add">글쓰기</a></button>
 
+                    <button class="btn btn-default" role="button"><a href="/board/add">글쓰기</a></button>
                     <form action="/board/list" class="float-end">
-                        <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}" title="검색어 입력"
+                        <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}"
+                               title="검색어 입력"
                                placeholder="검색어 입력">
                         <span class="caret"></span>
                     </form>
-                    <h1>  </h1>
-                    <h1>  </h1>
-                    <table class="table datatable">
+
+                    <div style="margin: 50px 0;"></div>
+                    <table class="table datatable" style="margin-top: 30px;">
                         <thead>
                         <tr>
                             <th><b>제목</b></th>
@@ -47,23 +48,27 @@
                     </table>
                     <div class="pagination">
                         <a href="javascript:;" class="firstpage pbtn" data-num="1"><img data-num="1"
-                                                                                         th:src="@{/images/btn_firstpage.png}"
-                                                                                         alt="첫 페이지로 이동"></a>
+                                                                                        th:src="@{/images/btn_firstpage.png}"
+                                                                                        alt="첫 페이지로 이동"></a>
                         <a th:if="${responseDTO.prev}" href="javascript:;" class="prevpage pbtn"
                            th:data-num="${responseDTO.start -1}"><img th:data-num="${responseDTO.start -1}"
-                                                                      th:src="@{/images/btn_prevpage.png}" alt="이전 페이지로 이동"></a>
+                                                                      th:src="@{/images/btn_prevpage.png}"
+                                                                      alt="이전 페이지로 이동"></a>
                         <th:block th:each="num:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                             <a href="javascript:;">
-                                <span th:class="${responseDTO.page==num} ? 'pagenum currentpage':'pagenum'" th:data-num="${num}">[[${num}]]</span>
+                                <span th:class="${responseDTO.page==num} ? 'pagenum currentpage':'pagenum'"
+                                      th:data-num="${num}">[[${num}]]</span>
                             </a>
                         </th:block>
                         <th:block th:if="${responseDTO.next}">
                             <a href="javascript:;" class="nextpage pbtn" th:data-num="${responseDTO.end +1}"><img
-                                    th:data-num="${responseDTO.end +1}" th:src="@{/images/btn_nextpage.png}" alt="다음 페이지로 이동"></a>
+                                    th:data-num="${responseDTO.end +1}" th:src="@{/images/btn_nextpage.png}"
+                                    alt="다음 페이지로 이동"></a>
                         </th:block>
 
                         <a href="javascript:;" class="lastpage  pbtn" th:data-num="${responseDTO.last}"><img
-                                th:data-num="${responseDTO.last}" th:src="@{/images/btn_lastpage.png}" alt="마지막 페이지로 이동"></a>
+                                th:data-num="${responseDTO.last}" th:src="@{/images/btn_lastpage.png}"
+                                alt="마지막 페이지로 이동"></a>
                     </div>
                 </div>
             </div>

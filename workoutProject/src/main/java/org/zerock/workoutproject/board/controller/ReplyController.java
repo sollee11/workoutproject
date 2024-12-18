@@ -16,7 +16,7 @@ import org.zerock.workoutproject.board.service.ReplyService;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/replies")
 @RequiredArgsConstructor
 @Log4j2

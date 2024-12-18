@@ -21,7 +21,7 @@ public class ReplyDTO {
     private Long bno;
     @NotEmpty
     private String replyText;
-    @NotEmpty
+//    @NotEmpty
     private String replyer;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;

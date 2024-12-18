@@ -16,44 +16,49 @@
 
                     <!-- Content -->
 
-                    <div class="bodytext_area box_inner">
+                    <div>
                         <form action="/board/add" method="POST">
                             <ul class="bbsview_list">
                                 <li class="bbs_title">
-                                    <span class="input-group-text"><h4>제목</h4></span>
-                                    <input type="text" name="title" size="110" placeholder="제목을 입력해주세요.">
+                                    <label style="margin-bottom: 15px;"><h5>제목</h5></label>
+                                    <input type="text" name="title" size="110" placeholder="제목을 입력해주세요." style="margin-bottom: 30px;">
                                 </li>
                                 <h1></h1>
                                 <li class="bbs_content">
                                     <div class="editer_content">
-                                        <span class="input-group-text"><h4>내용</h4></span>
+                                        <label style="margin-bottom: 15px;"><h5>내용</h5></label>
                                         <textarea name="content" cols="110" rows="20"
-                                                  placeholder="내용을 입력해주세요."></textarea>
+                                                  placeholder="내용을 입력해주세요." style="margin-bottom: 30px;"></textarea>
                                     </div>
                                 </li>
                                 <h1></h1>
                                 <li class="bbs_writer">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text"><h4>작성자</h4></span>
-                                        <input type="text" name="writer" size="50">
+                                    <div>
+                                        <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
+                                        <input type="text" name="writer" size="50" style="margin-bottom: 30px;">
                                         <!--<input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>-->
                                     </div>
                                 </li>
                                 <h1></h1>
                                 <li>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text"><h4>이미지</h4></span>
-                                        <div class="float-end uploadHidden">
-                                            <button type="button" class="btn btn-primary uploadFileBtn">파일 추가</button>
+                                    <div>
+                                        <label style="margin-bottom: 15px;"><h5>이미지</h5></label>
+                                        <div class="float-end uploadHidden" style="margin-bottom: 30px;">
+                                            <button type="button" class="btn btn-default uploadFileBtn" style="margin-left: 20px;">파일 추가</button>
                                         </div>
                                     </div>
                                 </li>
+
+                                <div style="margin: 10px 0;">
+                                    <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #000;">
+                                    <hr style="margin: 0; border: 0; border-top: 1px solid #000;">
+                                </div>
+
                                 <li>
-                                    <div class="my-4">
-                                        <p class="btn_line txt_right">
-                                            <input type="button" value="글쓰기" class="btn_srch submitBtn">
-                                            <a th:href="|@{/board/list}?${list}|" class="btn_bbs">목록</a>
-                                        </p>
+                                    <div style="margin-top: 50px;">
+                                            <button type="submit" style="width: 80px; height: 35px;" class="btn btn-primary">등록</button>
+<!--                                            <input type="button" value="완료" class="btn btn-default">-->
+                                            <button type="button" style="width: 80px; height: 35px; margin-right: 10px;" class="btn btn-default"><a th:href="|@{/board/list}?${list}|">목록</a></button>
                                     </div>
                                 </li>
                             </ul>
@@ -86,8 +91,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary uploadBtn">업로드</button>
-                    <button type="button" class="btn btn-outline-dark closeUploadBtn">닫기</button>
+                    <button type="button" class="button-16 uploadBtn">업로드</button>
+                    <button type="button" class="button-16 closeUploadBtn">닫기</button>
                 </div>
             </div>
         </div>
