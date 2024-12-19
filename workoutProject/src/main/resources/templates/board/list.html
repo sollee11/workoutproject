@@ -18,13 +18,14 @@
                         <h3>자유게시판</h3>
                     </header>
 
-                    <button class="btn btn-default" role="button"><a href="/board/add">글쓰기</a></button>
-                    <form action="/board/list" class="float-end">
-                        <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}"
-                               title="검색어 입력"
-                               placeholder="검색어 입력">
-                        <span class="caret"></span>
-                    </form>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <form action="/board/list">
+                            <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}"
+                                   title="검색어 입력"
+                                   placeholder="검색어 입력">
+                        </form>
+                        <button class="btn btn-default" role="button"><a href="/board/add">글쓰기</a></button>
+                    </div>
 
                     <div style="margin: 50px 0;"></div>
                     <table class="table datatable" style="margin-top: 30px;">
