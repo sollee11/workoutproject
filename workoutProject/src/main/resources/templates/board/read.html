@@ -22,20 +22,27 @@
                             </ul>
                         </header>
 
-                        <div class="editer_content" th:utext="${board.content}"></div>
-                        <div th:if="${board.fileNames != null && board.fileNames.size()>0}">
-                            <img class="card-img-top" th:each="fileName: ${board.fileNames}"
+<!--                        <div class="editer_content" th:utext="${board.content}"></div>-->
+                        <div th:each="fileName: ${board.fileNames}" style="margin-bottom: 20px;">
+                            <img class="card-img-top"
                                  th:src="|/view/${fileName}|"
-                                 style="max-width: 500px; height: auto;">
+                                 style="max-width: 500px; height: auto; display: block;">
                         </div>
+                        <div class="editer_content"
+                             style="margin: 30px auto; max-width: 800px; text-align: center;"
+                             th:utext="${board.content}">
+                        </div>
+
                         <div style="margin: 50px 0;">
                             <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #000;">
                             <hr style="margin: 0; border: 0; border-top: 1px solid #000;">
                         </div>
+
                         <div class="btn_line">
-                            <button class="btn btn-default" role="button"><a
-                                    th:href="|@{/board/modify(bno=${board.bno})}&${link}|">수정</a></button>
-                            <button class="btn btn-default" role="button"><a href="/board/list">목록</a></button>
+                            <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
+                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
+                            <a href="/board/list" class="btn-default"
+                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">목록</a>
                         </div>
                     </div>
                     <div style="margin: 50px 0;"></div>
@@ -48,8 +55,8 @@
                                     <div style="display: flex; align-items: flex-start; gap: 10px;">
                                         <textarea class="replyText" style="flex: 1; height: 100px; resize: none;"
                                                   placeholder="댓글을 작성하세요"></textarea>
-                                        <input type="button" value="등록" class="btn btn-default registerBtn"
-                                               style="height: 100px;">
+                                        <input type="button" value="등록" class="btn-default registerBtn"
+                                               style="height: 100px; line-height: normal; font-size: 0.9em; padding: 0 1.5em; display: inline-block; text-align: center;">
                                     </div>
                                     <hr style="margin: 30px 0; border: 0; border-top: 1px solid #000000;">
                                     <ul class="list-group replyList"></ul>
@@ -113,8 +120,9 @@
                 <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
 <!--                <span class="col-2">${dto.replyer}</span>-->
                 <span class="float-end">
-                  <button class="btn btn-danger removeReply" data-rno="${dto.rno}">삭제</button>
-                </span>
+                       <button class="btn-danger removeReply" data-rno="${dto.rno}"
+                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border: 1px solid #dc3545;">삭제</button>
+                   </span>
               </li>`
             }
         }

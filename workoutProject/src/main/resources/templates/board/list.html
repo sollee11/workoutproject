@@ -18,35 +18,54 @@
                         <h3>자유게시판</h3>
                     </header>
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <form action="/board/list">
-                            <input id="search" type="search" name="keyword" size="50" th:value="${pageRequestDTO.keyword}"
-                                   title="검색어 입력"
-                                   placeholder="검색어 입력">
-                        </form>
-                        <button class="btn btn-default" role="button"><a href="/board/add">글쓰기</a></button>
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 1em;">
+                    <form action="/board/list" style="display: flex; gap: 0.5em;">
+                        <input type="search" name="keyword"
+                               th:value="${pageRequestDTO.keyword}"
+                               placeholder="검색어를 입력하세요"
+                               style="width: 200px; height: 2.2em; font-size: 0.9em;" />
+                        <button type="submit" class="btn-default"
+                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em;">검색</button>
+                    </form>
+                    <a href="/board/add" class="btn-default"
+                       style="margin-left: 0.5em; height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">글쓰기</a>
                     </div>
-
-                    <div style="margin: 50px 0;"></div>
-                    <table class="table datatable" style="margin-top: 30px;">
-                        <thead>
-                        <tr>
-                            <th><b>제목</b></th>
-                            <th><b>작성자</b></th>
-                            <th><b>작성일</b></th>
-                            <th><b>조회수</b></th>
-                        </tr>
-                        <tbody>
-                        <tr th:each="board:${responseDTO.dtoList}">
-                            <td><a th:href="@{/board/read(bno=${board.bno})}">[[${board.title}]]</a>
-                                <span class="badge progress-bar-success">[[${board.replyCount}]]</span></td>
-                            <td>[[${board.writer}]]</td>
-                            <td>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
-                            <td>[[${board.view}]]</td>
-                        </tr>
-                        </thead>
-                        </tbody>
-                    </table>
+                    <!-- 게시판 테이블 -->
+                    <div class="table-wrapper">
+                        <table style="border-collapse: collapse;">
+                            <thead>
+                            <tr style="border-top: 2px solid #000; border-bottom: 1px solid #000; background-color: #f8f9fa;">
+<!--                                <th style="width: 10%; padding: 1em; text-align: center;">번호</th>-->
+                                <th style="width: 50%; padding: 1em;">제목</th>
+<!--                                작성자 추가-->
+                                <th style="width: 15%; padding: 1em; text-align: center;">조회수</th>
+                                <th style="width: 25%; padding: 1em; text-align: center;">작성일</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="board:${responseDTO.dtoList}"
+                                style="border-bottom: 1px solid #ddd;">
+<!--                                <td style="padding: 1em; text-align: center;">[[${board.bno}]]</td>-->
+                                <td style="padding: 1em;">
+                                    <a th:href="@{/board/read(bno=${board.bno})}" style="text-decoration: none; color: #000;">
+                                        [[${board.title}]]
+                                        <span th:if="${board.replyCount > 0}"
+                                              style="background: #000; color: #fff;
+                                                    padding: 0.2em 0.6em; border-radius: 2em;
+                                                    font-size: 0.8em; margin-left: 0.5em;">
+                                           [[${board.replyCount}]]
+                                       </span>
+                                    </a>
+                                </td>
+<!--                                작성자 추가-->
+                                <td style="padding: 1em; text-align: center;">[[${board.view}]]</td>
+                                <td style="padding: 1em; text-align: center;">
+                                    [[${#temporals.format(board.regDate, 'yyyy-MM-dd')}]]
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="pagination">
                         <a href="javascript:;" class="firstpage pbtn" data-num="1"><img data-num="1"
                                                                                         th:src="@{/images/btn_firstpage.png}"
@@ -127,8 +146,8 @@
                                 </footer>
                             </article>
                         </section>
-
                     </div>
+
                 </div>
             </div>
         </div>
