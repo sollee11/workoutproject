@@ -45,7 +45,7 @@
                                     <div>
                                         <label style="margin-bottom: 15px;"><h5>이미지</h5></label>
                                         <div class="uploadHidden" style="margin-bottom: 50px;">
-                                            <input type="file" name="files" class="btn btn-default" accept="image/*"
+                                            <input type="file" name="files" class="btn" accept="image/*"
                                                    multiple>
                                         </div>
                                     </div>
@@ -57,18 +57,16 @@
                                 </li>
 
                                 <div style="margin: 10px 0;">
-                                    <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #000;">
-                                    <hr style="margin: 0; border: 0; border-top: 1px solid #000;">
+                                    <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
+                                    <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
                                 </div>
 
                                 <li>
                                     <div style="margin-top: 50px;">
-                                        <button type="button" style="width: 80px; height: 35px;"
-                                                class="btn btn-primary submitBtn">등록
-                                        </button>
-                                        <button type="button" style="width: 80px; height: 35px; margin-right: 10px;"
-                                                class="btn btn-default"><a th:href="|@{/board/list}?${list}|">목록</a>
-                                        </button>
+                                        <button type="button" class="btn-primary submitBtn"
+                                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border-radius: 0;">등록</button>
+                                        <button type="button" class="btn-default" style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border-radius: 0;">
+                                            <a th:href="|@{/board/list}?${list}|">목록</a></button>
                                     </div>
                                 </li>
                             </ul>

@@ -34,8 +34,8 @@
                         </div>
 
                         <div style="margin: 50px 0;">
-                            <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #000;">
-                            <hr style="margin: 0; border: 0; border-top: 1px solid #000;">
+                            <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
+                            <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
                         </div>
 
                         <div class="btn_line">
@@ -58,7 +58,7 @@
                                         <input type="button" value="등록" class="btn-default registerBtn"
                                                style="height: 100px; line-height: normal; font-size: 0.9em; padding: 0 1.5em; display: inline-block; text-align: center;">
                                     </div>
-                                    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #000000;">
+                                    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
                                     <ul class="list-group replyList"></ul>
                                 </div>
                             </div>
@@ -120,8 +120,8 @@
                 <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
 <!--                <span class="col-2">${dto.replyer}</span>-->
                 <span class="float-end">
-                       <button class="btn-danger removeReply" data-rno="${dto.rno}"
-                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border: 1px solid #dc3545;">삭제</button>
+                       <button class="btn-danger removeBtn" data-rno="${dto.rno}"
+                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border: 1px solid #dc3545; border-radius: 0;">삭제</button>
                    </span>
               </li>`
             }
@@ -144,22 +144,60 @@
     // 초기 댓글 목록 로드
     printReplies(1, 10, true);
 
-    removeBtn.addEventListener("click", function (e) {
-        // if(!hasAuth){
-        //   alert("댓글 작성자만 삭제가 가능합니다.")
-        //   modifyModal.hide()
-        //   return
-        // }
-        removeReply(replyHeader.innerHTML).then(result => {
-            alert(result.rno + ' 댓글이 삭제되었습니다.')
-            replyText.value = ''
-            modifyModal.hide()
-            page = 1
-            printReplies(page.size)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, false)
+    replyList.addEventListener("click", function(e) {
+        if(e.target.classList.contains('removeBtn')) {
+            const rno = e.target.getAttribute("data-rno");
+
+            if(confirm('댓글을 삭제하시겠습니까?')) {
+                removeReply(rno).then(result => {
+                    alert('댓글이 삭제되었습니다.');
+                    // 댓글 목록 갱신
+                    printReplies(1, 10, false);
+                }).catch(e => {
+                    alert('댓글 삭제에 실패했습니다.');
+                    console.error(e);
+                });
+            }
+        }
+    }, false);
+
+    // async function deleteReply(rno) {
+    //     if(!confirm('댓글을 삭제하시겠습니까?')) {
+    //         return;
+    //     }
+    //     try {
+    //         await removeReply(rno);
+    //         alert('댓글이 삭제되었습니다.');
+    //
+    //         // 댓글 목록 갱신
+    //         getList({bno: bno, page: 1, size: 10, goLast: true}).then(
+    //             data => {
+    //                 printList(data.dtoList);
+    //             }
+    //         ).catch(e => {
+    //             console.error(e);
+    //         });
+    //     } catch(err) {
+    //         alert('댓글 삭제에 실패했습니다.');
+    //         console.error(err);
+    //     }
+    // }
+
+    // removeBtn.addEventListener("click", function (e) {
+    //     // if(!hasAuth){
+    //     //   alert("댓글 작성자만 삭제가 가능합니다.")
+    //     //   modifyModal.hide()
+    //     //   return
+    //     // }
+    //     removeReply(replyHeader.innerHTML).then(result => {
+    //         alert(result.rno + ' 댓글이 삭제되었습니다.')
+    //         replyText.value = ''
+    //         // page = 1
+    //         // printReplies(page.size)
+    //     }).catch(e => {
+    //         console.log(e)
+    //     })
+    // }, false)
 
     // function printPages(data) {
     //   let pageStr = '';

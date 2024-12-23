@@ -1678,12 +1678,12 @@ a {
 		color: white;
 	}
 	.btn-primary {
-		border: 1px solid #4acaa8;
+		border: 1px solid #006dcc;
 		color: #006dcc;
 		border-color: #006dcc;
 	}
 	.btn-primary:hover {
-		border: 1px solid #45b395;
+		border: 1px solid #006dcc;
 		background: #006dcc !important;
 		color: white;
 	}
@@ -1696,10 +1696,12 @@ a {
 		color: white;
 	}
 	.btn-success {
+		border:1px solid #5bb75b;
 		color: #5bb75b;
 		border-color: #5bb75b;
 	}
 	.btn-success:hover {
+		border: 1px solid #5bb75b;
 		background: #5bb75b !important;
 		color: white;
 	}
