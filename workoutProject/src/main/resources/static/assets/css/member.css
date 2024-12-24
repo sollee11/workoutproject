@@ -150,7 +150,7 @@ form h1:after {
 
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=number] {
   background: linear-gradient(#1f2124,#27292c);
   border: 1px solid #222;
   border-radius: .3em;

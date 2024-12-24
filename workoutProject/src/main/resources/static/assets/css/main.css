@@ -1298,6 +1298,7 @@ a {
 	form input[type="text"],
 	form input[type="email"],
 	form input[type="password"],
+	form input[type="number"],
 	form select,
 	form textarea {
 		-webkit-appearance: none;
@@ -1310,6 +1311,7 @@ a {
 	form input[type="text"]:focus,
 	form input[type="email"]:focus,
 	form input[type="password"]:focus,
+	form input[type="number"]:focus,
 	form select:focus,
 	form textarea:focus {
 		box-shadow: 0 0 2px 1px #4091bf;
@@ -1317,7 +1319,8 @@ a {
 
 	form input[type="text"],
 	form input[type="email"],
-	form input[type="password"] {
+	form input[type="password"],
+	form input[type="number"]{
 		line-height: 3em;
 		padding: 0 1em;
 	}
@@ -1433,7 +1436,7 @@ a {
 
 
 /* Button */
-
+	input[type="number"],
 	input[type="button"],
 	input[type="submit"],
 	input[type="reset"],
