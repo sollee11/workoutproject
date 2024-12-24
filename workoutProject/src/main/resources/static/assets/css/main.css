@@ -1656,11 +1656,20 @@ a {
 		border-color: #000;
 	}
 	.btn {
+		/*border: 1px solid #000;  !* 추가 *!*/
+		display: inline-block;
 		background: transparent !important;
 		border-width: 2px;
 		border-radius: 0;
 	}
 	.btn-default {
+		border: 1px solid #000;  /* 추가 */
+		display: inline-block;
+		padding: 0 1.5em;
+		background: #fff;
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
 		color: black;
 		border-color: black;
 	}
@@ -1669,10 +1678,12 @@ a {
 		color: white;
 	}
 	.btn-primary {
+		border: 1px solid #006dcc;
 		color: #006dcc;
 		border-color: #006dcc;
 	}
 	.btn-primary:hover {
+		border: 1px solid #006dcc;
 		background: #006dcc !important;
 		color: white;
 	}
@@ -1685,10 +1696,12 @@ a {
 		color: white;
 	}
 	.btn-success {
+		border:1px solid #5bb75b;
 		color: #5bb75b;
 		border-color: #5bb75b;
 	}
 	.btn-success:hover {
+		border: 1px solid #5bb75b;
 		background: #5bb75b !important;
 		color: white;
 	}
@@ -1701,10 +1714,12 @@ a {
 		color: white;
 	}
 	.btn-danger {
+		border: 1px solid #da4f49;
 		color: #da4f49;
 		border-color: #da4f49;
 	}
 	.btn-danger:hover {
+		border: 1px solid #da4f49;
 		background: #da4f49 !important;
 		color: white;
 	}
@@ -2628,4 +2643,13 @@ a {
 				padding: 3em 0 1em 0;
 			}
 
+<<<<<<< HEAD
 	}
+
+
+ .card-img-top {
+	 max-width: 500px;
+	 height: auto;
+	 margin: 0 auto; /* 이미지를 중앙 정렬하고 싶은 경우 */
+ }
+
