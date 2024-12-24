@@ -121,8 +121,10 @@
                 <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
 <!--                <span class="col-2">${dto.replyer}</span>-->
                 <span class="float-end">
+                 <span th:if="${#authentication.principal.username} == ${board.writer}">
                        <button class="btn-danger removeBtn" data-rno="${dto.rno}"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border: 1px solid #dc3545; border-radius: 0;">삭제</button>
+                 </span>
                    </span>
               </li>`
             }
