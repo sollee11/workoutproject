@@ -4,6 +4,7 @@ import org.zerock.workoutproject.board.domain.Board;
 import org.zerock.workoutproject.board.dto.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public interface BoardService {
@@ -14,6 +15,10 @@ public interface BoardService {
     PageResponseDTO<BoardDTO> searchList(PageRequestDTO pageRequestDTO);
     PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO);
     PageResponseDTO<BoardListAllDTO> listWithAll(PageRequestDTO pageRequestDTO);
+    // 최근 게시물 가져오기
+    List<BoardDTO> getRecentPosts(int count);
+    // 인기 게시물 가져오기
+    BoardDTO getPopularPost();
 
     default Board dtoToEntity(BoardDTO boardDTO){
         Board board = Board.builder()
@@ -21,6 +26,7 @@ public interface BoardService {
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
                 .writer(boardDTO.getWriter())
+                .view(boardDTO.getView())
                 .build();
         if(boardDTO.getFileNames() != null){
             boardDTO.getFileNames().forEach(fileName -> {
@@ -35,8 +41,10 @@ public interface BoardService {
                 .bno(board.getBno())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .writer(board.getWriter())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
+                .view(board.getView())
                 .writer(board.getWriter())
                 .build();
         List<String> fileNames = board.getImageSet().stream().sorted()
