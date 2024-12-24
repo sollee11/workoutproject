@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
+    <style>
+        /* 크롬, 사파리, 엣지 */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
+        /* 파이어폭스 */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no"/>
     <meta name="description" content=""/>
@@ -27,40 +39,41 @@
                 <div class="card-body">
                     <form id="registerForm" action="/member/join" method="post">
                         <div class="input-group mb-3">
-                            <span class="input-group-text">아이디</span>
-                            <input type="text" name="mid" class="form-control mid" placeholder="아이디">
+                            <span class="input-group-text">아이디(필수)</span>
+                            <input type="text" name="mid" class="form-control mid" placeholder="아이디를 입력해 주세요">
                             <button type="overlappedID"  class="btn btn-secondary idCheck">중복확인</button>
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">패스워드</span>
-                            <input type="text" name="mpw" class="form-control" placeholder="비밀번호">
+                            <span class="input-group-text">패스워드(필수)</span>
+                            <input type="text" name="mpw" class="form-control" placeholder="비밀번호를 입력해 주세요">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">패스워드 확인</span>
+                            <span class="input-group-text">패스워드 확인(필수)</span>
                             <input type="text" name="mpwCheck" class="form-control" placeholder="비밀번호 확인">
                             <span id="passMessage"></span>
                         </div>
                         <br>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">이메일</span>
-                            <input type="text" name="email" class="form-control" placeholder="이메일">
+                            <span class="input-group-text">이메일(필수)</span>
+                            <input type="text" name="email" class="form-control" placeholder="이메일을 입력해 주세요">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">나이(선택)</span>
-                            <input type="text" name="age" class="form-control" placeholder="나이">
+                            <input type="number" name="age" class="form-control" placeholder="나이를 입력해 주세요">
+
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">키(선택)</span>
-                            <input type="text" name="height" class="form-control" placeholder="키">
+                            <input type="number" name="height" class="form-control" placeholder="키를 입력해 주세요">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">몸무게(선택)</span>
-                            <input type="text" name="weight" class="form-control" placeholder="몸무게">
+                            <input type="number" name="weight" class="form-control" placeholder="몸무게를 입력해 주세요">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">전화번호</span>
-                            <input type="text" name="phone" class="form-control" placeholder="전화번호">
+                            <span class="input-group-text">전화번호(필수)</span>
+                            <input type="number" name="phone" class="form-control" placeholder="전화번호를 입력해 주세요">
                         </div>
 
                         <p class="p-container">
@@ -113,6 +126,7 @@
             passMessage.style.color=correctColor;
 
         }
+
     }
 </script>
 </body>

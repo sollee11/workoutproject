@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="ko"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="">
 <head>
 	<title>WORK OUT</title>
 	<meta charset="utf-8" />
@@ -32,7 +32,14 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 							<li><a href="#">운동게시판</a></li>
 							<li><a href="/">자유게시판</a></li>
 							<li><a href="/">Q&A게시판</a></li>
-							<li><a href="/">회원가입</a></li>
+							<th:block sec:authorize="isAnonymous()">
+								<li><a href="/member/login">로그인</a></li>
+								<li><a href="/member/join">회원가입</a></li>
+							</th:block>
+							<th:block sec:authorize="isAuthenticated()">
+								<li><a href="/logout">로그아웃</a></li>
+								<li><a href="/member/mypage">정보수정</a></li>
+							</th:block>
 						</ul>
 					</nav>
 				</div>

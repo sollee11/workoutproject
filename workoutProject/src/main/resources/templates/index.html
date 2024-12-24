@@ -16,14 +16,10 @@
     <!-- Header -->
     <div id="header-wrapper">
 
-        <th:block sec:authorize="isAnonymous()">
-            <a href="/member/login" style="text-decoration: none; position: absolute; top: 10px; right: 90px;">로그인</a>
-            <a href="/member/join" style="text-decoration: none; position: absolute; top:10px; right: 10px;">회원가입</a>
-        </th:block>
-        <th:block sec:authorize="isAuthenticated()">
-            <a href="/logout" style="text-decoration: none; position: absolute; top: 10px; right: 90px;">로그아웃</a>
-            <a href="/member/mypage" style="text-decoration: none; position: absolute; top:10px; right: 10px;">정보수정</a>
-        </th:block>
+<!--        <th:block sec:authorize="isAnonymous()">-->
+<!--            <a href="/member/login" style="text-decoration: none; position: absolute; top: 10px; right: 90px;">로그인</a>-->
+<!--            <a href="/member/join" style="text-decoration: none; position: absolute; top:10px; right: 10px;">회원가입</a>-->
+<!--        </th:block>-->
         <div class="container">
 
             <!-- Header -->
@@ -40,8 +36,14 @@
                             <li><a href="/">운동게시판</a></li>
                             <li><a href="/board/list">자유게시판</a></li>
                             <li><a href="/">Q&A게시판</a></li>
+                            <th:block sec:authorize="isAnonymous()">
                             <li><a href="/member/login">로그인</a></li>
                             <li><a href="/member/join">회원가입</a></li>
+                            </th:block>
+                            <th:block sec:authorize="isAuthenticated()">
+                            <li><a href="/logout">로그아웃</a></li>
+                            <li><a href="/member/mypage">정보수정</a></li>
+                            </th:block>
                         </ul>
                     </nav>
                 </div>
