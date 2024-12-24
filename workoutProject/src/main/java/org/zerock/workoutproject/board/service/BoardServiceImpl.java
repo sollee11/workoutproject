@@ -128,16 +128,4 @@ public class BoardServiceImpl implements BoardService {
         return null;
     }
 
-//    @Override
-//    public List<Map<String, Object>> getViewCounts() {
-//        List<Board> boards = boardRepository.findAll();
-//        return boards.stream()
-//                .map(board -> {
-//                    Map<String, Object> viewInfo = new HashMap<>();
-//                    viewInfo.put("bno", board.getBno());
-//                    viewInfo.put("view", board.getView());
-//                    return viewInfo;
-//                })
-//                .collect(Collectors.toList());
-//    }
 }
