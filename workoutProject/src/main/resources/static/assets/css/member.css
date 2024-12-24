@@ -151,6 +151,7 @@ form h1:after {
 }
 
 input[type=text], input[type=password], input[type=number] {
+
   background: linear-gradient(#1f2124,#27292c);
   border: 1px solid #222;
   border-radius: .3em;
@@ -160,6 +161,7 @@ input[type=text], input[type=password], input[type=number] {
   margin-bottom: 20px;
   padding: 8px 5px;
   width: 100%;
+
 }
 
 input[type=text]:disabled, input[type=password]:disabled {
