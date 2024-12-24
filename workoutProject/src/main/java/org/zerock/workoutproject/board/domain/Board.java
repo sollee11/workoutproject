@@ -3,7 +3,7 @@ package org.zerock.workoutproject.board.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
-import org.zerock.workoutproject.main.common.BaseEntity;
+import org.zerock.workoutproject.common.BaseEntity;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,5 +1,6 @@
 package org.zerock.workoutproject.config;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,29 @@ public class CustomSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     log.info("---------------------configure-----------------------");
+    http.formLogin().loginPage("/member/login");
+    http.csrf().disable();
+    http.logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .addLogoutHandler((request, response, authentication) -> {
+              HttpSession session = request.getSession();
+              session.invalidate();
+            })
+            .logoutSuccessHandler(((request, response, authentication) ->
+                    response.sendRedirect("/")))
+            .deleteCookies("id", "token"));
+
+//        http
+//                .httpBasic(httpBasicConfigurer -> httpBasicConfigurer.disable())  // HTTP Basic 인증 비활성화
+//                .csrf(CsrfConfigurer::disable)
+//                .cors(corsConfigurer -> corsConfigurer.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+//                .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+//                .authorizeHttpRequests(authorizeRequestsCustomizer -> authorizeRequestsCustomizer
+//                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
+//                );
+
 //    // form태그를 사용한 로그인
 //    http.formLogin().loginPage("/member/login");
 //    // CSRF 끄기 설정

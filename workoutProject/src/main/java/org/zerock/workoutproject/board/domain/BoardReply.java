@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.zerock.workoutproject.main.common.BaseEntity;
+import org.zerock.workoutproject.common.BaseEntity;
 
 @Entity
 @Table(name="BoardReply", indexes = {
