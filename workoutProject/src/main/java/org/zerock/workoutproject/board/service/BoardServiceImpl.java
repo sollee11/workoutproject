@@ -1,17 +1,22 @@
 package org.zerock.workoutproject.board.service;
 
+import com.querydsl.core.BooleanBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.zerock.workoutproject.board.domain.Board;
 import org.zerock.workoutproject.board.dto.*;
 import org.zerock.workoutproject.board.repository.BoardRepository;
 import org.zerock.workoutproject.board.repository.ReplyRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -60,6 +65,7 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.deleteById(bno);
     }
 
+
     @Override
     public PageResponseDTO<BoardDTO> searchList(PageRequestDTO pageRequestDTO) {
         String keyword = pageRequestDTO.getKeyword();
@@ -100,4 +106,26 @@ public class BoardServiceImpl implements BoardService {
                 .total((int)result.getTotalElements())
                 .build();
     }
+
+    @Override
+    public List<BoardDTO> getRecentPosts(int count) {
+        Pageable pageable = PageRequest.of(0, count, Sort.by("regDate").descending());
+        List<Board> recentBoards = boardRepository.findAll(pageable).getContent();
+
+        return recentBoards.stream()
+                .map(board -> modelMapper.map(board, BoardDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BoardDTO getPopularPost() {
+        Pageable pageable = PageRequest.of(0, 1, Sort.by("view").descending());
+        List<Board> popularBoards = boardRepository.findAll(pageable).getContent();
+
+        if (!popularBoards.isEmpty()) {
+            return modelMapper.map(popularBoards.get(0), BoardDTO.class);
+        }
+        return null;
+    }
+
 }

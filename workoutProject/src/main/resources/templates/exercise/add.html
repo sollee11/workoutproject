@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<!--
+	ZeroFour by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html  lang="ko"
+	   xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/basic.html}">
+
+
+			<!-- Main Wrapper -->
+				<div layout:fragment="content" id="main-wrapper">
+					<div class="bodytext_area box_inner">
+						<form action="/exercise/add" method="POST">
+							<ul class="bbsview_list">
+								<li class="bbs_title">제목 : <input type="text" name="title" size="110" placeholder="제목을 입력해주세요."></li>
+								<li class="bbs_title">URL : <input type="text" name="url" size="110" placeholder="URL을 입력해주세요"></li>
+								<li class="bbs_content">
+									<div class="editer_content">
+										<textarea name="content" cols="110" rows="20" placeholder="내용을 입력해주세요."></textarea>
+									</div>
+								</li>
+							</ul>
+							<p class="btn_line txt_right">
+								<input type="submit" value="글쓰기" class="btn_srch">
+								<a th:href="|@{/exercise/notice}?${link}|" class="btn_bbs">목록</a>
+							</p>
+						</form>
+					</div>
+				</div>
+
+			<script layout:fragment="script" th:inline="javascript">
+				document.querySelector(".pagination").addEventListener("click", (e)=>{
+					e.preventDefault();
+					e.stopPropagation();
+					const target = e.target;
+					if(target.tagName !== 'IMG' && target.tagName !== 'A' && target.tagName !== 'SPAN'){
+						return;
+					}
+					const num = target.closest('a, span').getAttribute("data-num");
+					const formObj = document.querySelector("form");
+					formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`
+					formObj.submit();
+				},false)
+			</script>
+</html>

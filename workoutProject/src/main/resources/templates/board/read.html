@@ -17,8 +17,9 @@
                         <header class="major">
                             <ul class="bbsview_list">
                                 <li class="bbs_title"><h3>[[${board.title}]]</h3></li>
-                                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm:ss')}]]</span></li>
-                                <li class="bbs_date" style="margin-bottom: 30px;">조회수 : <span>[[${board.view}]]</span></li>
+                                <li class="bbs_hit">작성자 : <span>[[${board.writer}]]</span></li>
+                                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}]]</span></li>
+<!--                                <li class="bbs_date" style="margin-bottom: 30px;">조회수 : <span>[[${board.view}]]</span></li>-->
                             </ul>
                         </header>
 
