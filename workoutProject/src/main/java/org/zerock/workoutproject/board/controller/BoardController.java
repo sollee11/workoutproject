@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.workoutproject.board.dto.*;
 import org.zerock.workoutproject.board.service.BoardService;
@@ -18,6 +21,7 @@ import org.zerock.workoutproject.board.service.BoardService;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -31,6 +35,13 @@ public class BoardController {
     public void list(PageRequestDTO req, Model model) {
         PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(req);
         model.addAttribute("responseDTO", responseDTO);
+        // 최근 게시물 2개 가져오기
+        List<BoardDTO> recentPosts = boardService.getRecentPosts(2);
+        model.addAttribute("recentPosts", recentPosts);
+
+        // 조회수 가장 높은 게시물 가져오기
+        BoardDTO popularPost = boardService.getPopularPost();
+        model.addAttribute("popularPost", popularPost);
     }
 
     @GetMapping("/add")
@@ -97,5 +108,15 @@ public class BoardController {
             }
         }
     }
+//    @GetMapping("/board/view-counts")
+//    @ResponseBody
+//    public ResponseEntity<List<Map<String, Object>>> getViewCounts() {
+//        try {
+//            List<Map<String, Object>> viewCounts = boardService.getViewCounts();
+//            return ResponseEntity.ok(viewCounts);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 }
 

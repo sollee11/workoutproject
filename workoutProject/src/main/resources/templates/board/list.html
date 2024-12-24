@@ -19,46 +19,45 @@
                     </header>
 
                     <div style="display: flex; justify-content: flex-end; margin-bottom: 1em;">
-                    <form action="/board/list" style="display: flex; gap: 0.5em;">
-                        <input type="search" name="keyword"
-                               th:value="${pageRequestDTO.keyword}"
-                               placeholder="검색어를 입력하세요"
-                               style="width: 200px; height: 2.2em; font-size: 0.9em;" />
-                        <button type="submit" class="btn-default"
-                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em;">검색</button>
-                    </form>
-                    <a href="/board/add" class="btn-default"
-                       style="margin-left: 0.5em; height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">글쓰기</a>
+                        <form action="/board/list" style="display: flex; gap: 0.5em;">
+                            <input type="search" name="keyword"
+                                   th:value="${pageRequestDTO.keyword}"
+                                   placeholder="검색어를 입력하세요"
+                                   style="width: 200px; height: 2.2em; font-size: 0.9em;"/>
+                            <button type="submit" class="btn-default"
+                                    style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em;">검색
+                            </button>
+                        </form>
+                        <a href="/board/add" class="btn-default"
+                           style="margin-left: 0.5em; height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">글쓰기</a>
                     </div>
                     <!-- 게시판 테이블 -->
                     <div class="table-wrapper">
                         <table style="border-collapse: collapse;">
                             <thead>
-                            <tr style="border-top: 2px solid #000; border-bottom: 1px solid #000; background-color: #f8f9fa;">
-<!--                                <th style="width: 10%; padding: 1em; text-align: center;">번호</th>-->
+                            <tr style="border-top: 2px solid #ddd; border-bottom: 1px solid #ddd; background-color: #f8f9fa;">
                                 <th style="width: 50%; padding: 1em;">제목</th>
-<!--                                작성자 추가-->
-                                <th style="width: 15%; padding: 1em; text-align: center;">조회수</th>
+                                <th style="width: 15%; padding: 1em; text-align: center;">작성자</th>
+<!--                                <th style="width: 15%; padding: 1em; text-align: center;">조회수</th>-->
                                 <th style="width: 25%; padding: 1em; text-align: center;">작성일</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="board:${responseDTO.dtoList}"
-                                style="border-bottom: 1px solid #ddd;">
-<!--                                <td style="padding: 1em; text-align: center;">[[${board.bno}]]</td>-->
+                            <tr th:each="board:${responseDTO.dtoList}" style="border-bottom: 1px solid #ddd;">
                                 <td style="padding: 1em;">
-                                    <a th:href="@{/board/read(bno=${board.bno})}" style="text-decoration: none; color: #000;">
+                                    <a th:href="@{/board/read(bno=${board.bno})}"
+                                       style="text-decoration: none; color: #000;">
                                         [[${board.title}]]
-                                        <span th:if="${board.replyCount > 0}"
-                                              style="background: #000; color: #fff;
-                                                    padding: 0.2em 0.6em; border-radius: 2em;
-                                                    font-size: 0.8em; margin-left: 0.5em;">
+                                        <span th:if="${board.replyCount > 0}" style="background: #000; color: #fff;
+                                        padding: 0.2em 0.6em; border-radius: 2em;font-size: 0.8em; margin-left: 0.5em;">
                                            [[${board.replyCount}]]
                                        </span>
                                     </a>
                                 </td>
-<!--                                작성자 추가-->
-                                <td style="padding: 1em; text-align: center;">[[${board.view}]]</td>
+                                <td style="padding: 1em; text-align: center;">[[${board.writer}]]</td>
+<!--                                <td style="padding: 1em; text-align: center;" th:id="'view-count-' + ${board.bno}">-->
+<!--                                    [[${board.view}]]-->
+<!--                                </td>-->
                                 <td style="padding: 1em; text-align: center;">
                                     [[${#temporals.format(board.regDate, 'yyyy-MM-dd')}]]
                                 </td>
@@ -98,60 +97,45 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="wrapper style3">
-        <div class="inner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8 col-12-medium">
-                        <!-- Article list -->
-                        <section class="box article-list">
-                            <h2 class="icon fa-file-alt">최신 글</h2>
-                            <!-- Excerpt -->
-                            <article class="box excerpt">
-                                <a href="#" class="image left"><img src="images/pic05.jpg" alt=""/></a>
-                                <div>
-                                    <header>
-                                        <span class="date">July 18</span>
-                                        <h3><a href="#">Adventuring with a knee injury</a></h3>
-                                    </header>
-                                    <p>내용</p>
-                                </div>
-                            </article>
-
-                            <!-- Excerpt -->
-                            <article class="box excerpt">
-                                <a href="#" class="image left"><img src="images/pic06.jpg" alt=""/></a>
-                                <div>
-                                    <header>
-                                        <span class="date">July 14</span>
-                                        <h3><a href="#">Preparing for Y2K38</a></h3>
-                                    </header>
-                                    <p>내용</p>
-                                </div>
-                            </article>
-
-                        </section>
-                    </div>
-                    <div class="col-4 col-12-medium">
-
-                        <!-- Spotlight -->
-                        <section class="box spotlight">
-                            <h2 class="icon fa-file-alt">Spotlight</h2>
-                            <article>
-                                <a href="#" class="image featured"><img src="images/pic07.jpg" alt=""></a>
+<div class="wrapper style3">
+    <div class="inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 col-12-medium">
+                    <!-- Article list -->
+                    <section class="box article-list">
+                        <h2 class="icon fa-file-alt">최신 글</h2>
+                        <!-- 최근 게시물 2개만 반복 -->
+                        <article class="box excerpt" th:each="recent, iterStat : ${recentPosts}"
+                                 th:if="${iterStat.index < 2}">
+                            <div>
                                 <header>
-                                    <h3><a href="#">Neural Implants</a></h3>
-                                    <p>The pros and cons. Mostly cons.</p>
+                                    <span class="date"
+                                          th:text="${#temporals.format(recent.regDate, 'yyyy-MM-dd')}">날짜</span>
+                                    <h3><a th:href="@{/board/read(bno=${recent.bno})}" th:text="${recent.title}">제목</a>
+                                    </h3>
                                 </header>
-                                <p>내용</p>
-                                <footer>
-                                    <a href="#" class="button alt icon solid fa-file-alt">Continue Reading</a>
-                                </footer>
-                            </article>
-                        </section>
-                    </div>
+                                <p th:text="${recent.content}">내용</p>
+                            </div>
+                        </article>
+                    </section>
+                </div>
 
+                <div class="col-4 col-12-medium">
+                    <!-- Spotlight -->
+                    <section class="box spotlight">
+                        <h2 class="icon fa-file-alt">인기 게시물</h2>
+                        <article th:if="${popularPost != null}">
+                            <header>
+                                <h3><a th:href="@{/board/read(bno=${popularPost.bno})}" th:text="${popularPost.title}">제목</a>
+                                </h3>
+                                <p>조회수: <span th:text="${popularPost.view}"></span></p>
+                            </header>
+                            <p th:text="${popularPost.content}">내용</p>
+                        </article>
+                    </section>
                 </div>
             </div>
         </div>
@@ -159,5 +143,26 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+    // 페이지 로드 시 조회수 갱신
+    document.addEventListener('DOMContentLoaded', function () {
+        // 5초마다 조회수 갱신
+        setInterval(updateViewCounts, 5000);
+    });
+
+    // 조회수 갱신 함수
+    function updateViewCounts() {
+        fetch('/board/view-counts')
+            .then(response => response.json())
+            .then(data => {
+                // 각 게시물의 조회수 업데이트
+                data.forEach(item => {
+                    const viewCountElement = document.getElementById('view-count-' + item.bno);
+                    if (viewCountElement) {
+                        viewCountElement.textContent = item.view;
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
 </script>
 </html>

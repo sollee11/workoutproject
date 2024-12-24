@@ -12,26 +12,30 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bno;
-    @Column(length = 500, nullable = false)
     private String title;
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
     private String writer;
     private String url;
-    private Long view;
+
+    @Builder.Default
+    private Long view = 0L;
+    // 조회수 증가 메서드
+    public void increaseView() {
+        this.view++;
+    }
 
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL},
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     @BatchSize(size = 20)
