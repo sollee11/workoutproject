@@ -19,7 +19,6 @@ public interface BoardService {
     List<BoardDTO> getRecentPosts(int count);
     // 인기 게시물 가져오기
     BoardDTO getPopularPost();
-//    List<Map<String, Object>> getViewCounts();
 
     default Board dtoToEntity(BoardDTO boardDTO){
         Board board = Board.builder()

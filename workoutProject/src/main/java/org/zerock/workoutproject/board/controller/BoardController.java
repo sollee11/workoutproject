@@ -108,15 +108,6 @@ public class BoardController {
             }
         }
     }
-//    @GetMapping("/board/view-counts")
-//    @ResponseBody
-//    public ResponseEntity<List<Map<String, Object>>> getViewCounts() {
-//        try {
-//            List<Map<String, Object>> viewCounts = boardService.getViewCounts();
-//            return ResponseEntity.ok(viewCounts);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+
 }
 
