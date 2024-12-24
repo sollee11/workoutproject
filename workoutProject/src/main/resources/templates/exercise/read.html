@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<!--
+	ZeroFour by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+
+<!-- Main Wrapper -->
+<div layout:fragment="content" id="main-wrapper">
+    <div class="wrapper">
+        <!--						<div class="inner">-->
+        <h2 class="textcenter">[[${dto.title}]]</h2>
+        <div class="container2">
+
+            <iframe width="75%" height="100%" th:src="${dto.url}" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            <!-- Content -->
+            <!--										<article>-->
+            <!--											<header class="major">-->
+            <!--											</header>-->
+            <!--											<span class="image featured"><img src="images/pic08.jpg" alt="" /></span>-->
+            <!--										</article>-->
+
+        </div>
+        <div>
+            <p class="textcenter">[[${dto.content}]]</p>
+
+        </div>
+        <p class="btn_line txt_right">
+            <a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs">목록</a>
+            <a th:href="|@{/exercise/modify(eno=${dto.eno})}&${pageRequestDTO.link}|" class="btn_bbs">수정</a>
+        </p>
+        <form class="mb-4"><textarea class="form-control replyText" rows="3" placeholder="댓글을 작성하세요">
+
+        </textarea>
+            <div><input type="text" name="title" size="110" class="replyer" ></div>
+        </form>
+        <div class="my-4">
+            <p class="btn_line txt_right">
+                <input type="button" value="등록" class="registerBtn btn btn-info">
+            </p>
+        </div>
+        <!-- Comment with nested comments-->
+        <div class="d-flex mb-4">
+            <div class="ms-3">
+                <div class="col">
+                    <ul class="list-group replyList"></ul>
+                    <ul class="pagination replyPaging"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/assets/js/exercisereply.js"></script>
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+    const eno = [[${dto.eno}]];
+    const replyList = document.querySelector(".replyList");
+    const replyPaging = document.querySelector(".replyPaging");
+    const registerBtn = document.querySelector(".registerBtn");
+    const replyText = document.querySelector(".replyText");
+    const replyer = document.querySelector(".replyer");
+
+
+    function printList(dtoList) {
+        let str = '';
+        if (dtoList && dtoList.length) {
+            for (const dto of dtoList) {
+                str += `<li class="list-group-item d-flex replyItem">
+                            <span class="col-2">${dto.rno}</span>
+                            <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
+                            <span class="col-2">${dto.replyer}</span>
+                            <span class="col-2">${dto.regDate}</span>
+                        </li>`
+            }
+        }
+        replyList.innerHTML = str;
+    }
+    registerBtn.addEventListener("click",function(e){
+        // JSON형식으로 데이터를 보내기 위해서 JavaScript 객체 생성
+        const replyObj = {
+            eno:eno,
+            replyText:replyText.value,
+            replyer:replyer.value
+        };
+        addReply(replyObj).then(result => {
+            alert(result.rno);
+            registerModal.hide();
+            replyText.value="";
+            replyer.value="";
+            printReplies(1,10,true);
+        }).catch(e=>{
+            alert("Exception...");
+        })
+    },false)
+
+    function printPages(data) {
+        let pageStr = '';
+        if (data.prev) {
+            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PREV</a></li>`;
+        }
+        for (let i = data.start; i <= data.end; i++) {
+            pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" data-page="${i}">${i}</a></li>`;
+        }
+        if (data.next) {
+            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`;
+        }
+        replyPaging.innerHTML = pageStr;
+    }
+
+    function printReplies(page, size, goLast) {
+        getList({eno, page, size, goLast}).then(
+            data => {
+                currentPage = data.page;
+                printList(data.dtoList);
+                printPages(data);
+            }).catch(e => {
+            console.error(e);
+        })
+    }
+
+    printReplies(1, 10, true);
+</script>
+</html>
