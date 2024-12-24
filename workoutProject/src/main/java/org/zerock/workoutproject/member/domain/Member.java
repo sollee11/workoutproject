@@ -4,6 +4,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.zerock.workoutproject.common.BaseEntity;
 
@@ -20,13 +21,16 @@ import java.util.Set;
 
 public class Member extends BaseEntity {
     @Id
+    @NotEmpty(message = "아이디 입력은 필수 항목입니다.")
     private String mid;
+    @NotEmpty(message = "비밀번호 입력은 필수 항목입니다.")
     private String mpw;
-
+    @NotEmpty(message = "비밀번호 입력은 필수 항목입니다.")
     private String email;
     private int age;
     private double height;
     private double weight;
+    @NotEmpty(message = "이메일 입력은 필수항목 입니다.")
     private String phone;
     private boolean del;
 

@@ -1,0 +1,9 @@
+diff a/workoutProject/src/main/resources/application.properties b/workoutProject/src/main/resources/application.properties	(rejected hunks)
+@@ -3,6 +3,7 @@
+ server.port=8080
+ 
+ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
++spring.datasource.url=jdbc:mariadb://localhost:3307/workout
+ spring.datasource.username=teamproject
+ spring.datasource.password=teamproject
+ 

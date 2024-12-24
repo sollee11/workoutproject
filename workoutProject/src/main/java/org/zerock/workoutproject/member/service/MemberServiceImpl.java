@@ -62,9 +62,10 @@ public class MemberServiceImpl implements MemberService {
         try {
 
             Member member = memberRepository.findById(memberDTO.getMid()).orElseThrow();
-            if (memberDTO.getMpw() != null) {
+            if (memberDTO.getMpw() != null && !memberDTO.getMpw().isBlank()) {
                 member.changePassword(passwordEncoder.encode(memberDTO.getMpw()));
             }
+
             if (memberDTO.getEmail() != null){
                 member.changeEmail(memberDTO.getEmail());
             }
