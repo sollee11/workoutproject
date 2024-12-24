@@ -38,10 +38,11 @@
                             <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
                             <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
                         </div>
-
                         <div class="btn_line">
+                            <span th:if="${#authentication.principal.username} == ${board.writer}">
                             <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
+                            </span>
                             <a href="/board/list" class="btn-default"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">목록</a>
                         </div>
