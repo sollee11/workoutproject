@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface QnaRepository extends JpaRepository<Qna, Long> {
-    @Query("SELECT q FROM Qna q ORDER BY q.regDate ASC")
+    @Query("SELECT q FROM Qna q ORDER BY q.regDate DESC")
     Page<Qna> findAllByOrderByRegDateDesc(Pageable pageable);
 
     @Query("SELECT q FROM Qna q LEFT JOIN FETCH q.images WHERE q.qno = :qno")

@@ -19,7 +19,8 @@ public interface BoardService {
     List<BoardDTO> getRecentPosts(int count);
     // 인기 게시물 가져오기
     BoardDTO getPopularPost();
-
+    List<ViewCountDTO> getAllViewCounts();
+    int increaseViewCount(Long bno);
     default Board dtoToEntity(BoardDTO boardDTO){
         Board board = Board.builder()
                 .bno(boardDTO.getBno())
@@ -54,4 +55,6 @@ public interface BoardService {
         boardDTO.setFileNames(fileNames);
         return boardDTO;
     }
+
+
 }

@@ -20,6 +20,7 @@ import org.zerock.workoutproject.board.service.BoardService;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -108,6 +109,20 @@ public class BoardController {
             }
         }
     }
+    @GetMapping("/test-pagination")
+    public ResponseEntity<PageResponseDTO<Object>> testPagination() {
+        PageRequestDTO requestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .build();
 
+        PageResponseDTO<Object> responseDTO = PageResponseDTO.withAll()
+                .pageRequestDTO(requestDTO)
+                .dtoList(Collections.emptyList())
+                .total(105)
+                .build();
+
+        return ResponseEntity.ok(responseDTO);
+    }
 }
 
