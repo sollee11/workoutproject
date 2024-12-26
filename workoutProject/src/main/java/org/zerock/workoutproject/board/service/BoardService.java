@@ -44,12 +44,10 @@ public interface BoardService {
                 .writer(board.getWriter())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
-<<<<<<< HEAD
                 .view(board.getView())
-=======
-                .writer(board.getWriter())
->>>>>>> member
                 .build();
+        // 두 필드 모두 BoardDTO에 필요해보여서
+        // view와 writer 속성을 모두 포함하도록 수정했습니다.
         List<String> fileNames = board.getImageSet().stream().sorted()
                 .map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName())
                 .collect(Collectors.toList());

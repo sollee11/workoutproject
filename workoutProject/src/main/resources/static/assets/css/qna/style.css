@@ -1,0 +1,718 @@
+
+.body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+
+/* 페이징 버튼 컨테이너 */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* 페이징 버튼 스타일 */
+.pagination-container button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+}
+
+/* 버튼 호버 효과 */
+.pagination-container button:hover {
+    background-color: #e0e0e0;
+    border-color: #999;
+    color: #000;
+}
+
+
+.pagination-container button.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    cursor: default; /* 클릭 비활성화 */
+}
+
+/* 비활성 버튼 (예: API 요청 중) */
+.pagination-container button:disabled {
+    background-color: #f9f9f9;
+    border-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+
+.container {
+    /*background-color: white;*/
+    /*border-radius: 8px;*/
+    /*padding: 20px;*/
+    /*margin-bottom: 20px;*/
+}
+
+.board-container, .post-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+
+.image-upload-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.image-upload-area {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.image-upload-area:hover {
+    border-color: #666;
+}
+
+.image-upload-area input[type="file"] {
+    display: none;
+}
+
+.image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview-item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.image-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* 버튼 스타일 */
+.button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.primary-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.status-completed.primary-button:hover {
+    background-color: #ffd43b;
+    color: #664d03;
+}
+
+.status-pending.primary-button:hover {
+    background-color: #69db7c;
+    color: #087f5b;
+}
+
+.secondary-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.secondary-button2 {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #6c757d;
+    color: white;
+}
+
+.secondary-button:hover {
+    background-color: #5a6268;
+}
+
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.board-table th, .board-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.view-replies-container {
+    margin-top: 20px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.board-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #495057;
+}
+
+.board-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.completed-message {
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 4px;
+    text-align: center;
+}
+
+
+.admin-badge {
+    display: inline-block;
+    background-color: orange;
+    color: white;
+    font-size: 0.8em;
+    padding: 2px 6px;
+    margin-left: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.status-completed {
+    background-color: #69db7c;
+    color: #087f5b;
+}
+
+.status-pending {
+    background-color: #ffd43b;
+    color: #664d03;
+}
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: #495057;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.reply-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.form-group textarea,
+.reply-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* 게시글 스타일 */
+.post-header {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.post-title {
+    color: #343a40;
+    margin: 0 0 10px 0;
+}
+
+.post-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.post-content {
+    padding: 20px;
+    min-height: 200px;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+
+.reply-section {
+    margin-top: 30px;
+    border-top: 2px solid #dee2e6;
+}
+
+.reply-form {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.reply-list {
+    margin-top: 20px;
+    transition: opacity 0.3s ease;
+}
+
+.reply-item {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+
+.load-more-container {
+    text-align: right;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.load-more-button {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.load-more-button:hover {
+    background-color: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.load-more-button.loading {
+    color: transparent;
+    pointer-events: none;
+}
+
+/* 관리자 배지 */
+.admin-badge {
+    background-color: #fd7e14;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+/* 알림 메시지 */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    display: none;
+}
+
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+}
+
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.load-more-button.loading::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #495057;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s linear infinite;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-image {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.post-image:hover {
+    transform: scale(1.05);
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.9);
+    margin: 15% 45% 15% 15% ;
+    width: 70%;
+    max-width: 800px;
+    animation: modalFadeIn 0.3s ease-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.board-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.write-button,
+.faq-button {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.write-button:hover,
+.faq-button:hover {
+    background-color: #45a049;
+}
+
+/* FAQ 모달 스타일링 */
+.faq-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+/* FAQ 모달 컨텐츠 영역 */
+.faq-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 8% auto;
+    padding: 2.5em;
+    width: 70%;
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+/* 모달 애니메이션 효과 */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 모달 닫기 버튼 */
+.faq-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.faq-close:hover {
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+/* FAQ 항목 컨테이너 */
+.faq-item {
+    border-bottom: 1px solid #eee;
+    padding: 1.5em 0;
+    margin-bottom: 0.5em;
+    transition: background-color 0.3s ease;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* FAQ 질문 스타일 */
+.faq-question {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1em;
+    padding: 0.5em 0;
+    margin-bottom: 1em;
+    position: relative;
+    cursor: pointer;
+}
+
+.faq-question::before {
+    content: "Q.";
+    color: #4CAF50;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+/* FAQ 답변 스타일 */
+.faq-answer {
+    color: #666;
+    line-height: 1.6;
+    padding: 1em 1.5em;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    margin-left: 25px;
+    position: relative;
+}
+
+.faq-answer::before {
+    content: "A.";
+    color: #666;
+    font-weight: 700;
+    position: absolute;
+    left: -25px;
+    top: 1em;
+}
+
+/* 모달 제목 스타일 */
+.faq-modal-content h2 {
+    color: #333;
+    margin-bottom: 1.5em;
+    padding-bottom: 0.8em;
+    border-bottom: 2px solid #eee;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/* FAQ 버튼 스타일 (헤더에 있는 버튼) */
+.write-button,
+.faq-button {
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.write-button:hover,
+.faq-button:hover {
+    background-color: #45a049;
+    transform: translateY(-1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .faq-modal-content {
+        width: 90%;
+        margin: 10% auto;
+        padding: 1.5em;
+    }
+
+    .faq-question {
+        font-size: 1em;
+        padding-right: 30px;
+    }
+
+    .faq-answer {
+        font-size: 0.95em;
+        margin-left: 20px;
+        padding: 1em;
+    }
+
+    .board-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .write-button,
+    .faq-button {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
