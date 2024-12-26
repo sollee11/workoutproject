@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
         Board board = result.orElseThrow();
         board.change(dto.getTitle(), dto.getContent());
         board.clearImages();
-        if(dto.getFileNames() != null) {
+        if (dto.getFileNames() != null) {
             for (String fileName : dto.getFileNames()) {
                 String[] arr = fileName.split("_");
                 board.addImage(arr[0], arr[1]);
@@ -70,14 +70,14 @@ public class BoardServiceImpl implements BoardService {
     public PageResponseDTO<BoardDTO> searchList(PageRequestDTO pageRequestDTO) {
         String keyword = pageRequestDTO.getKeyword();
         Pageable pageable = pageRequestDTO.getPageable("bno");
-        Page<Board> result = boardRepository.searchAll(keyword,pageable);
+        Page<Board> result = boardRepository.searchAll(keyword, pageable);
         List<BoardDTO> dtoList = result.getContent().stream()
                 .map(board -> modelMapper.map(board, BoardDTO.class))
                 .collect(Collectors.toList());
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
-                .total((int)result.getTotalElements())
+                .total((int) result.getTotalElements())
                 .build();
     }
 
@@ -90,7 +90,7 @@ public class BoardServiceImpl implements BoardService {
         return PageResponseDTO.<BoardListReplyCountDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(result.getContent())
-                .total((int)result.getTotalElements())
+                .total((int) result.getTotalElements())
                 .build();
     }
 
@@ -103,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
         return PageResponseDTO.<BoardListAllDTO>withAll()
                 .pageRequestDTO(req)
                 .dtoList(result.getContent())
-                .total((int)result.getTotalElements())
+                .total((int) result.getTotalElements())
                 .build();
     }
 
@@ -126,6 +126,24 @@ public class BoardServiceImpl implements BoardService {
             return modelMapper.map(popularBoards.get(0), BoardDTO.class);
         }
         return null;
+    }
+
+    @Override
+    public List<ViewCountDTO> getAllViewCounts() {
+        return boardRepository.findAll().stream()
+                .map(board -> new ViewCountDTO(
+                        board.getBno(),
+                        Math.toIntExact(board.getView())  // Long -> int 안전 변환
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int increaseViewCount(Long bno) {
+        boardRepository.increaseViewCount(bno);
+        Board board = boardRepository.findById(bno)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다"));
+        return board.getView().intValue();  // Long을 int로 변환
     }
 
 }

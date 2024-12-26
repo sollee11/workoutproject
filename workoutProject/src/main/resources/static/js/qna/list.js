@@ -5,11 +5,11 @@ const httpClient = new HttpClient();
 const uiManager = new UIManager();
 
 function saveCurrentPage(page) {
-    localStorage.setItem('qnaCurrentPage', page.toString());
+    sessionStorage.setItem('qnaCurrentPage', page.toString());
 }
 
 function loadCurrentPage() {
-    const savedPage = localStorage.getItem('qnaCurrentPage');
+    const savedPage = sessionStorage.getItem('qnaCurrentPage');
     return savedPage ? parseInt(savedPage) : 1;
 }
 
