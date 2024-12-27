@@ -44,11 +44,9 @@ public interface BoardService {
                 .writer(board.getWriter())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
-<<<<<<< HEAD
                 .view(board.getView())
-=======
                 .writer(board.getWriter())
->>>>>>> member
+
                 .build();
         List<String> fileNames = board.getImageSet().stream().sorted()
                 .map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName())
