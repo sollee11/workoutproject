@@ -1,11 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="ko"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/basic.html}">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
 
 <th:blcok layout:fragment="link">
-<!--    <link rel="stylesheet" href="/assets/css/main.css"/>-->
     <link rel="stylesheet" th:href="@{/assets/css/qna/style.css}">
 </th:blcok>
 <!-- 메인 콘텐츠 영역 -->
@@ -18,7 +17,11 @@ layout:decorate="~{layout/basic.html}">
                         <h2 class="board-title">QnA 게시판</h2>
                         <div class="board-actions">
                             <button class="faq-button" onclick="openFaqModal()">FAQ 확인하기</button>
-                            <button class="write-button" onclick="location.href='/qna/register'">글쓰기</button>
+                            <button class="write-button"
+                                    onclick="location.href='/qna/register'"
+                                    th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+                                글쓰기
+                            </button>
                         </div>
                     </div>
 
@@ -52,7 +55,6 @@ layout:decorate="~{layout/basic.html}">
     <script type="module" th:src="@{/js/qna/list.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </div>
-
 
 
 <script layout:fragment="script" th:inline="javascript">

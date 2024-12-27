@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.workoutproject.board.dto.ViewCountDTO;
 import org.zerock.workoutproject.qna.domain.Qna;
 import org.zerock.workoutproject.qna.domain.QnaReply;
 import org.zerock.workoutproject.qna.dto.QnaDTO;
@@ -45,7 +46,9 @@ public interface QnaService {
 
     Page<QnaListDTO>  getQnaList(int page, int size);
     long getTotalCount();
+    long increaseViewCount(Long qno);
 
+    List<ViewCountDTO> getAllViewCounts();
 }
 
 

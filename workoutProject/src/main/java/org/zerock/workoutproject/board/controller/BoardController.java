@@ -119,7 +119,7 @@ public class BoardController {
         PageResponseDTO<Object> responseDTO = PageResponseDTO.withAll()
                 .pageRequestDTO(requestDTO)
                 .dtoList(Collections.emptyList())
-                .total(105)
+                .total(50)
                 .build();
 
         return ResponseEntity.ok(responseDTO);
