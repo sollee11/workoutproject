@@ -105,7 +105,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const pwMatchMessage = document.getElementById('pwMatchMessage');
         let passwordVerified = false;
-
+        let correctColor = "#0000FF"
+        let worngColor = "#FF0000"
         // 비밀번호 확인 버튼 클릭 이벤트
         pwCheckBtn.addEventListener('click', function () {
             const password = document.getElementById('mpw').value;
@@ -121,6 +122,7 @@
                 pwMatchMessage.style.display = 'block';
                 pwMatchMessage.className = 'mb-3 text-success';
                 pwMatchMessage.textContent = '비밀번호가 일치합니다.';
+                pwMatchMessage.style.color=correctColor;
                 submitBtn.disabled = false;
 
                 // 비밀번호 입력 필드 잠금
@@ -132,6 +134,7 @@
                 pwMatchMessage.style.display = 'block';
                 pwMatchMessage.className = 'mb-3 text-danger';
                 pwMatchMessage.textContent = '비밀번호가 일치하지 않습니다.';
+                pwMatchMessage.style.color=worngColor;
                 submitBtn.disabled = true;
             }
         });
