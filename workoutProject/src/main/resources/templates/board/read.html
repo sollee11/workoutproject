@@ -2,7 +2,7 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+      layout:decorate="~{layout/basic.html}" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <!-- Main Wrapper -->
 <div layout:fragment="content" id="main-wrapper">
@@ -17,12 +17,14 @@
                             <ul class="bbsview_list">
                                 <li class="bbs_title"><h3>[[${board.title}]]</h3></li>
                                 <li class="bbs_hit">작성자 : <span>[[${board.writer}]]</span></li>
-                                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}]]</span></li>
-<!--                                <li class="bbs_date" style="margin-bottom: 30px;">조회수 : <span>[[${board.view}]]</span></li>-->
+                                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}]]</span>
+                                </li>
+<!--                                <li class="bbs_date" style="margin-bottom: 10px;">조회수 : <span>[[${board.view}]]</span>-->
+                                </li>
                             </ul>
                         </header>
 
-<!--                        <div class="editer_content" th:utext="${board.content}"></div>-->
+                        <!--                        <div class="editer_content" th:utext="${board.content}"></div>-->
                         <div th:each="fileName: ${board.fileNames}" style="margin-bottom: 20px;">
                             <img class="card-img-top"
                                  th:src="|/view/${fileName}|"
@@ -38,9 +40,10 @@
                             <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
                         </div>
                         <div class="btn_line">
-                            <span th:if="${#authentication.principal.username} == ${board.writer}">
-                            <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
-                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
+                           <span sec:authorize="isAuthenticated()"
+                                 th:if="${#authentication.principal.username == board.writer}">
+                                 <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
+                                  style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
                             </span>
                             <a href="/board/list" class="btn-default"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">목록</a>
@@ -147,11 +150,11 @@
     // 초기 댓글 목록 로드
     printReplies(1, 10, true);
 
-    replyList.addEventListener("click", function(e) {
-        if(e.target.classList.contains('removeBtn')) {
+    replyList.addEventListener("click", function (e) {
+        if (e.target.classList.contains('removeBtn')) {
             const rno = e.target.getAttribute("data-rno");
 
-            if(confirm('댓글을 삭제하시겠습니까?')) {
+            if (confirm('댓글을 삭제하시겠습니까?')) {
                 removeReply(rno).then(result => {
                     alert('댓글이 삭제되었습니다.');
                     // 댓글 목록 갱신
