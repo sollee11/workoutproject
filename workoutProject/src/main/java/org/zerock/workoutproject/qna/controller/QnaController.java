@@ -80,46 +80,19 @@ public class QnaController {
     }
 
 
-    // Qna 목록 조회 페이징 처리 x
-//    @GetMapping("/api/list/{all}")
-//    @ResponseBody
-//    public ResponseEntity<List<QnaDTO>> getQnaList() {
-//        List<Qna> qnaList = qnaService.getQnaList(new QnaDTO());
-//        List<QnaDTO> dtoList = qnaList.stream()
-//                .map(qna -> QnaDTO.builder()
-//                        .qno(qna.getQno())
-//                        .title(qna.getTitle())
-//                        .questionText(qna.getQuestionText())
-//                        .writer(qna.getWriter())
-//                        .regDate(qna.getRegDate())
-//                        .completed(qna.isCompleted())
-//                        .build())
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(dtoList);
-//    }
 
-    @GetMapping("/api/list")
+
+
+
+
+
+@GetMapping("/api/list")
     @ResponseBody
     public Page<QnaListDTO>  getPagedQnaList(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<QnaListDTO>  qnaPage = qnaService.getQnaList(page, size);
         return qnaPage;
-//        try {
-//            Page<Qna> qnaPage = qnaService.getQnaList(page, size);
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("data", qnaPage.getContent());
-//            response.put("totalPages", qnaPage.getTotalPages());
-//            response.put("currentPage", qnaPage.getNumber() + 1);
-//            response.put("totalElements", qnaPage.getTotalElements());
-
-//            return ResponseEntity.ok(response);
-
-//        } catch (Exception e) {
-//            log.error("페이징된 QnA 목록 조회 중 오류 발생", e);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(Collections.singletonMap("error", "QnA 목록 조회 중 오류가 발생했습니다."));
-//        }
     }
 
     // 이미지 조회

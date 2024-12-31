@@ -32,6 +32,8 @@ public class Qna {
     private boolean completed;
     private boolean secret;
     private boolean hide;
+    @Builder.Default
+    private Long view = 0L;
 
     @Column(name = "regDate")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

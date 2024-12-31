@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class QnaListDTO {
     private Long qno; // PK
+    private Long view; // 조회수
     private String title; // 제목
     private String questionText;    // 질문 내용
     private String writer;  // 작성자

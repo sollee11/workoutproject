@@ -2,11 +2,17 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<<<<<<< HEAD
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/basic.html}">
 
 <th:blcok layout:fragment="link">
     <!--    <link rel="stylesheet" href="/assets/css/main.css"/>-->
+=======
+      layout:decorate="~{layout/basic.html}">
+
+<th:blcok layout:fragment="link">
+>>>>>>> main
     <link rel="stylesheet" th:href="@{/assets/css/qna/style.css}">
 </th:blcok>
 <!-- 메인 콘텐츠 영역 -->
@@ -19,11 +25,19 @@
                         <h2 class="board-title">QnA 게시판</h2>
                         <div class="board-actions">
                             <button class="faq-button" onclick="openFaqModal()">FAQ 확인하기</button>
+<<<<<<< HEAD
                            <button class="write-button"
                                         sec:authorize="hasRole('ROLE_ADMIN') or isAuthenticated()"
                                         onclick="location.href='/qna/register'">
                             글쓰기
                         </button>
+=======
+                            <button class="write-button"
+                                    onclick="location.href='/qna/register'"
+                                    th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+                                글쓰기
+                            </button>
+>>>>>>> main
                         </div>
                     </div>
 

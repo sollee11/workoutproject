@@ -133,7 +133,7 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findAll().stream()
                 .map(board -> new ViewCountDTO(
                         board.getBno(),
-                        Math.toIntExact(board.getView())  // Long -> int 안전 변환
+                        Math.toIntExact(board.getView())  // Long -> int
                 ))
                 .collect(Collectors.toList());
     }

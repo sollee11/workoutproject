@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.workoutproject.board.domain.Board;
+import org.zerock.workoutproject.board.dto.ViewCountDTO;
 import org.zerock.workoutproject.qna.domain.Qna;
 import org.zerock.workoutproject.qna.domain.QnaImage;
 import org.zerock.workoutproject.qna.domain.QnaReply;
@@ -341,5 +343,23 @@ public class QnaServiceImpl implements QnaService {
         return qnaRepository.count();
     }
 
+    @Override
+    public long increaseViewCount(Long qno) {
+        qnaRepository.increaseViewCount(qno);
+        Qna qna = qnaRepository.findById(qno)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다"));
+        return qna.getView().intValue();  // Long을 int로 변환
+    }
 
+    @Override
+    public List<ViewCountDTO> getAllViewCounts() {
+        return qnaRepository.findAll().stream()
+                .map(board -> new ViewCountDTO(
+                        board.getQno(),
+                        Math.toIntExact(board.getView())  // Long -> int 안전 변환
+                ))
+                .collect(Collectors.toList());
+    }
 }
+
+
