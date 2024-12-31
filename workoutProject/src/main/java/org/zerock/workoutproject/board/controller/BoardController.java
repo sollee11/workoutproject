@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.workoutproject.board.dto.*;
 import org.zerock.workoutproject.board.service.BoardService;
+import org.zerock.workoutproject.main.service.MainService;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -26,6 +28,7 @@ public class BoardController {
     @Value("${org.zerock.upload.path}")
     private String uploadPath;
     private final BoardService boardService;
+    private final MainService mainService;
 
     @GetMapping("/list")
     public void list(PageRequestDTO req, Model model) {
