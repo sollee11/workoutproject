@@ -81,7 +81,7 @@
                     </div>
 
                     <p class="p-container">
-                        <button type="submit" class="btn btn-default" id="submitBtn" disabled>수정완료</button>
+                        <button type="submit" class="btn btn-default" id="submitBtn" >수정완료</button>
                         <br><br><br>
                         <button type="button" class="btn btn-default" onclick="window.location.href='/'">취소</button>
                         <br><br><br>
@@ -154,7 +154,7 @@
         });
 
         // 폼 제출 전 최종 확인
-        document.getElementById('accesspanel').addEventListener('submit', function (e) {
+        document.getElementById('submitBtn').addEventListener('click', function (e) {
             if (!passwordVerified) {
                 e.preventDefault();
                 alert('비밀번호 확인이 필요합니다.');

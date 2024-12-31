@@ -88,6 +88,8 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/assets/js/members.js"></script>
 <script layout:fragment="script" th:inline="javascript">
+
+    let idCheck = false;
     const error = [[${error}]];
     if (error && error === 'mid') {
         alert("동일한 MID를 가진 계정이 존재합니다.")
@@ -95,6 +97,7 @@
     document.querySelector(".idCheck").addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
+
         let id = document.querySelector("input[name='mid']").value;
         if (id === "") {
             alert("ID를 입력해주세요.");
@@ -103,8 +106,11 @@
         checkId(id).then(result => {
             if (result) {
                 alert("이미 존재하는 ID 입니다.");
+
             } else {
                 alert("사용가능한 ID 입니다.");
+                document.querySelector(".mid").readOnly= true;
+                idCheck = true;
             }
         }).catch(e => {
             console.log(e);
@@ -127,7 +133,41 @@
 
         }
 
+
     }
+    let submitCheck = document.querySelector("#accesspanel");
+    document.querySelector("#join").addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        let memPassword1=document.querySelector("input[name='mpw']").value;
+        let memPassword2=document.querySelector("input[name='mpwCheck']").value;
+        if (!idCheck){
+            alert("아이디 중복확인을 확인해주세요");
+            return;
+        }
+        if(memPassword1 !== memPassword2){
+            alert("비밀번호를 다시 확인해주세요");
+            return;
+        }
+
+        let age = document.querySelector("input[name='age']");
+        let height = document.querySelector("input[name='height']");
+        let weight = document.querySelector("input[name='weight']");
+        if (age.value === null || age.value === ""){
+            age.value = 0;
+        }
+        if (height.value === null || height.value === ""){
+            height.value = 0;
+        }
+        if (weight.value === null || weight.value === ""){
+            weight.value = 0;
+        }
+        submitCheck.submit();
+    })
+
+
+
+
 </script>
 </body>
 </html>
