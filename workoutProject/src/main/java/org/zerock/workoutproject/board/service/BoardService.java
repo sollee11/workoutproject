@@ -19,7 +19,8 @@ public interface BoardService {
     List<BoardDTO> getRecentPosts(int count);
     // 인기 게시물 가져오기
     BoardDTO getPopularPost();
-
+    List<ViewCountDTO> getAllViewCounts();
+    int increaseViewCount(Long bno);
     default Board dtoToEntity(BoardDTO boardDTO){
         Board board = Board.builder()
                 .bno(boardDTO.getBno())
@@ -46,10 +47,14 @@ public interface BoardService {
                 .modDate(board.getModDate())
                 .view(board.getView())
                 .build();
+        // 두 필드 모두 BoardDTO에 필요해보여서
+        // view와 writer 속성을 모두 포함하도록 수정했습니다.
         List<String> fileNames = board.getImageSet().stream().sorted()
                 .map(boardImage -> boardImage.getUuid()+"_"+boardImage.getFileName())
                 .collect(Collectors.toList());
         boardDTO.setFileNames(fileNames);
         return boardDTO;
     }
+
+
 }

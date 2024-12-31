@@ -38,10 +38,11 @@
                             <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
                             <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
                         </div>
-
                         <div class="btn_line">
+                            <span th:if="${#authentication.principal.username} == ${board.writer}">
                             <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
+                            </span>
                             <a href="/board/list" class="btn-default"
                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">목록</a>
                         </div>
@@ -76,66 +77,59 @@
 
 <script layout:fragment="script" th:inline="javascript">
     const bno = [[${board.bno}]];
+    const currentUser = [[${#authentication.principal.username}]];  // 현재 로그인한 사용자
 
-    const replyList = document.querySelector('.replyList')
-
-    const registerBtn = document.querySelector(".registerBtn")
-    const replyText = document.querySelector(".replyText")
-    const replyer = document.querySelector(".replyer")
+    const replyList = document.querySelector('.replyList');
+    const registerBtn = document.querySelector(".registerBtn");
+    const replyText = document.querySelector(".replyText");
 
     registerBtn.addEventListener("click", function (e) {
         if (replyText.value.trim() === '') {
             alert("댓글 내용을 입력해주세요");
             return;
         }
-        // JSON형식으로 데이터를 보내기 위해서 JavaScript 객체 생성
+
         const replyObj = {
             bno: bno,
             replyText: replyText.value,
-            // replyer: replyer.value
+            replyer: currentUser  // 현재 로그인한 사용자를 작성자로 설정
         }
+
         addReply(replyObj).then(result => {
-            // 댓글 등록 성공 후 처리
-            replyText.value = '';  // 입력창 비우기
-
-            // 댓글 목록 즉시 갱신
-            getList({bno: bno, page: 1, size: 10, goLast: true}).then(
-                data => {
-                    printList(data.dtoList);
-                }
-            ).catch(e => {
-                console.error(e);
-            });
-
+            replyText.value = '';
+            printReplies(1, 10, true);
         }).catch(e => {
             alert("댓글 등록에 실패했습니다");
             console.error(e);
         });
-    }, false);
+    });
 
     function printList(dtoList) {
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) {
-                str += `<li class="list-group-item d-flex replyItem">
-                <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
-<!--                <span class="col-2">${dto.replyer}</span>-->
-                <span class="float-end">
-                       <button class="btn-danger removeBtn" data-rno="${dto.rno}"
-                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border: 1px solid #dc3545; border-radius: 0;">삭제</button>
-                   </span>
-              </li>`
+                str += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">${dto.replyer}</span>
+                        <span class="ms-2">${dto.replyText}</span>
+                    </div>
+                    <div>
+                        ${currentUser === dto.replyer ?
+                    `<button class="btn-danger removeBtn" data-rno="${dto.rno}">삭제</button>`
+                    : ''}
+                    </div>
+                </li>`;
             }
+        } else {
+            str = '<li class="list-group-item">등록된 댓글이 없습니다.</li>';
         }
         replyList.innerHTML = str;
     }
 
-    // 페이지 로드시 댓글 목록 불러오기
     function printReplies(page, size, goLast) {
         getList({bno, page, size, goLast}).then(
             data => {
                 printList(data.dtoList);
-                // printPages(data); // 페이징 처리가 필요한 경우 주석 해제
             }
         ).catch(e => {
             console.error(e);
@@ -145,6 +139,7 @@
     // 초기 댓글 목록 로드
     printReplies(1, 10, true);
 
+    // 댓글 삭제 이벤트
     replyList.addEventListener("click", function(e) {
         if(e.target.classList.contains('removeBtn')) {
             const rno = e.target.getAttribute("data-rno");
@@ -152,7 +147,6 @@
             if(confirm('댓글을 삭제하시겠습니까?')) {
                 removeReply(rno).then(result => {
                     alert('댓글이 삭제되었습니다.');
-                    // 댓글 목록 갱신
                     printReplies(1, 10, false);
                 }).catch(e => {
                     alert('댓글 삭제에 실패했습니다.');
@@ -160,76 +154,7 @@
                 });
             }
         }
-    }, false);
-
-    // async function deleteReply(rno) {
-    //     if(!confirm('댓글을 삭제하시겠습니까?')) {
-    //         return;
-    //     }
-    //     try {
-    //         await removeReply(rno);
-    //         alert('댓글이 삭제되었습니다.');
-    //
-    //         // 댓글 목록 갱신
-    //         getList({bno: bno, page: 1, size: 10, goLast: true}).then(
-    //             data => {
-    //                 printList(data.dtoList);
-    //             }
-    //         ).catch(e => {
-    //             console.error(e);
-    //         });
-    //     } catch(err) {
-    //         alert('댓글 삭제에 실패했습니다.');
-    //         console.error(err);
-    //     }
-    // }
-
-    // removeBtn.addEventListener("click", function (e) {
-    //     // if(!hasAuth){
-    //     //   alert("댓글 작성자만 삭제가 가능합니다.")
-    //     //   modifyModal.hide()
-    //     //   return
-    //     // }
-    //     removeReply(replyHeader.innerHTML).then(result => {
-    //         alert(result.rno + ' 댓글이 삭제되었습니다.')
-    //         replyText.value = ''
-    //         // page = 1
-    //         // printReplies(page.size)
-    //     }).catch(e => {
-    //         console.log(e)
-    //     })
-    // }, false)
-
-    // function printPages(data) {
-    //   let pageStr = '';
-    //   if (data.prev) {
-    //     pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PREV</a></li>`
-    //   }
-    //   for (let i = data.start; i <= data.end; i++) {
-    //     pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" data-page="${i}">${i}</a></li>`
-    //   }
-    //   if (data.next) {
-    //     pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`
-    //   }
-    //   replyPaging.innerHTML = pageStr
-    // }
-
-    // // 댓글 페이지 클릭
-    // let page = 1
-    // let size = 10
-    //
-    // replyPaging.addEventListener("click", function (e) {
-    //   e.preventDefault()
-    //   e.stopPropagation()
-    //   const target = e.target
-    //   if (!target || target.tagName != 'A') {
-    //     return
-    //   }
-    //   const pageNum = target.getAttribute("data-page")
-    //   page = pageNum
-    //   printReplies(page, size)
-    // }, false)
-    //
+    });
 
 </script>
 </html>
