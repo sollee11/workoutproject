@@ -4,7 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 
-<!-- Main Wrapper -->
 <div layout:fragment="content" id="main-wrapper">
     <div class="wrapper style2">
         <div class="inner">
@@ -14,7 +13,6 @@
                         <h3>새 글 등록</h3>
                     </header>
 
-                    <!-- Content -->
 
                     <div>
                         <form action="/board/add" method="POST">
@@ -36,7 +34,6 @@
                                 <li class="bbs_writer">
                                     <div>
                                         <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
-<!--                                        <input type="text" name="writer" size="50" style="margin-bottom: 30px;">-->
                                         <input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>
                                     </div>
                                 </li>
@@ -144,7 +141,6 @@
         document.querySelector(".uploadResult").innerHTML += str
     }
 
-    // 이미지가 출력된 div 삭제 및 파일 데이터 삭제 함수
     function removeFile(uuid, fileName, obj) {
         console.log(uuid)
         console.log(fileName)
