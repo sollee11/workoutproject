@@ -4,30 +4,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 <th:blcok layout:fragment="link">
-  <!--    <link rel="stylesheet" href="/assets/css/main.css"/>-->
-  <link rel="stylesheet" th:href="@{/assets/css/boardList.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/boardList.css}">
 </th:blcok>
 <div layout:fragment="content" id="main-wrapper">
-<<<<<<< HEAD
-  <div class="wrapper style2">
-    <div class="inner">
-      <div class="container">
-        <div class="board-container">
-          <!-- 게시판 헤더 -->
-          <header class="board-header">
-            <h3 class="board-title">자유게시판</h3>
-            <div class="board-controls">
-              <form action="/board/list" class="search-form">
-                <input type="search" name="keyword" th:value="${pageRequestDTO.keyword}"
-                       class="search-input" placeholder="검색어를 입력하세요" />
-                <button type="submit" class="btn-write">검색</button>
-              </form>
-              <button class="btn-write"
-                      onclick="location.href='/board/add'"
-                      th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
-                글쓰기
-              </button>
-=======
     <div class="wrapper style2">
         <div class="inner">
             <div class="container">
@@ -102,153 +81,55 @@
                 </div>
 
                 <!-- 최신 글 및 인기 게시물 -->
-<!--                <div class="row">-->
-<!--                    <div class="recent-posts">-->
-<!--                        <section class="box">-->
-<!--                            <h2>최신 글</h2>-->
-<!--                            <article th:each="recent : ${recentPosts}">-->
-<!--                                <header>-->
-<!--                                    <h3 th:text="${recent.title}"></h3>-->
-<!--                                    <p th:text="${recent.content}"></p>-->
-<!--                                </header>-->
-<!--                            </article>-->
-<!--                        </section>-->
-<!--                    </div>-->
-<!--                    <div class="popular-posts">-->
-<!--                        <section class="box">-->
-<!--                            <h2>인기 게시물</h2>-->
-<!--                            <article th:if="${popularPost != null}">-->
-<!--                                <header>-->
-<!--                                    <h3 th:text="${popularPost.title}"></h3>-->
-<!--                                    <p th:text="'조회수: ' + ${popularPost.view}"></p>-->
-<!--                                </header>-->
-<!--                            </article>-->
-<!--                        </section>-->
-<!--                    </div>-->
-<!--                </div>-->
->>>>>>> main
+                <!--                <div class="row">-->
+                <!--                    <div class="recent-posts">-->
+                <!--                        <section class="box">-->
+                <!--                            <h2>최신 글</h2>-->
+                <!--                            <article th:each="recent : ${recentPosts}">-->
+                <!--                                <header>-->
+                <!--                                    <h3 th:text="${recent.title}"></h3>-->
+                <!--                                    <p th:text="${recent.content}"></p>-->
+                <!--                                </header>-->
+                <!--                            </article>-->
+                <!--                        </section>-->
+                <!--                    </div>-->
+                <!--                    <div class="popular-posts">-->
+                <!--                        <section class="box">-->
+                <!--                            <h2>인기 게시물</h2>-->
+                <!--                            <article th:if="${popularPost != null}">-->
+                <!--                                <header>-->
+                <!--                                    <h3 th:text="${popularPost.title}"></h3>-->
+                <!--                                    <p th:text="'조회수: ' + ${popularPost.view}"></p>-->
+                <!--                                </header>-->
+                <!--                            </article>-->
+                <!--                        </section>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
-          </header>
-
-          <!-- 게시글 목록 테이블 -->
-          <div class="table-wrapper">
-            <table class="board-table">
-              <thead>
-              <tr>
-                <th class="no-border">번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="board : ${responseDTO.dtoList}">
-                <td class="no-border">[[${board.bno}]]</td>
-                <td>
-                  <a th:href="@{/board/read(bno=${board.bno})}" class="post-title">
-                    [[${board.title}]]
-                  </a>
-                </td>
-                <td class="text-center">[[${board.writer}]]</td>
-                <td class="text-center"
-                    th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd')}"></td>
-                <td class="text-center view-count"
-                    th:id="'view-count-' + ${board.bno}">
-                  <th:block th:text="${board.view != null ? board.view : 0}"></th:block>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- 페이지네이션 -->
-          <div class="pagination-container">
-            <!-- 처음 버튼 -->
-            <button th:if="${responseDTO.page > 1}"
-                    th:data-num="1"
-                    class="pagination-btn first-page">처음</button>
-
-            <!-- 페이지 번호 -->
-            <button th:each="page : ${responseDTO.pageList}"
-                    th:data-num="${page}"
-                    th:text="${page}"
-                    th:classappend="${page == responseDTO.page} ? 'active' : ''"
-                    class="pagination-btn"></button>
-
-            <!-- 마지막 버튼 -->
-            <button th:if="${responseDTO.page < responseDTO.last}"
-                    th:data-num="${responseDTO.last}"
-                    class="pagination-btn last-page">마지막</button>
-          </div>
         </div>
-
-        <!-- 최신 글 및 인기 게시물 -->
-        <!--                <div class="row">-->
-        <!--                    <div class="recent-posts">-->
-        <!--                        <section class="box">-->
-        <!--                            <h2>최신 글</h2>-->
-        <!--                            <article th:each="recent : ${recentPosts}">-->
-        <!--                                <header>-->
-        <!--                                    <h3 th:text="${recent.title}"></h3>-->
-        <!--                                    <p th:text="${recent.content}"></p>-->
-        <!--                                </header>-->
-        <!--                            </article>-->
-        <!--                        </section>-->
-        <!--                    </div>-->
-        <!--                    <div class="popular-posts">-->
-        <!--                        <section class="box">-->
-        <!--                            <h2>인기 게시물</h2>-->
-        <!--                            <article th:if="${popularPost != null}">-->
-        <!--                                <header>-->
-        <!--                                    <h3 th:text="${popularPost.title}"></h3>-->
-        <!--                                    <p th:text="'조회수: ' + ${popularPost.view}"></p>-->
-        <!--                                </header>-->
-        <!--                            </article>-->
-        <!--                        </section>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-      </div>
     </div>
-  </div>
 </div>
 <!-- 자바스크립트 섹션 -->
 <script layout:fragment="script" th:inline="javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    initializeBoardFunctions();
-  });
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeBoardFunctions();
+    });
 
-<<<<<<< HEAD
-  function initializeBoardFunctions() {
-    setupBoardClickEvents();
-    setupPaginationEvents();
-    updateViewCounts();
-  }
-=======
     function initializeBoardFunctions() {
         setupBoardClickEvents();
         setupPaginationEvents();
         updateViewCounts();
     }
->>>>>>> main
 
-  // 페이지네이션 버튼 클릭 이벤트 설정
-  function setupPaginationEvents() {
-    const paginationButtons = document.querySelectorAll('.pagination-btn'); // 페이지네이션 버튼 선택
-    console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`); // 디버깅: 버튼 개수 확인
+    // 페이지네이션 버튼 클릭 이벤트 설정
+    function setupPaginationEvents() {
+        const paginationButtons = document.querySelectorAll('.pagination-btn'); // 페이지네이션 버튼 선택
+        console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`); // 디버깅: 버튼 개수 확인
 
-    paginationButtons.forEach(button => {
-      button.addEventListener('click', function (e) {
-        e.preventDefault();
+        paginationButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
 
-<<<<<<< HEAD
-        const pageNum = this.getAttribute('data-num');
-        console.log(`클릭한 버튼의 페이지 번호: ${pageNum}`);
-
-        if (pageNum) {
-          loadBoardPage(pageNum);
-        } else {
-          console.warn('data-num 속성이 없습니다.');
-=======
                 const pageNum = this.getAttribute('data-num');
                 console.log(`클릭한 버튼의 페이지 번호: ${pageNum}`);
 
@@ -315,67 +196,7 @@
             });
         } catch (error) {
             console.error('조회수 갱신 중 오류:', error);
->>>>>>> main
         }
-      });
-    });
-  }
-
-  // 페이지 이동 함수
-  function loadBoardPage(page) {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('page', page);
-    window.location.href = currentUrl.toString();
-  }
-
-  // 게시글 클릭 이벤트 설정
-  function setupBoardClickEvents() {
-    const boardLinks = document.querySelectorAll('.post-title');
-    boardLinks.forEach(link => {
-      link.addEventListener('click', async function (e) {
-        e.preventDefault();
-
-        const url = new URL(this.closest('a').href);
-        const bno = url.searchParams.get('bno');
-
-        try {
-          const response = await fetch(`/board/api/view/${bno}`, { method: 'POST' });
-          console.log(`응답 상태: ${response.status}`);
-
-          if (!response.ok) throw new Error('조회수 증가 실패');
-
-          // 성공적으로 조회수 증가 후 페이지 이동
-          window.location.href = this.closest('a').href;
-        } catch (error) {
-          console.error('조회수 증가 중 오류:', error);
-          window.location.href = this.closest('a').href;
-        }
-      });
-    });
-  }
-
-  // 조회수 갱신 함수
-  async function updateViewCounts() {
-    try {
-      console.log("조회수 갱신 요청 시작");
-      const response = await fetch('/board/api/view-counts');
-      if (!response.ok) throw new Error(`조회수 요청 실패: 상태 코드 ${response.status}`);
-
-      const viewCounts = await response.json();
-      console.log('조회수 데이터:', viewCounts);
-
-      viewCounts.forEach(({ bno, viewCount }) => {
-        const viewCountElement = document.getElementById(`view-count-${bno}`);
-        if (viewCountElement) {
-          console.log(`업데이트 성공: view-count-${bno} -> ${viewCount}`);
-          viewCountElement.textContent = viewCount;
-        } else {
-          console.warn(`view-count-${bno} 요소를 찾을 수 없음`);
-        }
-      });
-    } catch (error) {
-      console.error('조회수 갱신 중 오류:', error);
     }
-  }
 </script>
 </html>
