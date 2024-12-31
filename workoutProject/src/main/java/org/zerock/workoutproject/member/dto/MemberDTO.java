@@ -17,6 +17,7 @@ public class MemberDTO {
     private String mid;
     @NotBlank(message = "비밀번호는 필수 입력값 입니다.")
     private String mpw;
+    @NotBlank(message = "이메일은 필수 입력값 입니다.")
     private String email;
     private int age;
     private double height;
