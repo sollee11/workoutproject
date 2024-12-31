@@ -14,42 +14,29 @@ layout:decorate="~{layout/basic.html}">
 				<div layout:fragment="content" id="main-wrapper">
 					<div class="wrapper">
 <!--						<div class="inner">-->
-						<h2 class="textcenter">[[${dto.title}]]</h2>
-							<div class="container2">
-
-									<iframe width="75%" height="100%"  th:src="${dto.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-									<!-- Content -->
-<!--										<article>-->
-<!--											<header class="major">-->
-<!--											</header>-->
-<!--											<span class="image featured"><img src="images/pic08.jpg" alt="" /></span>-->
-<!--										</article>-->
-
-							</div>
-						<div >
-							<p class="textcenter">[[${dto.content}]]</p>
-
-						</div>
+						<form th:action="@{/exercise/modify}" method="post">
+						<input type="hidden" name="eno" th:value="${dto.eno}">
+						<ul class="bbsview_list">
+							<li class="bbs_title">제목 : <input type="text" name="title" size="110" th:value="${dto.title}" ></li>
+							<li class="bbs_hit">작성일 : <span>[[${#temporals.format(dto.regDate,'yyyy-MM-dd HH:mm:ss')}]]</span></li>
+							<li class="bbs_date">url : <input type="text" name="url" size="110" th:value="${dto.url}" ></li>
+							<li class="bbs_content">
+								<div class="editer_content">
+									<textarea name="content" cols="110" rows="20" >[[${dto.content}]]</textarea>
+								</div>
+							</li>
+						</ul>
 						<p class="btn_line txt_right">
 							<a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs">목록</a>
-							<a th:href="|@{/exercise/modify(eno=${dto.eno})}&${pageRequestDTO.link}|" class="btn_bbs">수정</a>
+							<input type="submit" value="수정" class="btn_bbs">
+							<button type="button" class="btn_bbs removeBtn2">삭제</button>
 						</p>
-						<form class="mb-4"><textarea class="form-control" rows="3" placeholder="댓글을 작성하세요"></textarea></form>
-						<div class="my-4">
-							<p class="btn_line txt_right">
-								<input type="button" value="등록" class="btn btn-info addReplyBtn">
-							</p>
-						</div>
-						<!-- Comment with nested comments-->
-						<div class="d-flex mb-4">
-							<div class="ms-3"><div class="form-control replyText">댓글 작성자</div>
-								replyText</div>
-						</div>
-						</div>
 
+						</form>
 					</div>
+
 				</div>
+
 
 			<script layout:fragment="script" th:inline="javascript">
 				const eno = [[${dto.eno}]];
@@ -201,5 +188,22 @@ layout:decorate="~{layout/basic.html}">
 					})
 				}
 				printReplies(1,10,true);
+				// const formObj = document.querySelector("#f1");
+				// document.querySelector(".modBtn").addEventListener("click",function(e){
+				// 	e.preventDefault();
+				// 	e.stopPropagation()
+				// 	formObj.action = `/exercise/modify?${link}`;
+				// 	formObj.method = 'post';
+				// 	//파일의 이름을 form태그의 input type=hidden으로 설정
+				// 	formObj.submit();
+				// },false)
+				const formObj = document.querySelector("form");
+				document.querySelector(".removeBtn2").addEventListener("click", function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					formObj.action = `/exercise/remove`;
+					formObj.method = 'post'
+					formObj.submit();
+				},false)
 			</script>
 </html>

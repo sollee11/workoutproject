@@ -1,5 +1,7 @@
 package org.zerock.workoutproject.exercise.service;
 
+
+import org.zerock.workoutproject.board.dto.BoardDTO;
 import org.zerock.workoutproject.exercise.domain.Exercise;
 import org.zerock.workoutproject.exercise.dto.*;
 

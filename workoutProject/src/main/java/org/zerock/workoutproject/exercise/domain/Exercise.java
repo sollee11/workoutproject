@@ -30,6 +30,7 @@ public class Exercise extends BaseEntity {
   public void change(ExerciseDTO dto){
     this.title = dto.getTitle();
     this.content = dto.getContent();
+    this.url = dto.getUrl();
   }
   @OneToMany(mappedBy="exercise",
           cascade={CascadeType.ALL},
@@ -56,9 +57,9 @@ public class Exercise extends BaseEntity {
     this.imageSet.clear();
   }
 
-  public void change(String title, String content){
+  public void change(String title, String content, String url) {
     this.title = title;
     this.content = content;
-    //this.subject = subject;
+    this.url = url;
   }
 }

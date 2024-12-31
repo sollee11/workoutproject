@@ -36,7 +36,6 @@
                                 <li class="bbs_writer">
                                     <div>
                                         <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
-<!--                                        <input type="text" name="writer" size="50" style="margin-bottom: 30px;">-->
                                         <input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>
                                     </div>
                                 </li>
@@ -78,7 +77,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/js/upload.js"></script>
+    <script src="/assets/js/upload.js"></script>
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
@@ -91,26 +90,6 @@
         }
         alert(errorMsg)
     }
-
-    const uploadResult = document.querySelector(".uploadResult")
-
-    // 파일 업로드 이벤트 리스너
-    document.querySelector("input[name='files']").addEventListener("change", function(e) {
-        const formObj = new FormData()
-        const files = e.target.files
-
-        for (let i = 0; i < files.length; i++) {
-            formObj.append("files", files[i])
-        }
-
-        uploadToServer(formObj).then(result => {
-            for (const uploadResult of result) {
-                showUploadFile(uploadResult)
-            }
-        }).catch(e => {
-            console.error(e)
-        })
-    }, false)
 
     // 폼 제출 이벤트
     document.querySelector(".submitBtn").addEventListener("click", function(e) {
@@ -128,6 +107,26 @@
 
         target.innerHTML = str
         document.querySelector("form").submit()
+    }, false)
+
+    // const uploadResult = document.querySelector(".uploadResult")
+
+    // 파일 업로드 이벤트 리스너
+    document.querySelector("input[name='files']").addEventListener("change", function(e) {
+        const formObj = new FormData()
+        const files = e.target.files
+
+        for (let i = 0; i < files.length; i++) {
+            formObj.append("files", files[i])
+        }
+
+        uploadToServer(formObj).then(result => {
+            for (const uploadResult of result) {
+                showUploadFile(uploadResult)
+            }
+        }).catch(e => {
+            console.error(e)
+        })
     }, false)
 
     // 이미지 표시 함수
@@ -158,7 +157,6 @@
             targetDiv.remove()
         })
     }
-
 
     const auth = [[${#authentication.principal}]]
     const errors2 = [[${error}]]
