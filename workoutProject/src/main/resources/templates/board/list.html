@@ -2,7 +2,10 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/basic.html}">
+
+
 <th:blcok layout:fragment="link">
     <!--    <link rel="stylesheet" href="/assets/css/main.css"/>-->
     <link rel="stylesheet" th:href="@{/assets/css/boardList.css}">
@@ -22,7 +25,11 @@
                                 <button type="submit" class="btn-write">검색</button>
                             </form>
                             <form action="/board/add" class="write-form">
-                                <button type="submit" class="btn-write">글쓰기</button>
+                                <button type="submit" class="btn-write"
+                                        sec:authorize="hasRole('ROLE_ADMIN') or isAuthenticated()">
+                                    글쓰기
+                                </button>
+                            </form>
                         </div>
                     </header>
 
@@ -114,6 +121,7 @@
     });
 
     function initializeBoardFunctions() {
+        updateViewCounts();
         setupBoardClickEvents();
         setupPaginationEvents();
     }
