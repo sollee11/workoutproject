@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<div layout:fragment="content" id="main-wrapper">
+    <div class="wrapper style2">
+        <div class="inner">
+            <div class="container">
+                <!-- 게시판 본문 영역 -->
+                <div class="board-container">
+                    <div class="board-header">
+                        <h3>자유게시판</h3>
+                    </div>
+
+                    <!-- 검색 및 글쓰기 버튼 영역 -->
+                    <div class="search-write-container">
+                        <form action="/board/list" class="search-form">
+                            <input type="search"
+                                   name="keyword"
+                                   th:value="${pageRequestDTO.keyword}"
+                                   placeholder="검색어를 입력하세요"
+                                   class="search-input"/>
+                            <button type="submit" class="button secondary-button">검색</button>
+                        </form>
+                        <a href="/board/add" class="button primary-button">글쓰기</a>
+                    </div>
+
+                    <!-- 게시글 목록 -->
+                    <div class="table-wrapper">
+                        <table class="board-table">
+                            <thead>
+                            <tr>
+                                <th class="w-10">번호</th>
+                                <th class="w-50">제목</th>
+                                <th class="w-15">작성자</th>
+                                <th class="w-15">작성일</th>
+                                <th class="w-10">조회수</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="board:${responseDTO.dtoList}">
+                                <td>[[${board.bno}]]</td>
+                                <td>
+                                    <a th:href="@{/board/read(bno=${board.bno})}" class="title-link">
+                                        [[${board.title}]]
+                                        <th:block th:if="${board.replyCount > 0}">
+                                            <span class="reply-badge">[[${board.replyCount}]]</span>
+                                        </th:block>
+                                    </a>
+                                </td>
+                                <td class="text-center">[[${board.writer}]]</td>
+                                <td class="text-center" th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd')}"></td>
+                                <td class="text-center" th:id="'view-count-' + ${board.bno}">[[${board.view}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 페이지네이션 -->
+                    <div class="pagination" id="pagination">
+                        <a class="pagenum firstpage" th:href="@{/board/list(page=1)}">
+                            <img th:src="@{/images/btn_firstpage.png}" alt="첫 페이지">
+                        </a>
+                        <a th:if="${responseDTO.prev}" class="pagenum prevpage"
+                           th:href="@{/board/list(page=${responseDTO.start - 1})}">
+                            <img th:src="@{/images/btn_prevpage.png}" alt="이전">
+                        </a>
+                        <th:block th:each="num: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                            <a th:href="@{/board/list(page=${num})}"
+                               th:class="${responseDTO.page == num} ? 'pagenum currentpage' : 'pagenum'">
+                                [[${num}]]
+                            </a>
+                        </th:block>
+                        <a th:if="${responseDTO.next}" class="pagenum nextpage"
+                           th:href="@{/board/list(page=${responseDTO.end + 1})}">
+                            <img th:src="@{/images/btn_nextpage.png}" alt="다음">
+                        </a>
+                        <a class="pagenum lastpage" th:href="@{/board/list(page=${responseDTO.last})}">
+                            <img th:src="@{/images/btn_lastpage.png}" alt="마지막 페이지">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style layout:fragment="css">
+    /* 게시판 기본 스타일 */
+    .board-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .board-header {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .board-header h3 {
+        font-size: 1.5em;
+        color: #333;
+        margin: 0;
+    }
+
+    /* 검색 및 글쓰기 영역 */
+    .search-write-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 8px;
+    }
+
+    .search-input {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 200px;
+    }
+
+    /* 테이블 스타일 */
+    .board-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .board-table th,
+    .board-table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .board-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .title-link {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .title-link:hover {
+        text-decoration: underline;
+    }
+
+    .reply-badge {
+        background: #000;
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        margin-left: 8px;
+    }
+
+    /* 페이지네이션 */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .pagenum {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .currentpage {
+        background-color: #4CAF50;
+        color: white;
+        border-color: #4CAF50;
+    }
+
+    /* 유틸리티 클래스 */
+    .text-center { text-align: center; }
+    .w-10 { width: 10%; }
+    .w-15 { width: 15%; }
+    .w-50 { width: 50%; }
+</style>
+
+<script layout:fragment="script" th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // 조회수 자동 업데이트
+        setInterval(updateViewCounts, 5000);
+    });
+
+    function updateViewCounts() {
+        fetch('/board/view-counts')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    const element = document.getElementById('view-count-' + item.bno);
+                    if (element) element.textContent = item.view;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</html>

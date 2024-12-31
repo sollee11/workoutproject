@@ -36,9 +36,8 @@
                                 <li>
                                     <div class="input-group mb-3">
                                         <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
-                                        <input type="text" name="writer" size="50" style="margin-bottom: 30px;"
-                                               th:value="${board.writer}" readonly>
-                                        <!--<input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>-->
+<!--                                        <input type="text" name="writer" size="50" style="margin-bottom: 30px;" th:value="${board.writer}" readonly>-->
+                                        <input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>
                                     </div>
                                 </li>
                                 <h1></h1>

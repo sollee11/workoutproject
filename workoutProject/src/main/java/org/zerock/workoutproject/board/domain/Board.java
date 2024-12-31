@@ -12,30 +12,36 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bno;
-    @Column(length = 500, nullable = false)
     private String title;
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
     private String writer;
     private String url;
-    private Long view;
+
+    @Builder.Default
+    private Long view = 0L;
+
+    // 조회수 증가 메서드
+    public void increaseView() {
+        this.view++;
+    }
 
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL},
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     @BatchSize(size = 20)
     private Set<BoardImage> imageSet = new HashSet<>();
+
     public void addImage(String uuid, String fileName) {
         BoardImage boardImage = BoardImage.builder()
                 .uuid(uuid)
@@ -45,8 +51,23 @@ public class Board extends BaseEntity {
                 .build();
         imageSet.add(boardImage);
     }
-    public void clearImages(){
+
+    public void clearImages() {
         imageSet.forEach(boardImage -> boardImage.changeBoard(null));
         this.imageSet.clear();
+    }
+
+    public void increaseViewCount() {
+        if (this.view == null) {
+            this.view = 1L;
+        } else {
+            this.view = this.view + 1L;
+        }
+    }
+
+    // view 필드의 getter
+    public Long getView() {
+        // null인 경우 0을 반환하여 NPE 방지
+        return view == null ? 0L : view;
     }
 }
