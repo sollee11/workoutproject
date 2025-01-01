@@ -48,7 +48,7 @@ public class ExerciseServiceImpl implements ExerciseService {
   public void modifyExercise(ExerciseDTO exerciseDTO) {
     Optional<Exercise> result = exerciseRepository.findById(exerciseDTO.getEno());
     Exercise exercise = result.orElseThrow();
-    exercise.change(exerciseDTO.getTitle(), exerciseDTO.getContent());
+    exercise.change(exerciseDTO.getTitle(), exerciseDTO.getContent(),exerciseDTO.getUrl());
     // 모든 이미지 초기화
     exercise.clearImages();
     // 새로운 이미지 추가

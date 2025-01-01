@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.workoutproject.board.dto.*;
 import org.zerock.workoutproject.board.service.BoardService;
+import org.zerock.workoutproject.main.service.MainService;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -31,6 +32,7 @@ public class BoardController {
     @Value("${org.zerock.upload.path}")
     private String uploadPath;
     private final BoardService boardService;
+    private final MainService mainService;
 
     @GetMapping("/list")
     public void list(PageRequestDTO req, Model model) {

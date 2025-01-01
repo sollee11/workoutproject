@@ -13,6 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.workoutproject.exercise.dto.*;
 import org.zerock.workoutproject.exercise.service.ExerciseReplyService;
 import org.zerock.workoutproject.exercise.service.ExerciseService;
+import org.zerock.workoutproject.main.service.MainService;
+
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
@@ -21,6 +25,7 @@ import org.zerock.workoutproject.exercise.service.ExerciseService;
 public class ExerciseController {
   private final ExerciseService exerciseService;
   private final ExerciseReplyService exerciseReplyService;
+  private final MainService mainService;
 
   @GetMapping("/list")
   public void getNoticeList(PageRequestDTO pageRequestDTO, Model model) {
@@ -59,18 +64,18 @@ public class ExerciseController {
       String link = pageRequestDTO.getLink();
       redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
       redirectAttributes.addAttribute("eno", exerciseDTO.getEno());
-      return "redirect:/board/modify?"+link;
+      return "redirect:/exercise/modify?"+link;
     }
     exerciseService.modifyExercise(exerciseDTO);
     redirectAttributes.addFlashAttribute("result", "modified");
     redirectAttributes.addAttribute("eno", exerciseDTO.getEno());
-    return "redirect:/notice/read?eno="+ exerciseDTO.getEno()+"&"+pageRequestDTO.getLink();
+    return "redirect:/exercise/read?eno="+ exerciseDTO.getEno()+"&"+pageRequestDTO.getLink();
   }
   @PostMapping("/remove")
   public String remove(int eno, RedirectAttributes redirectAttributes){
     exerciseService.removeExercise(eno);
    // redirectAttributes.addFlashAttribute("result", "removed");
-    return "redirect:/notice/list";
+    return "redirect:/exercise/notice";
   }
 
   @GetMapping("/notice")

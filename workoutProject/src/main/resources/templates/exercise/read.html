@@ -37,10 +37,10 @@
             <a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs">목록</a>
             <a th:href="|@{/exercise/modify(eno=${dto.eno})}&${pageRequestDTO.link}|" class="btn_bbs">수정</a>
         </p>
-        <form class="mb-4"><textarea class="form-control replyText" rows="3" placeholder="댓글을 작성하세요">
+        <form class="mb-4">댓글<textarea class="form-control replyText" rows="3" placeholder="댓글을 작성하세요">
 
         </textarea>
-            <div><input type="text" name="title" size="110" class="replyer" ></div>
+            <div>작성자<input type="text" name="title" size="110" class="replyer" th:value="${#authentication.principal.username}" readonly ></div>
         </form>
         <div class="my-4">
             <p class="btn_line txt_right">
@@ -64,6 +64,7 @@
 
 
 <script layout:fragment="script" th:inline="javascript">
+
     const eno = [[${dto.eno}]];
     const replyList = document.querySelector(".replyList");
     const replyPaging = document.querySelector(".replyPaging");
@@ -74,17 +75,27 @@
 
     function printList(dtoList) {
         let str = '';
+        let id = [[${#authentication.name}]];
+        console.log(id);
         if (dtoList && dtoList.length) {
             for (const dto of dtoList) {
                 str += `<li class="list-group-item d-flex replyItem">
-                            <span class="col-2">${dto.rno}</span>
+<!--                            <span class="col-2">${dto.rno}</span>-->
                             <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
                             <span class="col-2">${dto.replyer}</span>
-                            <span class="col-2">${dto.regDate}</span>
-                        </li>`
+                            <span class="col-2">${dto.regDate}</span>`;
+
+                // 작성자와 로그인한 사용자가 동일한 경우 삭제 버튼 추가
+                if (dto.replyer === id) {
+                    str += `<span><button class="btn-danger removeBtn" data-rno="${dto.rno}">삭제</button></span>`;
+                    str += `<span><button class="btn-danger removeBtn" data-rno="${dto.rno}">수정</button></span>`;
+                }
+
+                str += `</li>`;
+
             }
         }
-        replyList.innerHTML = str;
+       replyList.innerHTML = str;
     }
     registerBtn.addEventListener("click",function(e){
         // JSON형식으로 데이터를 보내기 위해서 JavaScript 객체 생성
@@ -130,5 +141,21 @@
     }
 
     printReplies(1, 10, true);
+
+    replyList.addEventListener("click", function(e) {
+        if(e.target.classList.contains('removeBtn')) {
+            const rno = e.target.getAttribute("data-rno");
+
+            if(confirm('댓글을 삭제하시겠습니까?')) {
+                removeReply(rno).then(result => {
+                    alert('댓글이 삭제되었습니다.');
+                    printReplies(1, 10, false);
+                }).catch(e => {
+                    alert('댓글 삭제에 실패했습니다.');
+                    console.error(e);
+                });
+            }
+        }
+    });
 </script>
 </html>
