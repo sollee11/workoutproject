@@ -46,4 +46,11 @@ public class ReplyServiceImpl implements ReplyService {
                 .total((int)result.getTotalElements())
                 .build();
     }
+
+    @Override
+    public void modify(ReplyDTO replyDTO) {
+        BoardReply boardReply = replyRepository.findById(replyDTO.getRno()).orElseThrow();
+        boardReply.changeText(replyDTO.getReplyText());
+        replyRepository.save(boardReply);
+    }
 }

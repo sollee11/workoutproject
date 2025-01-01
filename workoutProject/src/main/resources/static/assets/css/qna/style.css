@@ -1,4 +1,15 @@
-
+:root {
+    --primary-color: #2C3E50;      /* 주 색상 */
+    --primary-hover: #34495E;      /* 주 색상 호버 */
+    --secondary-color: #95a5a6;    /* 보조 색상 */
+    --success-color: #27ae60;      /* 성공 상태 색상 */
+    --warning-color: #f39c12;      /* 경고 상태 색상 */
+    --danger-color: #e74c3c;       /* 위험/삭제 색상 */
+    --background-color: #f5f5f5;   /* 배경 색상 */
+    --text-primary: #2c3e50;       /* 주 텍스트 색상 */
+    --text-secondary: #7f8c8d;     /* 보조 텍스트 색상 */
+    --border-color: #dfe6e9;       /* 테두리 색상 */
+}
 .body {
     font-family: Arial, sans-serif;
     max-width: 1200px;
@@ -12,23 +23,22 @@
 .pagination-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 8px;
+    margin: 30px 0;
+}
+.pagination-container button {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
 }
 
-
-/* 페이징 버튼 스타일 */
-.pagination-container button {
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 8px 12px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-
+.pagination-container button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
 
 /* 버튼 호버 효과 */
@@ -39,13 +49,6 @@
 }
 
 
-.pagination-container button.active {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    font-weight: bold;
-    cursor: default; /* 클릭 비활성화 */
-}
 
 /* 비활성 버튼 (예: API 요청 중) */
 .pagination-container button:disabled {
@@ -55,13 +58,6 @@
     cursor: not-allowed;
 }
 
-
-.container {
-    /*background-color: white;*/
-    /*border-radius: 8px;*/
-    /*padding: 20px;*/
-    /*margin-bottom: 20px;*/
-}
 
 .board-container, .post-container {
     background-color: white;
@@ -157,14 +153,14 @@
 }
 
 .secondary-button {
-    background-color: #6c757d;
+    background-color: var(--primary-color);
     color: white;
 }
 
 .secondary-button2 {
     display: flex;
     justify-content: flex-end;
-    background-color: #6c757d;
+    background-color: var(--primary-color);
     color: white;
 }
 
@@ -529,10 +525,7 @@
 }
 
 
-.write-button:hover,
-.faq-button:hover {
-    background-color: #45a049;
-}
+
 
 /* FAQ 모달 스타일링 */
 .faq-modal {
@@ -658,21 +651,19 @@
 /* FAQ 버튼 스타일 (헤더에 있는 버튼) */
 .write-button,
 .faq-button {
-    margin-top: 10px;
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
-    padding: 12px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .write-button:hover,
 .faq-button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover);
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 반응형 디자인 */

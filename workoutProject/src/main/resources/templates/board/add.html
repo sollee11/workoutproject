@@ -132,7 +132,7 @@
         const str = `<div class="card" style="min-width: 200px; margin-right: 10px;">
         <div class="card-header d-flex justify-content-between align-items-center">
             <span class="text-truncate" style="max-width: 150px;">${fileName}</span>
-            <button class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
+            <button type="button" class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
         </div>
         <div class="card-body">
             <img src="/view/${link}" data-src="${uuid}_${fileName}" style="width: 100%; height: 150px; object-fit: cover;">

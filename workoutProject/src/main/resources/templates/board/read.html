@@ -51,19 +51,22 @@
                     <div style="margin: 50px 0;"></div>
 
                     <section>
-                        <div class="card bg-light">
+                        <div class="card">
                             <div class="card-body">
-                                <!-- Comment form-->
-                                <div class="editer_content" style="margin-top: 30px;">
-                                    <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                        <textarea class="replyText" style="flex: 1; height: 100px; resize: none;"
-                                                  placeholder="댓글을 작성하세요"></textarea>
-                                        <input type="button" value="등록" class="btn-default registerBtn"
-                                               style="height: 100px; line-height: normal; font-size: 0.9em; padding: 0 1.5em; display: inline-block; text-align: center;">
-                                    </div>
-                                    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #ddd;">
-                                    <ul class="list-group replyList"></ul>
+                                <div style="margin-bottom: 20px;">
+                                       <textarea class="replyText"
+                                                 style="width: 100%; height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none;"
+                                                 placeholder="댓글을 작성하세요"></textarea>
                                 </div>
+                                <div class="editer_content">
+                                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                                        <div style="display: flex; justify-content: flex-end;">
+                                            <input type="button" value="등록" class="registerBtn"
+                                                   style="background-color: #dc3545; color: white; border: none; padding: 8px 20px; border-radius: 3px; cursor: pointer;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="replyList" style="margin-top: 30px;"></div>
                             </div>
                         </div>
                     </section>
@@ -105,28 +108,52 @@
         });
     });
 
+
     function printList(dtoList) {
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) {
-                str += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                const date = new Date(dto.regDate);
+                const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours() > 12 ? '오후' : '오전'} ${String(date.getHours() % 12 || 12).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+                str += `
+            <div class="reply-item" data-rno="${dto.rno}" style="border-bottom: 1px solid #eee; padding: 15px 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <div>
-                        <span class="fw-bold">${dto.replyer}</span>
-                        <span class="ms-2">${dto.replyText}</span>
+                        <span style="font-weight: bold;">${dto.replyer}</span>
+                        <span style="background-color: #f8f9fa; padding: 2px 8px; margin-left: 8px; border-radius: 3px; font-size: 0.9em;">관리자</span>
                     </div>
-                    <div>
-                        ${currentUser === dto.replyer ?
-                    `<button class="btn-danger removeBtn" data-rno="${dto.rno}">삭제</button>`
-                    : ''}
+                    <span style="color: #666; font-size: 0.9em;">${formattedDate}</span>
+                </div>
+                <div class="reply-content" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="reply-text" style="flex-grow: 1;">${dto.replyText}</div>
+                    <div class="edit-area" style="display: none; flex-grow: 1;">
+                        <textarea style="width: 100%; padding: 8px; margin-right: 10px; border: 1px solid #ddd; border-radius: 4px;">${dto.replyText}</textarea>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 10px; gap: 5px;">
+                            <button class="saveBtn" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px;">저장</button>
+                            <button class="cancelBtn" style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px;">취소</button>
+                        </div>
                     </div>
-                </li>`;
+                    <div class="button-area" style="display: flex; gap: 5px;">
+                        ${currentUser === dto.replyer ? `
+                            <button class="modifyBtn"
+                                style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px;">
+                                수정
+                            </button>
+                            <button class="removeBtn"
+                                style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px;">
+                                삭제
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>`;
             }
         } else {
-            str = '<li class="list-group-item">등록된 댓글이 없습니다.</li>';
+            str = '<div style="padding: 15px 0;">등록된 댓글이 없습니다.</div>';
         }
         replyList.innerHTML = str;
     }
-
     function printReplies(page, size, goLast) {
         getList({bno, page, size, goLast}).then(
             data => {
@@ -140,10 +167,94 @@
     // 초기 댓글 목록 로드
     printReplies(1, 10, true);
 
-    // 댓글 삭제 이벤트
-    replyList.addEventListener("click", function (e) {
+    replyList.addEventListener("click", async function (e) {
+        // 댓글 항목을 찾습니다
+        const replyItem = e.target.closest('.reply-item');
+        if (!replyItem) return;
+
+        if (e.target.classList.contains('modifyBtn')) {
+
+            const rno = replyItem.dataset.rno;  // 이 부분이 중요합니다
+            console.log('댓글 번호:', rno);  // 디버깅을 위한 로그 추가
+
+            const replyContent = replyItem.querySelector('.reply-content');
+            const replyText = replyContent.querySelector('.reply-text');
+            const editArea = replyContent.querySelector('.edit-area');
+            const buttonArea = replyContent.querySelector('.button-area');
+            editArea.dataset.rno = rno;
+
+            const textarea = editArea.querySelector('textarea');
+            textarea.value = replyText.textContent.trim();
+            textarea.focus();
+
+            replyText.style.display = 'none';
+            editArea.style.display = 'block';
+            buttonArea.style.display = 'none';
+
+
+
+        }
+
+        // 저장 버튼을 눌렀을 때
+        if (e.target.classList.contains('saveBtn')) {
+            try {
+                // edit-area에서 rno를 가져옵니다
+                const editArea = replyItem.querySelector('.edit-area');
+                const rno = editArea.dataset.rno;   // 수정된 부분
+                console.log('수정하려는 댓글 번호:', rno);  // 디버깅용 로그
+
+                if (!rno) {
+                    console.error('댓글 번호를 찾을 수 없습니다');
+                    return;
+                }
+
+                const textarea = editArea.querySelector('textarea');
+                const newText = textarea.value.trim();
+
+                if (!newText) {
+                    return;
+                }
+                let replyObj = {
+                    rno: rno,
+                    replyText: newText
+                }
+                // 서버로 수정 요청을 보냅니다
+                const result = await modifyReply(replyObj);
+
+                if (result) {
+                    // UI 업데이트
+                    const replyContent = replyItem.querySelector('.reply-content');
+                    const replyText = replyContent.querySelector('.reply-text');
+                    const buttonArea = replyContent.querySelector('.button-area');
+
+                    replyText.textContent = newText;
+                    replyText.style.display = 'block';
+                    editArea.style.display = 'none';
+                    buttonArea.style.display = 'flex';
+
+                    // 댓글 목록 갱신
+                    await printReplies(1, 10, false);
+                }
+            } catch (error) {
+                console.error('댓글 수정 중 오류 발생:', error);
+            }
+        }
+
+        // 취소 버튼 클릭 처리
+        if (e.target.classList.contains('cancelBtn')) {
+            const replyContent = replyItem.querySelector('.reply-content');
+            const replyText = replyContent.querySelector('.reply-text');
+            const editArea = replyContent.querySelector('.edit-area');
+            const buttonArea = replyContent.querySelector('.button-area');
+
+            replyText.style.display = 'block';
+            editArea.style.display = 'none';
+            buttonArea.style.display = 'flex';
+        }
+
+        // 삭제 버튼 클릭 처리
         if (e.target.classList.contains('removeBtn')) {
-            const rno = e.target.getAttribute("data-rno");
+            const rno = replyItem.dataset.rno;
 
             if (confirm('댓글을 삭제하시겠습니까?')) {
                 removeReply(rno).then(result => {

@@ -11,6 +11,7 @@ import org.zerock.workoutproject.common.BaseEntity;
 @Table(name="BoardReply", indexes = {
         @Index(name="idx_reply_board_bno", columnList = "board_bno")
 })
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -23,4 +24,7 @@ public class BoardReply extends BaseEntity {
     private Board board;
     private String replyText;
     private String replyer;
+    public void changeText(String replyText){
+        this.replyText = replyText;
+    }
 }

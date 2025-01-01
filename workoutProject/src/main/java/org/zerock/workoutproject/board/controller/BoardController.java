@@ -65,11 +65,13 @@ public class BoardController {
         model.addAttribute("board", dto);
     }
 
+
     @PostMapping("/modify")
     public String modify(BoardDTO dto) {
         Long bno = boardService.modify(dto);
         return "redirect:/board/read?bno="+bno;
     }
+
 
     @PostMapping("/remove")
     public String remove(BoardDTO dto, RedirectAttributes redirectAttributes) {

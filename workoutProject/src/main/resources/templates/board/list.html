@@ -98,8 +98,8 @@
 
     // 페이지네이션 버튼 클릭 이벤트 설정
     function setupPaginationEvents() {
-        const paginationButtons = document.querySelectorAll('.pagination-btn'); // 페이지네이션 버튼 선택
-        console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`); // 디버깅: 버튼 개수 확인
+        const paginationButtons = document.querySelectorAll('.pagination-btn');
+        console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`);
 
         paginationButtons.forEach(button => {
             button.addEventListener('click', function (e) {
