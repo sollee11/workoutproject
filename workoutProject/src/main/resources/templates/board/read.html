@@ -18,13 +18,9 @@
                                 <li class="bbs_title"><h3>[[${board.title}]]</h3></li>
                                 <li class="bbs_hit">작성자 : <span>[[${board.writer}]]</span></li>
                                 <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}]]</span>
-                                </li>
-<!--                                <li class="bbs_date" style="margin-bottom: 10px;">조회수 : <span>[[${board.view}]]</span>-->
-                                </li>
                             </ul>
                         </header>
 
-                        <!--                        <div class="editer_content" th:utext="${board.content}"></div>-->
                         <div th:each="fileName: ${board.fileNames}" style="margin-bottom: 20px;">
                             <img class="card-img-top"
                                  th:src="|/view/${fileName}|"
@@ -41,7 +37,7 @@
                         </div>
                         <div class="btn_line">
                             <span sec:authorize="isAuthenticated()"
-                                  th:if="${#authentication.principal.username == board.writer}">                                 <a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
+                                  th:if="${#authentication.principal.username == board.writer}"><a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
                                   style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
                             </span>
                             <a href="/board/list" class="btn-default"
@@ -173,8 +169,7 @@
         if (!replyItem) return;
 
         if (e.target.classList.contains('modifyBtn')) {
-
-            const rno = replyItem.dataset.rno;  // 이 부분이 중요합니다
+            const rno = replyItem.dataset.rno; // 이 부분이 중요합니다
             console.log('댓글 번호:', rno);  // 디버깅을 위한 로그 추가
 
             const replyContent = replyItem.querySelector('.reply-content');
