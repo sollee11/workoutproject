@@ -12,7 +12,7 @@
         <div class="inner">
             <div class="container">
                 <div id="content">
-                    <header class="major">
+                    <header>
                         <h3>새 글 등록</h3>
                     </header>
                     <div>
@@ -59,7 +59,7 @@
                                         <button type="button" class="btn-primary submitBtn">
                                             등록
                                         </button>
-                                        <button type="button" class="btn-default">
+                                        <button type="button" class="btn-primary">
                                             <a th:href="|@{/board/list}?${list}|">목록</a></button>
                                     </div>
                                 </li>
@@ -184,5 +184,60 @@
     const errors2 = [[${error}]];
     console.log(auth);
     console.log(errors2);
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitBtn = document.querySelector('.submitBtn');
+        const form = document.querySelector('form');
+
+        submitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 필수 입력값 검증
+            const title = form.querySelector('input[name="title"]').value;
+            const content = form.querySelector('textarea[name="content"]').value;
+
+            if (!title.trim()) {
+                alert('제목을 입력해주세요.');
+                return;
+            }
+
+            if (!content.trim()) {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+
+            const target = document.querySelector(".uploadHidden");
+            const uploadFiles = document.querySelectorAll(".uploadResult img");
+            let str = '';
+
+            uploadFiles.forEach(uploadFile => {
+                const imgLink = uploadFile.getAttribute("data-src");
+                str += `<input type='hidden' name='fileNames' value="${imgLink}">`;
+            });
+
+            target.innerHTML = str;
+
+            // FormData를 사용하여 폼 데이터 전송
+            const formData = new FormData(form);
+
+            fetch('/board/add', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // 성공 시 목록 페이지로 리다이렉트
+                        const listQueryParam = new URLSearchParams(window.location.search).get('list') || '';
+                        window.location.href = `/board/list?${listQueryParam}`;
+                    } else {
+                        throw new Error('등록에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('등록 중 오류가 발생했습니다:', error);
+                    alert('등록 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
+        }, false);
+    });
 </script>
 </html>
