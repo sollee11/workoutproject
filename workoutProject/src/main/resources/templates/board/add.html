@@ -3,6 +3,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
+<head th:fragment="head">
+    <link rel="stylesheet" th:href="@{/assets/css/add.css}">
+</head>
 
 <div layout:fragment="content" id="main-wrapper">
     <div class="wrapper style2">
@@ -12,17 +15,21 @@
                     <header class="major">
                         <h3>새 글 등록</h3>
                     </header>
-
-
                     <div>
                         <form action="/board/add" method="POST">
                             <ul class="bbsview_list">
+                                <li class="bbs_writer">
+                                    <div>
+                                        <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
+                                        <input type="text" name="writer" class="form-control"
+                                               th:value="${#authentication.principal.username}" readonly>
+                                    </div>
+                                </li>
                                 <li class="bbs_title">
                                     <label style="margin-bottom: 15px;"><h5>제목</h5></label>
                                     <input type="text" name="title" size="110" placeholder="제목을 입력해주세요."
                                            style="margin-bottom: 30px;">
                                 </li>
-                                <h1></h1>
                                 <li class="bbs_content">
                                     <div class="editer_content">
                                         <label style="margin-bottom: 15px;"><h5>내용</h5></label>
@@ -30,39 +37,29 @@
                                                   placeholder="내용을 입력해주세요." style="margin-bottom: 30px;"></textarea>
                                     </div>
                                 </li>
-                                <h1></h1>
-                                <li class="bbs_writer">
-                                    <div>
-                                        <label style="margin-bottom: 15px;"><h5>작성자</h5></label>
-                                        <input type="text" name="writer" class="form-control" th:value="${#authentication.principal.username}" readonly>
-                                    </div>
-                                </li>
-                                <h1></h1>
                                 <li>
-                                    <div>
-                                        <label style="margin-bottom: 15px;"><h5>이미지</h5></label>
-                                        <div class="uploadHidden" style="margin-bottom: 50px;">
-                                            <input type="file" name="files" class="btn" accept="image/*"
-                                                   multiple>
+                                    <div class="mb-6">
+                                        <label class="block text-sm mb-2">이미지</label>
+                                        <div class="uploadHidden" style="display: none;">
+                                            <input type="file" name="files" accept="image/*" multiple id="file-upload">
                                         </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col ">
-                                            <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
+                                        <div id="drop-zone" class="board-dropzone" onclick="document.getElementById('file-upload').click()">
+                                            <p class="text-gray-500 text-sm">이미지를 드래그하여 놓거나 클릭하여 선택하세요</p>
+                                        </div>
+                                        <div class="mt-4">
+                                            <div class="uploadResult flex flex-row flex-wrap gap-4"></div>
                                         </div>
                                     </div>
                                 </li>
 
-                                <div style="margin: 10px 0;">
-                                    <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
-                                    <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
-                                </div>
+
 
                                 <li>
                                     <div style="margin-top: 50px;">
-                                        <button type="button" class="btn-primary submitBtn"
-                                                style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border-radius: 0;">등록</button>
-                                        <button type="button" class="btn-default" style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; border-radius: 0;">
+                                        <button type="button" class="btn-primary submitBtn">
+                                            등록
+                                        </button>
+                                        <button type="button" class="btn-default">
                                             <a th:href="|@{/board/list}?${list}|">목록</a></button>
                                     </div>
                                 </li>
@@ -79,86 +76,113 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
+
+
+    function showUploadFile({uuid, fileName, link}) {
+        const str = `
+            <div class="uploaded-image" style="display: inline-block; position: relative; margin: 5px;">
+                <div style="position: relative; width: 150px; height: 150px;">
+                    <img src="/view/${link}" data-src="${uuid}_${fileName}"
+                         style="width: 150px; height: 150px; object-fit: contain;">
+                    <button type="button" onclick="javascript:removeFile('${uuid}', '${fileName}', this)"
+                            style="position: absolute; top: 5px; right: 5px; background: #ff6b6b; color: white;
+                                   border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;
+                                   display: flex; align-items: center; justify-content: center; font-size: 14px;">×</button>
+                </div>
+                <p style="margin-top: 5px; font-size: 12px; color: #666; word-break: break-all; max-width: 150px;">
+                    ${fileName}
+                </p>
+            </div>`;
+
+        document.querySelector(".uploadResult").insertAdjacentHTML('beforeend', str);
+    }
+
+    // 파일 삭제 함수
+    function removeFile(uuid, fileName, obj) {
+        // 이벤트의 기본 동작과 전파를 막습니다
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (confirm('이미지를 삭제하시겠습니까?')) {
+            removeFileToServer(uuid, fileName).then(result => {
+                obj.closest('.uploaded-image').remove();
+            }).catch(error => {
+                console.error('파일 삭제 중 오류가 발생했습니다:', error);
+                alert('파일 삭제에 실패했습니다.');
+            });
+        }
+    }
+
+    // 파일 처리 함수
+    function handleFiles(files) {
+        const formData = new FormData();
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                formData.append('files', file);
+            }
+        });
+
+        if (formData.has('files')) {
+            // 이제 showUploadFile 함수가 정의된 후에 사용됩니다
+            uploadToServer(formData).then(results => {
+                results.forEach(result => showUploadFile(result));
+            }).catch(error => {
+                console.error('업로드 중 오류가 발생했습니다:', error);
+            });
+        }
+    }
+
+    // DOM 요소 참조
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-upload');
+
+    // 이벤트 리스너 설정
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, function () {
+            dropZone.style.borderColor = '#4a90e2';
+            dropZone.style.backgroundColor = '#f8fafc';
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, function () {
+            dropZone.style.borderColor = '#e5e7eb';
+            dropZone.style.backgroundColor = 'transparent';
+        });
+    });
+
+    // 드롭 이벤트 처리
+    dropZone.addEventListener('drop', function (e) {
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    // 파일 입력 변경 이벤트 처리
+    fileInput.addEventListener('change', function (e) {
+        handleFiles(e.target.files);
+    });
+
+    // 에러 처리
+    const errors = [[${errors}]];
+    console.log(errors);
+    let errorMsg = '';
     if (errors) {
         for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`;
         }
-        alert(errorMsg)
+        alert(errorMsg);
     }
 
-    // 폼 제출 이벤트
-    document.querySelector(".submitBtn").addEventListener("click", function(e) {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const target = document.querySelector(".uploadHidden")
-        const uploadFiles = document.querySelectorAll(".uploadResult img")
-        let str = ''
-
-        uploadFiles.forEach(uploadFile => {
-            const imgLink = uploadFile.getAttribute("data-src")
-            str += `<input type='hidden' name='fileNames' value="${imgLink}">`
-        })
-
-        target.innerHTML = str
-        document.querySelector("form").submit()
-    }, false)
-
-    // const uploadResult = document.querySelector(".uploadResult")
-
-    // 파일 업로드 이벤트 리스너
-    document.querySelector("input[name='files']").addEventListener("change", function(e) {
-        const formObj = new FormData()
-        const files = e.target.files
-
-        for (let i = 0; i < files.length; i++) {
-            formObj.append("files", files[i])
-        }
-
-        uploadToServer(formObj).then(result => {
-            for (const uploadResult of result) {
-                showUploadFile(uploadResult)
-            }
-        }).catch(e => {
-            console.error(e)
-        })
-    }, false)
-
-    // 이미지 표시 함수
-    function showUploadFile({uuid, fileName, link}) {
-        const str = `<div class="card" style="min-width: 200px; margin-right: 10px;">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span class="text-truncate" style="max-width: 150px;">${fileName}</span>
-            <button type="button" class="btn-sm btn-danger" onclick="javascript:removeFile('${uuid}', '${fileName}', this)">X</button>
-        </div>
-        <div class="card-body">
-            <img src="/view/${link}" data-src="${uuid}_${fileName}" style="width: 100%; height: 150px; object-fit: cover;">
-        </div>
-    </div>`
-        document.querySelector(".uploadResult").innerHTML += str
-    }
-
-    function removeFile(uuid, fileName, obj) {
-        console.log(uuid)
-        console.log(fileName)
-        // obj는 클릭했던 버튼태그가 들어있음
-        console.log(obj)
-        //obj(클릭한 버튼)에서 가장 가까운 선택자에 일치하는 태그를 찾아 반환
-        const targetDiv = obj.closest(".card")
-        //upload 폴더의 파일을 삭제
-        removeFileToServer(uuid, fileName).then(data => {
-            // 화면의 이미지 div 삭제
-            targetDiv.remove()
-        })
-    }
-
-    const auth = [[${#authentication.principal}]]
-    const errors2 = [[${error}]]
-    console.log(auth)
-    console.log(errors2)
-
+    const auth = [[${#authentication.principal}]];
+    const errors2 = [[${error}]];
+    console.log(auth);
+    console.log(errors2);
 </script>
 </html>

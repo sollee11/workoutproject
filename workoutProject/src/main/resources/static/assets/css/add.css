@@ -1,0 +1,183 @@
+/* 전체 컨테이너 스타일 */
+.board-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+.board-dropzone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+/* 페이지 제목 스타일 */
+.board-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+/* 입력 폼 스타일 */
+.board-form {
+    width: 100%;
+}
+
+.board-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.board-list li {
+    margin-bottom: 2rem;
+}
+
+/* 라벨 스타일 */
+.board-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* 입력 필드 공통 스타일 */
+.board-input,
+.board-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.board-input:focus,
+.board-textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* 작성자 필드 스타일 */
+.board-writer .board-input {
+    background-color: #f8f9fa;
+}
+
+/* 내용 입력 영역 스타일 */
+.board-content .board-textarea {
+    min-height: 300px;
+    resize: vertical;
+}
+
+/* 이미지 업로드 영역 스타일 */
+.board-image-upload {
+    margin-top: 2rem;
+}
+
+.board-dropzone {
+    border: 1px dashed #cbd5e0;
+    padding: 2rem;
+    text-align: center;
+    color: #718096;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.board-dropzone:hover {
+    border-color: #4a90e2;
+    background-color: #f8fafc;
+}
+
+.board-upload-result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.board-uploaded-image {
+    position: relative;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.board-uploaded-image img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.board-uploaded-image button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.board-uploaded-image p {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+    word-break: break-all;
+    max-width: 150px;
+}
+
+/* 버튼 영역 스타일 */
+.board-button-area {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.board-btn {
+    padding: 0.5rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.board-btn-primary {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.board-btn-primary:hover {
+    background-color: #357abd;
+}
+
+.board-btn-default {
+    background-color: #718096;
+    color: white;
+}
+
+.board-btn-default:hover {
+    background-color: #4a5568;
+}
+
+/* 파일 입력 숨김 처리 */
+.board-file-hidden {
+    display: none;
+}
+
+/* 구분선 스타일 */
+.board-divider {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
