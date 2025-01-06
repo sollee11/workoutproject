@@ -77,12 +77,27 @@
                         str += `
 <div class="reply-item" data-rno="${dto.rno}">
     <div class="reply-header">
-        <span class="reply-writer">${dto.replyer}</span>
-        ${dto.flag ? `<span class="admin-tag">관리자</span>` : ''}
-        <span class="reply-date">${formattedDate}</span>
+        <div class="reply-info">
+            <span class="reply-writer">${dto.replyer}</span>
+            ${dto.flag ? `<span class="admin-tag">관리자</span>` : ''}
+            <span class="reply-date">${formattedDate}</span>
+        </div>
+        <div class="button-area">
+            ${(currentUser === dto.replyer) ?
+                            `<button class="button modify-button modifyBtn">수정</button>` : ''}
+            ${(currentUser === dto.replyer || isAdmin) ?
+                            `<button class="button remove-button removeBtn">삭제</button>` : ''}
+        </div>
     </div>
     <div class="reply-content">
         <div class="reply-text">${dto.replyText}</div>
+        <div class="edit-area" style="display: none;">
+            <textarea class="reply-textarea">${dto.replyText}</textarea>
+            <div class="button-area">
+                <button class="button modify-button saveBtn">저장</button>
+                <button class="button list-button cancelBtn">취소</button>
+            </div>
+        </div>
     </div>
 </div>`;
                     }
@@ -131,7 +146,7 @@
                     bno: bno,
                     replyText: replyText.value,
                     replyer: currentUser,
-                    flag : isAdmin
+                    flag: isAdmin
                 }
                 console.log(replyObj)
 
@@ -149,31 +164,31 @@
                 const replyItem = e.target.closest('.reply-item');
                 if (!replyItem) return;
 
-                if (e.target.classList.contains('modify-button')) {
+                // 수정 모드 전환
+                if (e.target.classList.contains('modifyBtn')) {
                     const replyContent = replyItem.querySelector('.reply-content');
                     const replyText = replyContent.querySelector('.reply-text');
                     const editArea = replyContent.querySelector('.edit-area');
-                    const buttonArea = replyItem.querySelector('.reply-buttons');
+                    const buttonArea = replyItem.querySelector('.button-area');
 
                     const textarea = editArea.querySelector('textarea');
                     textarea.value = replyText.textContent.trim();
+                    textarea.focus();
 
                     replyText.style.display = 'none';
                     editArea.style.display = 'block';
                     buttonArea.style.display = 'none';
                 }
 
-                if (e.target.classList.contains('save-button')) {
-                    const editArea = replyItem.querySelector('.edit-area');
-                    const rno = replyItem.dataset.rno;
-                    const textarea = editArea.querySelector('textarea');
+                // 수정 저장
+                if (e.target.classList.contains('saveBtn')) {
+                    const textarea = replyItem.querySelector('.edit-area textarea');
                     const newText = textarea.value.trim();
-
                     if (!newText) return;
 
                     try {
                         await modifyReply({
-                            rno: rno,
+                            rno: replyItem.dataset.rno,
                             replyText: newText
                         });
                         printReplies(1, 10, false);
@@ -183,29 +198,29 @@
                     }
                 }
 
-                if (e.target.classList.contains('cancel-button')) {
+                // 수정 취소
+                if (e.target.classList.contains('cancelBtn')) {
                     const replyContent = replyItem.querySelector('.reply-content');
                     const replyText = replyContent.querySelector('.reply-text');
                     const editArea = replyContent.querySelector('.edit-area');
-                    const buttonArea = replyItem.querySelector('.reply-buttons');
+                    const buttonArea = replyItem.querySelector('.button-area');
 
                     replyText.style.display = 'block';
                     editArea.style.display = 'none';
                     buttonArea.style.display = 'flex';
                 }
 
-                if (e.target.classList.contains('remove-button')) {
-                    const rno = replyItem.dataset.rno;
+                // 삭제
+                if (e.target.classList.contains('removeBtn')) {
+                    if (!confirm('댓글을 삭제하시겠습니까?')) return;
 
-                    if (confirm('댓글을 삭제하시겠습니까?')) {
-                        try {
-                            await removeReply(rno);
-                            alert('댓글이 삭제되었습니다.');
-                            printReplies(1, 10, false);
-                        } catch (error) {
-                            alert('댓글 삭제에 실패했습니다.');
-                            console.error(error);
-                        }
+                    try {
+                        await removeReply(replyItem.dataset.rno);
+                        alert('댓글이 삭제되었습니다.');
+                        printReplies(1, 10, false);
+                    } catch (error) {
+                        console.error('댓글 삭제 실패:', error);
+                        alert('댓글 삭제에 실패했습니다.');
                     }
                 }
             });

@@ -51,7 +51,6 @@
                         </div>
                     </div>
 
-                    <!-- 페이지네이션 -->
                     <div class="pagination-container">
                         <button th:if="${pageResponseDTO.page > 1}"
                                 th:data-num="1"
@@ -80,6 +79,7 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+
     document.querySelector(".pagination-container").addEventListener("click", (e)=>{
         e.preventDefault();
         e.stopPropagation();
