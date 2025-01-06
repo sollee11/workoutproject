@@ -154,7 +154,7 @@
 
 								<!-- Excerpt -->
 								<article th:each="board : ${latestPosts['board']}" class="box excerpt">
-									<a th:href="@{/board/read(bno=${board.id})}" class="image left"><img  th:src="${board.url}" alt onerror="this.onerror=null; this.src='/images/pic04.jpg';"/></a>
+									<a th:href="@{/board/read(bno=${board.id})}" class="image left"><img width="240px" height="180px" th:src="|/view/${board.url2}|" alt onerror="this.onerror=null; this.src='/images/exercising.jpg';"/></a>
 									<div>
 										<header>
 											<span class="date">[[${board.regdate}]]</span>

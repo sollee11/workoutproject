@@ -34,13 +34,16 @@
 
         </div>
         <p class="btn_line txt_right">
-            <a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs">목록</a>
-            <a th:href="|@{/exercise/modify(eno=${dto.eno})}&${pageRequestDTO.link}|" class="btn_bbs">수정</a>
+            <a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs btn-default">목록</a>
+            <a th:href="|@{/exercise/modify(eno=${dto.eno})}&${pageRequestDTO.link}|" class="btn_bbs btn-default">수정</a>
         </p>
-        <form class="mb-4">댓글<textarea class="form-control replyText" rows="3" placeholder="댓글을 작성하세요">
-
-        </textarea>
-            <div>작성자<input type="text" name="title" size="110" class="replyer" th:value="${#authentication.principal.username}" readonly ></div>
+        <form class="mb-4"> <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <textarea class="replyText" style="flex: 1; height: 100px; width:70%; resize: none;"
+                                                  placeholder="댓글을 작성하세요"></textarea>
+<!--            <input type="button" value="등록" class="btn-default registerBtn"-->
+<!--                   style="height: 100px; line-height: normal; font-size: 0.9em; padding: 0 1.5em; display: inline-block; text-align: center;">-->
+        </div>
+            <div style="margin: 10px">작성자<input type="text" name="title" size="110" class="replyer" th:value="${#authentication.principal.username}" readonly ></div>
         </form>
         <div class="my-4">
             <p class="btn_line txt_right">
@@ -88,7 +91,6 @@
                 // 작성자와 로그인한 사용자가 동일한 경우 삭제 버튼 추가
                 if (dto.replyer === id) {
                     str += `<span><button class="btn-danger removeBtn" data-rno="${dto.rno}">삭제</button></span>`;
-                    str += `<span><button class="btn-danger removeBtn" data-rno="${dto.rno}">수정</button></span>`;
                 }
 
                 str += `</li>`;
@@ -105,28 +107,51 @@
             replyer:replyer.value
         };
         addReply(replyObj).then(result => {
-            alert(result.rno);
-            registerModal.hide();
+            // alert(result.rno);
+            // registerModal.hide();
             replyText.value="";
-            replyer.value="";
+            // replyer.value="";
             printReplies(1,10,true);
         }).catch(e=>{
-            alert("Exception...");
+            // alert("Exception...");
         })
     },false)
 
     function printPages(data) {
         let pageStr = '';
+
+        // 이전 페이지 버튼
         if (data.prev) {
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PREV</a></li>`;
+            pageStr += `<li class="page-item">
+                        <a class="page-link" href="#" data-page="${data.page - 1}">PREV</a>
+                    </li>`;
         }
+
+        // 페이지 번호 버튼
         for (let i = data.start; i <= data.end; i++) {
-            pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" data-page="${i}">${i}</a></li>`;
+            pageStr += `<li class="page-item ${i === data.page ? "active" : ""}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>`;
         }
+
+        // 다음 페이지 버튼
         if (data.next) {
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`;
+            pageStr += `<li class="page-item">
+                        <a class="page-link" href="#" data-page="${data.page + 1}">NEXT</a>
+                    </li>`;
         }
+
         replyPaging.innerHTML = pageStr;
+
+        // 페이지 버튼 클릭 이벤트 추가
+        const pageLinks = document.querySelectorAll('.page-link');
+        pageLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const page = parseInt(this.getAttribute('data-page'));
+                printReplies(page, 10, false); // 해당 페이지의 댓글 목록 갱신
+            });
+        });
     }
 
     function printReplies(page, size, goLast) {

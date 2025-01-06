@@ -54,7 +54,7 @@ public class ExerciseReplyServiceImpl implements ExerciseReplyService {
     Pageable pageable = PageRequest.of(
         pageRequestDTO.getPage() <= 0 ? 0 : pageRequestDTO.getPage()-1,
         pageRequestDTO.getSize(),
-        Sort.by("rno").ascending());
+        Sort.by("rno").descending());
     Page<Reply> result = exerciseReplyRepository.listOfExercise(eno, pageable);
     List<ReplyDTO> dtoList = result.getContent().stream()
         .map(reply -> modelMapper.map(reply, ReplyDTO.class))
