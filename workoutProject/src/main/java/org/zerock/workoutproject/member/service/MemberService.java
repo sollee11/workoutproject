@@ -29,6 +29,7 @@ public interface MemberService {
     void noticedelte(String mid, MemberSecurityDTO memberSecurityDTO);
 
     void replydelete(String mid, MemberSecurityDTO memberSecurityDTO);
+    boolean hasRole(String memberId, String role);
 
     static class MidExistException extends Exception {
         public MidExistException(String 이미_존재하는_id입니다) {

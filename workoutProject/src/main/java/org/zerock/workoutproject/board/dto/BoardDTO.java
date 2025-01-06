@@ -21,6 +21,7 @@ public class BoardDTO {
     private Long view;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-
     private List<String> fileNames;
+    private boolean flag;
+
 }

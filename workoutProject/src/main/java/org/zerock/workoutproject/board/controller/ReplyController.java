@@ -41,6 +41,7 @@ public class ReplyController {
     @GetMapping(value = "/list/{bno}")
     public PageResponseDTO<ReplyDTO> getList(@PathVariable("bno") Long bno, PageRequestDTO pageRequestDTO) {
         PageResponseDTO<ReplyDTO> responseDTO = replyService.getListofBoard(bno, pageRequestDTO);
+
         return responseDTO;
     }
 

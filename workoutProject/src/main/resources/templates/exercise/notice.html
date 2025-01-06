@@ -4,75 +4,93 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html  lang="ko"
-	   xmlns:th="http://www.thymeleaf.org"
-	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/basic.html}">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+<head th:fragment="head">
+    <link rel="stylesheet" th:href="@{/assets/css/ex/ex.css}">
+</head>
 
 
-			<!-- Main Wrapper -->
-				<div layout:fragment="content" id="main-wrapper">
-					<div class="wrapper style2">
-						<div class="inner">
-							<div class="container">
-								<h2>운동게시판</h2>
-								<div id="content">
-									<form action="/exercise/notice" class="minisrch_form">
-										<fieldset>
-											<legend>검색</legend>
-											<input type="text" class="tbox" name="keyword" th:value="${pageRequestDTO.keyword}" title="검색어를 입력해주세요" placeholder="검색어를 입력해주세요">
-											<button class="btn_srch">검색</button>
-											<a href="/exercise/add" class="btn_srch">글작성</a>
-										</fieldset>
-									</form>
-									<ul class="program_list clear" th:with="link = ${pageRequestDTO.getLink()}">
-										<li th:each="dto:${pageResponseDTO.dtoList}">
-											<iframe width="100%" height="300px" th:src="${dto.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-											<h3>[[${dto.title}]]</h3>
-											<p>[[${dto.content}]]</p>
-											<button><a th:href="|@{/exercise/read(eno=${dto.eno})}&${pageRequestDTO.link}|">자세히보기</a></button>
-										</li>
-									</ul>
-									<div class="pagination">
-										<a href="javascript:;" class="firstpage  pbtn" data-num="1"><img data-num="1" src="/img/btn_firstpage.png" alt="첫 페이지로 이동"></a>
-<!--										<a th:if="${pageResponseDTO.prev}" href="javascript:;" class="prevpage pbtn" th:data-num="${pageResponseDTO.start -1}"><img th:data-num="${pageResponseDTO.start -1}" src="/img/btn_prevpage.png" alt="이전 페이지로 이동"></a>-->
-										<th:block th:each="num:${#numbers.sequence(pageResponseDTO.start,pageResponseDTO.end)}">
-											<a href="javascript:;">
-                        <span th:class="${pageResponseDTO.page==num} ? ' currentpage':'pagenum'" th:data-num="${num}">
-                        [[${num}]]
-                        </span>
-											</a>
-										</th:block>
-<!--										<a th:if="${pageResponseDTO.next}" href="javascript:;" class="nextpage pbtn" th:data-num="${pageResponseDTO.end +1}"><img th:data-num="${pageResponseDTO.end +1}" src="/img/btn_nextpage.png" alt="다음 페이지로 이동"></a>-->
-										<a href="javascript:;" class="lastpage pbtn" th:data-num="${pageResponseDTO.last}"><img th:data-num="${pageResponseDTO.last}" src="/img/btn_lastpage.png" alt="마지막 페이지로 이동"></a>
-									</div>
+<!-- Main Wrapper -->
+<div layout:fragment="content" id="main-wrapper">
+    <div class="wrapper style2">
+        <div class="inner">
+            <div class="container">
+                <h2>운동게시판</h2>
+                <div id="content">
+                    <form action="/exercise/notice" class="minisrch_form">
+                        <fieldset>
+                            <legend>검색</legend>
+                            <input type="text" class="tbox" name="keyword" th:value="${pageRequestDTO.keyword}"
+                                   title="검색어를 입력해주세요" placeholder="검색어를 입력해주세요">
+                            <button class="btn_srch">검색</button>
+                            <a href="/exercise/add" class="btn_srch">글작성</a>
+                        </fieldset>
+                    </form>
+                    <ul class="program_list clear" th:with="link = ${pageRequestDTO.getLink()}">
+                        <li th:each="dto:${pageResponseDTO.dtoList}">
+                            <iframe width="100%" height="300px" th:src="${dto.url}" title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <h3>[[${dto.title}]]</h3>
+                            <p>[[${dto.content}]]</p>
+                            <button><a th:href="|@{/exercise/read(eno=${dto.eno})}&${pageRequestDTO.link}|">자세히보기</a>
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="pagination">
+                        <ul>
+                            <li>
+                                <button type="button" class="current" th:if="${pageResponseDTO.page == 1}" disabled>1</button>
+                                <button type="button" th:unless="${pageResponseDTO.page == 1}" th:data-num="1">1</button>
+                            </li>
+                            <li th:if="${pageResponseDTO.page > 2}">
+                                <button type="button" th:data-num="${pageResponseDTO.page - 1}">[[${pageResponseDTO.page - 1}]]</button>
+                            </li>
+                            <li th:if="${pageResponseDTO.page != 1 && pageResponseDTO.page != pageResponseDTO.last}">
+                                <button type="button" class="current" disabled>[[${pageResponseDTO.page}]]</button>
+                            </li>
+                            <li th:if="${pageResponseDTO.page < pageResponseDTO.last - 1}">
+                                <button type="button" th:data-num="${pageResponseDTO.page + 1}">[[${pageResponseDTO.page + 1}]]</button>
+                            </li>
+                            <li th:if="${pageResponseDTO.last > 1}">
+                                <button type="button" class="current" th:if="${pageResponseDTO.page == pageResponseDTO.last}" disabled>[[${pageResponseDTO.last}]]</button>
+                                <button type="button" th:unless="${pageResponseDTO.page == pageResponseDTO.last}" th:data-num="${pageResponseDTO.last}">[[${pageResponseDTO.last}]]</button>
+                            </li>
+                        </ul>
+                    </div>
 
 
-									<!-- Content -->
-<!--										<article>-->
-<!--											<header class="major">-->
-<!--											</header>-->
-<!--											<span class="image featured"><img src="images/pic08.jpg" alt="" /></span>-->
-<!--										</article>-->
+                    <!-- Content -->
+                    <!--										<article>-->
+                    <!--											<header class="major">-->
+                    <!--											</header>-->
+                    <!--											<span class="image featured"><img src="images/pic08.jpg" alt="" /></span>-->
+                    <!--										</article>-->
 
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-			<script layout:fragment="script" th:inline="javascript">
-				document.querySelector(".pagination").addEventListener("click", (e)=>{
-					e.preventDefault();
-					e.stopPropagation();
-					const target = e.target;
-					if(target.tagName !== 'IMG' && target.tagName !== 'A' && target.tagName !== 'SPAN'){
-						return;
-					}
-					const num = target.closest('a, span').getAttribute("data-num");
-					const formObj = document.querySelector("form");
-					formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`
-					formObj.submit();
-				},false)
-			</script>
+<script layout:fragment="script" th:inline="javascript">
+    document.querySelector(".pagination").addEventListener("click", (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+        if(target.tagName !== 'BUTTON' || target.disabled){
+            return;
+        }
+
+        const num = target.getAttribute("data-num");
+        const formObj = document.querySelector("form");
+        formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
+        formObj.submit();
+    }, false);
+</script>
 </html>
