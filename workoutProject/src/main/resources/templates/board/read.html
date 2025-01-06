@@ -13,7 +13,6 @@
         <div class="inner">
             <div class="container">
                 <div id="content">
-<<<<<<< HEAD
                     <div class="post-header">
                         <h2 class="post-title" th:text="${board.title}">제목</h2>
                         <div class="post-info">
@@ -21,40 +20,6 @@
                             <span>작성일: <strong
                                     th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}">날짜</strong></span>
                             <span>조회수: <strong th:text="${board.view}">조회수</strong></span>
-=======
-
-
-                    <div class="bodytext_area box_inner">
-                        <header class="major">
-                            <ul class="bbsview_list">
-                                <li class="bbs_title"><h3>[[${board.title}]]</h3></li>
-                                <li class="bbs_hit">작성자 : <span>[[${board.writer}]]</span></li>
-                                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}]]</span>
-                            </ul>
-                        </header>
-
-                        <div th:each="fileName: ${board.fileNames}" style="margin-bottom: 20px;">
-                            <img class="card-img-top"
-                                 th:src="|/view/${fileName}|"
-                                 style="max-width: 500px; height: auto; display: block;">
-                        </div>
-                        <div class="editer_content"
-                             style="margin: 30px auto; max-width: 800px; text-align: center;"
-                             th:utext="${board.content}">
-                        </div>
-
-                        <div style="margin: 50px 0;">
-                            <hr style="margin: 0 0 5px 0; border: 0; border-top: 1px solid #ddd;">
-                            <hr style="margin: 0; border: 0; border-top: 1px solid #ddd;">
-                        </div>
-                        <div class="btn_line">
-                            <span sec:authorize="isAuthenticated()"
-                                  th:if="${#authentication.principal.username == board.writer}"><a th:href="|@{/board/modify(bno=${board.bno})}&${link}|" class="btn-default"
-                                  style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">수정</a>
-                            </span>
-                            <a href="/board/list" class="btn-default"
-                               style="height: 2.2em; line-height: 2.2em; font-size: 0.9em; padding: 0 1em; display: inline-block; text-align: center;">목록</a>
->>>>>>> main
                         </div>
                     </div>
 
@@ -90,10 +55,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/assets/js/reply.js"></script>
     <script th:inline="javascript">
-
         document.addEventListener('DOMContentLoaded', function () {
             console.log('Script starting...');
-
 
             const bno = [[${board.bno}]];
             const currentUser = [[${#authentication.principal?.username}]];
@@ -103,7 +66,6 @@
             const registerBtn = document.querySelector(".comment-button");
             const replyText = document.querySelector(".comment-input");
             console.log('Current User:', currentUser);
-
 
             function printList(dtoList) {
                 let str = '';
@@ -130,7 +92,6 @@
                 replyList.innerHTML = str;
             }
 
-
             // 버튼 이벤트 리스너 추가
             const modifyButton = document.querySelector('.modify-button');
             if (modifyButton) {
@@ -146,7 +107,6 @@
                 });
             }
 
-<<<<<<< HEAD
             function printReplies(page, size, goLast) {
                 getList({bno, page, size, goLast}).then(
                     data => {
@@ -157,31 +117,6 @@
                     console.error('Error fetching replies:', e);
                 });
             }
-=======
-    replyList.addEventListener("click", async function (e) {
-        // 댓글 항목을 찾습니다
-        const replyItem = e.target.closest('.reply-item');
-        if (!replyItem) return;
-
-        if (e.target.classList.contains('modifyBtn')) {
-            const rno = replyItem.dataset.rno; // 이 부분이 중요합니다
-            console.log('댓글 번호:', rno);  // 디버깅을 위한 로그 추가
-
-            const replyContent = replyItem.querySelector('.reply-content');
-            const replyText = replyContent.querySelector('.reply-text');
-            const editArea = replyContent.querySelector('.edit-area');
-            const buttonArea = replyContent.querySelector('.button-area');
-            editArea.dataset.rno = rno;
-
-            const textarea = editArea.querySelector('textarea');
-            textarea.value = replyText.textContent.trim();
-            textarea.focus();
-
-            replyText.style.display = 'none';
-            editArea.style.display = 'block';
-            buttonArea.style.display = 'none';
->>>>>>> main
-
 
             console.log('Reply elements:', {replyList, registerBtn, replyText});
 
@@ -208,10 +143,6 @@
                     console.error(e);
                 });
             });
-
-
-            // 댓글 목록 출력 함수
-
 
             // 댓글 수정/삭제 이벤트
             replyList.addEventListener("click", async function (e) {
