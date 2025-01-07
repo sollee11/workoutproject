@@ -33,7 +33,7 @@
 
                     <div class="button-area">
                         <button class="button modify-button"
-                                th:if="${#authentication.principal.username == board.writer}">수정
+                                th:if="${#authorization.expression('isAuthenticated()') and (#authentication.principal.username == board.writer || #authorization.expression('hasRole(''ROLE_ADMIN'')') )}">수정
                         </button>
                         <button class="button list-button">목록</button>
                     </div>
@@ -56,22 +56,19 @@
     <script src="/assets/js/reply.js"></script>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('Script starting...');
-
             const bno = [[${board.bno}]];
-            const currentUser = [[${#authentication.principal?.username}]];
+            const currentUser = [[${#authorization.expression('isAuthenticated()') ? #authentication.principal?.username : ''}]];
             const isAdmin = [[${#authorization.expression('hasRole("ROLE_ADMIN")')}]];
-
+            console.log(isAdmin);
             const replyList = document.querySelector('.replyList');
             const registerBtn = document.querySelector(".comment-button");
             const replyText = document.querySelector(".comment-input");
-            console.log('Current User:', currentUser);
-
             function printList(dtoList) {
                 let str = '';
                 if (dtoList && dtoList.length > 0) {
                     for (const dto of dtoList) {
                         const date = new Date(dto.regDate);
+
                         const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours() > 12 ? '오후' : '오전'} ${String(date.getHours() % 12 || 12).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 
                         str += `
@@ -83,7 +80,7 @@
             <span class="reply-date">${formattedDate}</span>
         </div>
         <div class="button-area">
-            ${(currentUser === dto.replyer) ?
+            ${(currentUser === dto.replyer  || isAdmin) ?
                             `<button class="button modify-button modifyBtn">수정</button>` : ''}
             ${(currentUser === dto.replyer || isAdmin) ?
                             `<button class="button remove-button removeBtn">삭제</button>` : ''}

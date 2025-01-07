@@ -181,3 +181,12 @@
     border: 0;
     border-top: 1px solid #ddd;
 }
+.button{
+    background-color: #2C3E50;
+}
+.register-button{
+    background-color: #4CAF50;
+}
+.return-button{
+    background-color: #2C3E50;
+}
