@@ -141,6 +141,20 @@
         e.stopPropagation();
         let memPassword1=document.querySelector("input[name='mpw']").value;
         let memPassword2=document.querySelector("input[name='mpwCheck']").value;
+        let email = document.querySelector("input[name='email']").value;
+        let phone = document.querySelector("input[name='phone']").value;
+
+        if (email === "") {
+            alert("이메일은 필수 입력 항목입니다.");
+            document.querySelector("input[name='email']");
+            return;
+        }
+        if (phone === "") {
+            alert("전화번호는 필수 입력 항목입니다.");
+            document.querySelector("input[name='phone']");
+            return;
+        }
+
         if (!idCheck){
             alert("아이디 중복확인을 확인해주세요");
             return;
@@ -151,8 +165,11 @@
         }
 
         let age = document.querySelector("input[name='age']");
+        age.style.visibility = "hidden"
         let height = document.querySelector("input[name='height']");
+        height.style.visibility = "hidden"
         let weight = document.querySelector("input[name='weight']");
+        weight.style.visibility = "hidden"
         if (age.value === null || age.value === ""){
             age.value = 0;
         }

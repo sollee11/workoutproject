@@ -60,7 +60,7 @@
                         </div>
 
                         <div id="replyFormSection" class="reply-form"
-                             th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or (#authentication.isAuthenticated() and #authentication.name == qna.writer)}">
+                             th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') || (#authentication.isAuthenticated() && #authentication.name == qna.writer)}">
                             <label for="replyText"></label>
                             <textarea id="replyText" class="reply-textarea" placeholder="답변을 입력해주세요..."></textarea>
                             <div>

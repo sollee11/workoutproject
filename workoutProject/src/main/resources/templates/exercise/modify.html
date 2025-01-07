@@ -1,211 +1,68 @@
 <!DOCTYPE HTML>
-<!--
-	ZeroFour by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/basic.html}">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/basic.html}">
 
+<th:block layout:fragment="link">
+	<link rel="stylesheet" th:href="@{/assets/css/ex.css}">
+</th:block>
 
-<!-- Main Wrapper -->
 <div layout:fragment="content" id="main-wrapper">
-    <div class="wrapper">
-        <!--						<div class="inner">-->
-        <form th:action="@{/exercise/modify}" method="post">
-            <input type="hidden" name="eno" th:value="${dto.eno}">
-            <ul class="bbsview_list">
-                <li class="bbs_title">제목 : <input type="text" name="title" size="110" th:value="${dto.title}"></li>
-                <li class="bbs_hit">작성일 : <span>[[${#temporals.format(dto.regDate,'yyyy-MM-dd HH:mm:ss')}]]</span></li>
-                <li class="bbs_date">url : <input type="text" name="url" size="110" th:value="${dto.url}"></li>
-                <li class="bbs_content">
-                    <div class="editer_content">
-                        <textarea name="content" cols="110" rows="20">[[${dto.content}]]</textarea>
-                    </div>
-                </li>
-            </ul>
-            <p class="btn_line txt_right">
-                <a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="btn_bbs">목록</a>
-                <input type="submit" value="수정" class="btn_bbs">
-                <button type="button" class="btn_bbs removeBtn2">삭제</button>
-            </p>
+	<div class="wrapper style2">
+		<div class="inner">
+			<div class="container">
+				<div class="board-container">
+					<div class="board-header">
+						<h2 class="board-title">글 수정</h2>
+					</div>
 
-        </form>
-    </div>
+					<form th:action="@{/exercise/modify}" method="post" class="board-form">
+						<input type="hidden" name="eno" th:value="${dto.eno}">
 
+						<div class="form-group">
+							<label>제목</label>
+							<input type="text" name="title" class="form-input" th:value="${dto.title}">
+						</div>
+
+						<div class="form-group">
+							<label>URL</label>
+							<input type="text" name="url" class="form-input" th:value="${dto.url}">
+						</div>
+
+						<div class="form-group">
+							<label>내용</label>
+							<textarea name="content" class="form-textarea" th:text="${dto.content}"></textarea>
+						</div>
+
+						<div class="form-info">
+							작성일: <span th:text="${#temporals.format(dto.regDate,'yyyy-MM-dd HH:mm:ss')}"></span>
+						</div>
+
+						<div class="button-area">
+							<a th:href="|@{/exercise/notice}?${pageRequestDTO.link}|" class="button list-button">목록</a>
+							<button type="submit" class="button modify-button">수정</button>
+							<button type="button" class="button remove-button removeBtn2">삭제</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		const formObj = document.querySelector("form");
 
-<script layout:fragment="script" th:inline="javascript">
-    const eno = [[${dto.eno}]];
-    // const replyList = document.querySelector(".replyList");
-    // const replyPaging = document.querySelector(".replyPaging");
-    // bootstrap 모달 선언 부분
-    // const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"));
-    // 모달에 들어가는 데이터나 버튼 설정
-    // const registerBtn = document.querySelector(".registerBtn");
-    // const replyText = document.querySelector(".replyText");
-    // const replyer = document.querySelector(".replyer");
-    // const closeRegisterBtn = document.querySelector(".closeRegisterBtn");
-    // 페이지네이션 변수
-    let currentPage = 1;
-    let size = 10;
-    // modify 변수
-    // const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"));
-    // const replyHeader = document.querySelector(".replyHeader");
-    // const modifyText = document.querySelector(".modifyText");
-    // const modifyBtn = document.querySelector(".modifyBtn");
-    // const removeBtn = document.querySelector(".removeBtn");
-    // const closeModifyBtn = document.querySelector(".closeModifyBtn");
+		document.querySelector(".removeBtn2").addEventListener("click", function(e) {
+			e.preventDefault();
+			if(!confirm('정말 삭제하시겠습니까?')) return;
 
-    // 댓글 수정창 출력 이벤트
-    // replyList.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     const target = e.target;
-    //     if (!target || target.tagName != 'SPAN') {
-    //         return;
-    //     }
-    //     const rno = target.getAttribute("data-rno");
-    //     if (!rno) {
-    //         return;
-    //     }
-    //     getReply(rno).then(reply => {
-    //         replyHeader.innerHTML = reply.rno;
-    //         modifyText.value = reply.replyText;
-    //         // modifyModal.show();
-    //     }).catch(e => alert('error'));
-    // }, false)
-    // modifyBtn.addEventListener("click", function (e) {
-    //     const replyObj = {
-    //         eno: eno,
-    //         rno: replyHeader.innerHTML,
-    //         replyText: modifyText.value
-    //     }
-    //     modifyReply(replyObj).then(result => {
-    //         alert(result.rno + '댓글이 수정되었습니다.');
-    //         replyText.value = "";
-    //         // modifyModal.hide();
-    //         printReplies(currentPage, size);
-    //     }).catch(e => {
-    //         console.log(e);
-    //     })
-    // }, false)
-    // closeModifyBtn.addEventListener("click", function (e) {
-    //     modifyModal.hide();
-    // }, false)
-    // 댓글 삭제 이벤트
-    // removeBtn.addEventListener("click", function (e) {
-    //     removeReply(replyHeader.innerHTML).then(result => {
-    //         alert(result.rno + ' 댓글이 삭제되었습니다.');
-    //         replyText.value = '';
-    //         // modifyModal.hide();
-    //         currentPage = 1;
-    //         printReplies(currentPage, size, true);
-    //     }).catch(e => {
-    //         console.log(e);
-    //     })
-    // }, false)
-    // // 댓글 페이징 이벤트
-    // replyPaging.addEventListener("click", function (e) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     const target = e.target;
-    //     if (!target || target.tagName != 'A') {
-    //         return;
-    //     }
-    //     const pageNum = target.getAttribute("data-page");
-    //     currentPage = pageNum;
-    //     printReplies(currentPage, size);
-    // }, false)
-
-    // 댓글 모달창 출력
-    // document.querySelector(".addReplyBtn").addEventListener("click", function (e) {
-    //     registerModal.show();
-    // }, false)
-    // // 댓글 모달창 숨김
-    // closeRegisterBtn.addEventListener("click", function (e) {
-    //     registerModal.hide();
-    // }, false)
-    // 댓글 등록 버튼 이벤트
-    // registerBtn.addEventListener("click", function (e) {
-    //     // JSON형식으로 데이터를 보내기 위해서 JavaScript 객체 생성
-    //     const replyObj = {
-    //         eno: eno,
-    //         replyText: replyText.value,
-    //         replyer: replyer.value
-    //     };
-    //     addReply(replyObj).then(result => {
-    //         alert(result.rno);
-    //         // registerModal.hide();
-    //         replyText.value = "";
-    //         replyer.value = "";
-    //         printReplies(1, 10, true);
-    //     }).catch(e => {
-    //         alert("Exception...");
-    //     })
-    // }, false)
-
-
-    // function printList(dtoList) {
-    //     let str = '';
-    //     if (dtoList && dtoList.length) {
-    //         for (const dto of dtoList) {
-    //             str += `<li class="list-group-item d-flex replyItem">
-    //                         <span class="col-2">${dto.rno}</span>
-    //                         <span class="col-6" data-rno="${dto.rno}">${dto.replyText}</span>
-    //                         <span class="col-2">${dto.replyer}</span>
-    //                         <span class="col-2">${dto.regDate}</span>
-    //                     </li>`
-    //         }
-    //     }
-    //     replyList.innerHTML = str;
-    // }
-
-    // function printPages(data) {
-    //     let pageStr = '';
-    //     if (data.prev) {
-    //         pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">PREV</a></li>`;
-    //     }
-    //     for (let i = data.start; i <= data.end; i++) {
-    //         pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" data-page="${i}">${i}</a></li>`;
-    //     }
-    //     if (data.next) {
-    //         pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">NEXT</a></li>`;
-    //     }
-    //     replyPaging.innerHTML = pageStr;
-    // }
-    //
-    // function printReplies(page, size, goLast) {
-    //     getList({eno, page, size, goLast}).then(
-    //         data => {
-    //             currentPage = data.page;
-    //             printList(data.dtoList);
-    //             printPages(data);
-    //         }).catch(e => {
-    //         console.error(e);
-    //     })
-    // }
-    //
-    // printReplies(1, 10, true);
-    // const formObj = document.querySelector("#f1");
-    // document.querySelector(".modBtn").addEventListener("click",function(e){
-    // 	e.preventDefault();
-    // 	e.stopPropagation()
-    // 	formObj.action = `/exercise/modify?${link}`;
-    // 	formObj.method = 'post';
-    // 	//파일의 이름을 form태그의 input type=hidden으로 설정
-    // 	formObj.submit();
-    // },false)
-    const formObj = document.querySelector("form");
-    document.querySelector(".removeBtn2").addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        formObj.action = `/exercise/remove`;
-        formObj.method = 'post'
-        formObj.submit();
-    }, false)
-</script>
+			formObj.action = '/exercise/remove';
+			formObj.method = 'post';
+			formObj.submit();
+		}, false);
+	</script>
+</th:block>
 </html>

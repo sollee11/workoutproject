@@ -23,39 +23,51 @@ import java.util.Map;
 public class ReplyController {
     private final ReplyService replyService;
 
-    @PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,Long> register(
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Long> register(
             @Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult) throws BindException {
         log.info(replyDTO);
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new BindException(bindingResult);
         }
 
-        Map<String,Long> resultMap = new HashMap<>();
+        Map<String, Long> resultMap = new HashMap<>();
         Long rno = replyService.register(replyDTO);
         resultMap.put("rno", rno);
         return resultMap;
     }
 
     @GetMapping(value = "/list/{bno}")
-    public PageResponseDTO<ReplyDTO> getList(@PathVariable("bno") Long bno, PageRequestDTO pageRequestDTO){
+    public PageResponseDTO<ReplyDTO> getList(@PathVariable("bno") Long bno, PageRequestDTO pageRequestDTO) {
         PageResponseDTO<ReplyDTO> responseDTO = replyService.getListofBoard(bno, pageRequestDTO);
+
         return responseDTO;
     }
 
     @DeleteMapping("/{rno}")
-    public Map<String,Long> delete(@PathVariable("rno") Long rno){
+    public Map<String, Long> delete(@PathVariable("rno") Long rno) {
         replyService.remove(rno);
-        Map<String,Long> resultMap = new HashMap<>();
+        Map<String, Long> resultMap = new HashMap<>();
         resultMap.put("rno", rno);
         return resultMap;
     }
 
-    @PutMapping(value = "/{rno}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String,Long> remove(@PathVariable("rno") Long rno, @RequestBody ReplyDTO replyDTO){
+    //    @PutMapping(value = "/{rno}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public Map<String,Long> remove(@PathVariable("rno") Long rno, @RequestBody ReplyDTO replyDTO){
+//        replyDTO.setRno(rno);
+//        Map<String,Long> resultMap = new HashMap<>();
+//        resultMap.put("rno", rno);
+//        return resultMap;
+//    }
+    @PutMapping(value = "/{rno}")
+    public Map<String, Long> modify(@PathVariable("rno") Long rno, @RequestBody ReplyDTO replyDTO) {
+        log.info("댓글 수정: " + rno);
         replyDTO.setRno(rno);
-        Map<String,Long> resultMap = new HashMap<>();
+
+        replyService.modify(replyDTO);
+
+        Map<String, Long> resultMap = new HashMap<>();
         resultMap.put("rno", rno);
         return resultMap;
     }

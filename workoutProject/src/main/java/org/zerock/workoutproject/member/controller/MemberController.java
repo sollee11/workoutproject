@@ -57,7 +57,7 @@ public class MemberController {
         log.info("member: " + dto);
         dto.setEmail(dto.getMid());
         memberService.join(dto);
-        return "redirect:/";
+        return "redirect:/member/login";
     }
 
 

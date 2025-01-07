@@ -22,7 +22,7 @@ public class Board extends BaseEntity {
     private String content;
     private String writer;
     private String url;
-
+    @Column(columnDefinition = "bigint default 0")
     @Builder.Default
     private Long view = 0L;
 
@@ -69,5 +69,11 @@ public class Board extends BaseEntity {
     public Long getView() {
         // null인 경우 0을 반환하여 NPE 방지
         return view == null ? 0L : view;
+    }
+    @PrePersist
+    public void prePersist() {
+        if (this.view == null) {
+            this.view = 0L;
+        }
     }
 }
