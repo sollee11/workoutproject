@@ -46,14 +46,6 @@
                             <li><a href="/exercise/notice">운동게시판</a></li>
                             <li><a href="/board/list">자유게시판</a></li>
                             <li><a href="/qna/list">Q&A게시판</a></li>
-<!--                            <th:block sec:authorize="isAnonymous()">-->
-<!--                                <li><a href="/member/login">로그인</a></li>-->
-<!--                                <li><a href="/member/join">회원가입</a></li>-->
-<!--                            </th:block>-->
-<!--                            <th:block sec:authorize="isAuthenticated()">-->
-<!--                                <li><a href="/logout">로그아웃</a></li>-->
-<!--                                <li><a href="/member/mypage">정보수정</a></li>-->
-<!--                            </th:block>-->
                         </ul>
                     </nav>
                 </div>
@@ -88,48 +80,19 @@
                             <header class="first major">
                                 <h2>최신 운동 동영상</h2>
                                 <p>운동 방법을 모르실때 <strong>정보를 제공해드립니다</strong></p>
-
-                                    <a href="/exercise/notice" class="button medium icon solid fa-arrow-circle-right">운동게시판으로!</a>
-                                <p></p>
-
                             </header>
+                            <a href="/exercise/notice" class="button medium icon solid fa-arrow-circle-right">운동게시판으로!</a>
                         </div>
                         <div th:each="exercise : ${latestPosts['exercise']}" class="col-4 col-12-medium">
                             <section>
                                 <iframe class="image featured" width="100%" height="300px" th:src="${exercise.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<!--                                <a href="#" class="image featured"><img src="images/pic01.jpg" alt=""/></a>-->
                                 <header class="second icon solid fa-user">
                                     <h3><a th:href="@{/exercise/read(eno=${exercise.id})}">[[${exercise.title}]]</a></h3>
                                     <p>[[${exercise.content}]]</p>
                                 </header>
                             </section>
                         </div>
-<!--                        <div class="col-4 col-12-medium">-->
-<!--                            <section>-->
-<!--                                <a href="#" class="image featured"><img src="images/pic02.jpg" alt=""/></a>-->
-<!--                                <header class="second icon solid fa-cog">-->
-<!--                                    <h3>Also a Heading</h3>-->
-<!--                                    <p>And another subtitle</p>-->
-<!--                                </header>-->
-<!--                            </section>-->
-<!--                        </div>-->
-<!--                        <div class="col-4 col-12-medium">-->
-<!--                            <section>-->
-<!--                                <a href="#" class="image featured"><img src="images/pic03.jpg" alt=""/></a>-->
-<!--                                <header class="second icon solid fa-chart-bar">-->
-<!--                                    <h3>Another Heading</h3>-->
-<!--                                    <p>And yes, a subtitle</p>-->
-<!--                                </header>-->
-<!--                            </section>-->
-<!--                        </div>-->
-                        <div class="col-12">
-                            <p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus. Praesent semper
-                                bibendum ipsum, et tristique augue fringilla eu. Vivamus id risus vel dolor auctor
-                                euismod
-                                quis eget mi. Etiam eu ante risus. Aliquam erat volutpat. Aliquam luctus mattis lectus
-                                sit
-                                amet pulvinar. Nam nec turpis.</p>
-                        </div>
+
                     </div>
                 </section>
 
@@ -195,35 +158,6 @@
                                     </div>
                                 </article>
 
-<!--                                &lt;!&ndash; Excerpt &ndash;&gt;-->
-<!--                                <article class="box excerpt">-->
-<!--                                    <a href="#" class="image left"><img src="images/pic05.jpg" alt=""/></a>-->
-<!--                                    <div>-->
-<!--                                        <header>-->
-<!--                                            <span class="date">July 18</span>-->
-<!--                                            <h3><a href="#">Adventuring with a knee injury</a></h3>-->
-<!--                                        </header>-->
-<!--                                        <p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus-->
-<!--                                            semper mod quisturpis nisi consequat etiam lorem. Phasellus quam turpis,-->
-<!--                                            feugiat et sit amet ornare in, hendrerit in lectus semper mod quis eget mi-->
-<!--                                            dolore.</p>-->
-<!--                                    </div>-->
-<!--                                </article>-->
-
-<!--                                &lt;!&ndash; Excerpt &ndash;&gt;-->
-<!--                                <article class="box excerpt">-->
-<!--                                    <a href="#" class="image left"><img src="images/pic06.jpg" alt=""/></a>-->
-<!--                                    <div>-->
-<!--                                        <header>-->
-<!--                                            <span class="date">July 14</span>-->
-<!--                                            <h3><a href="#">Preparing for Y2K38</a></h3>-->
-<!--                                        </header>-->
-<!--                                        <p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus-->
-<!--                                            semper mod quisturpis nisi consequat etiam lorem. Phasellus quam turpis,-->
-<!--                                            feugiat et sit amet ornare in, hendrerit in lectus semper mod quis eget mi-->
-<!--                                            dolore.</p>-->
-<!--                                    </div>-->
-<!--                                </article>-->
 
                             </section>
                         </div>
