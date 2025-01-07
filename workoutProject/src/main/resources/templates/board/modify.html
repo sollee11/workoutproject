@@ -97,11 +97,9 @@
     const formObj2 = document.querySelector("form");
     document.querySelector(".removeBtn").addEventListener("click", function (e) {
         e.preventDefault();
-        // 태그의 기본적인 실행하지 않도록 하는 함수, a태그
         e.stopPropagation();
-        // 자식태그를 클릭하면 부모태그에 존재하는 스크립트나 기능이 실행되는 것을 막아주는 함수
+        appendFileData();
         formObj2.action = `/board/remove`;
-        // form태그의 action과 method의 설정을 remove에 맞게 변경하는 코드
         formObj2.method = "post";
         formObj2.submit();
         // form태그를 실행하는 함수
