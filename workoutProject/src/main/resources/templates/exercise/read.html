@@ -51,19 +51,21 @@
                     <!-- 댓글 섹션 -->
                     <div class="reply-section"
                          id="replySection"
-                         th:data-user="${#authentication.principal?.username}"
+                         th:data-user="${#authorization.expression('isAuthenticated()') ? #authentication.principal?.username:''}"
                          th:data-admin="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                          th:data-eno="${dto.eno}">
                         <h3 class="reply-title">댓글</h3>
 
-                        <!-- 댓글 작성 폼 -->
-                        <div class="reply-form">
-                            <textarea class="reply-textarea replyText"
-                                      placeholder="댓글을 작성하세요"></textarea>
-                            <button class="button register-button registerBtn">등록</button>
+
+                        <div class="comment-section" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <textarea class="comment-input" placeholder="댓글을 작성하세요"></textarea>
+                            <button class="button comment-button">등록</button>
+                        </div>
+                        <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                            <p>댓글을 작성하려면 <a href="/member/login">로그인</a>이 필요합니다.</p>
                         </div>
 
-                        <!-- 댓글 목록 -->
+
                         <div class="reply-list replyList"></div>
                     </div>
                 </div>

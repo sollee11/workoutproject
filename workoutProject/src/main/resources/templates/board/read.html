@@ -38,9 +38,12 @@
                         <button class="button list-button">목록</button>
                     </div>
 
-                    <div class="comment-section">
+                    <div class="comment-section" th:if="${#authorization.expression('isAuthenticated()')}">
                         <textarea class="comment-input" placeholder="댓글을 작성하세요"></textarea>
                         <button class="button comment-button">등록</button>
+                    </div>
+                    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <p>댓글을 작성하려면 <a href="/member/login">로그인</a>이 필요합니다.</p>
                     </div>
 
                 </div>
