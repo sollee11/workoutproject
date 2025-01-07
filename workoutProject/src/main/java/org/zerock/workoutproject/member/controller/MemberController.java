@@ -1,5 +1,6 @@
 package org.zerock.workoutproject.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,8 @@ public class MemberController {
 
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
+        request.getSession().setAttribute("url",request.getHeader("Referer"));
         return "member/login";
     }
 
