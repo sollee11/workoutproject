@@ -88,7 +88,7 @@
                                 <iframe class="image featured" width="100%" height="300px" th:src="${exercise.url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                                 <header class="second icon solid fa-user">
                                     <h3><a th:href="@{/exercise/read(eno=${exercise.id})}">[[${exercise.title}]]</a></h3>
-                                    <p>[[${exercise.content}]]</p>
+<!--                                    <p>[[${exercise.content}]]</p>-->
                                 </header>
                             </section>
                         </div>
@@ -197,14 +197,12 @@
     <!-- Footer Wrapper -->
     <div id="footer-wrapper">
         <footer id="footer" class="container">
-            <div class="row">
-                <div class="col-3 col-6-medium col-12-small">
+            <div>
                     <!-- Contact -->
                     <section>
                         <h2>Get in touch</h2>
                         <div>
-                            <div class="row">
-                                <div class="col-6 col-12-small">
+                                <div>
                                     <dl class="contact">
                                         <dt>Twitter</dt>
                                         <dd><a href="#">@workout</a></dd>
@@ -219,12 +217,9 @@
                                         <dt>Phone</dt>
                                         <dd>(051) 111-2222</dd>
                                     </dl>
-                                </div>
                             </div>
                         </div>
                     </section>
-
-                </div>
                 <div class="col-12">
                     <div id="copyright">
                         <ul class="menu">
