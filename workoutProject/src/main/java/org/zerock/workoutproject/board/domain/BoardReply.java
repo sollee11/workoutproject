@@ -1,17 +1,14 @@
 package org.zerock.workoutproject.board.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.zerock.workoutproject.common.BaseEntity;
 
 @Entity
 @Table(name="BoardReply", indexes = {
         @Index(name="idx_reply_board_bno", columnList = "board_bno")
 })
-
+@Setter
 @Getter
 @Builder
 @AllArgsConstructor
@@ -27,4 +24,8 @@ public class BoardReply extends BaseEntity {
     public void changeText(String replyText){
         this.replyText = replyText;
     }
+
+    @Column(name = "flag")
+    private boolean flag;
+
 }

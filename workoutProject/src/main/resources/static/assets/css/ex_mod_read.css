@@ -1,0 +1,58 @@
+/* 추가 폼 스타일 */
+.board-form {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.form-textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.form-info {
+    margin: 20px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 수정/삭제 버튼 영역 */
+.button-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.remove-button {
+    background-color: #dc3545;
+}
+
+.remove-button:hover {
+    background-color: #c82333;
+}

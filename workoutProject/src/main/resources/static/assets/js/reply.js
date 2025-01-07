@@ -1,19 +1,10 @@
-// async : 비동기 함수를 설정
-// await : 비동기 호출 부분 설정
+
 async function get1(bno){
     const result = await axios.get(`/replies/list/${bno}`)
     return result
 }
 
-// async function getList({bno,page,size,goLast}){
-//     const result = await axios.get(`/replies/list/${bno}`, {params:{page,size}})
-//     if(goLast){
-//         const total = result.data.total
-//         const lastPage = parseInt(Math.ceil(total/size))
-//         return getList({bno:bno, page:lastPage, size:size})
-//     }
-//     return result.data
-// }
+
 
 // 댓글 목록
 async function getList({bno, page, size, goLast}) {

@@ -21,7 +21,7 @@ function formatDate(dateString) {
     const month = date.getMonth() + 1; // 월
     const day = date.getDate(); // 일
 
-    return `${year}년 ${month}월 ${day}일`;
+    return `${year}-${month}-${day}`;
 }
 
 export async function getQnaList(page = loadCurrentPage(), size = 10) {

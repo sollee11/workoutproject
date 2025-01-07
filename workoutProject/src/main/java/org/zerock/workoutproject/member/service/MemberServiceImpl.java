@@ -120,6 +120,12 @@ public class MemberServiceImpl implements MemberService {
         }
         return modelMapper.map(member, MemberDTO.class);
     }
+    @Override
+    public boolean hasRole(String memberMid, String role) {
+        return memberRepository.findById(memberMid)
+                .map(member -> member.getRoleSet().contains(MemberRole.valueOf(role)))
+                .orElse(false);
+    }
 
 
 }
