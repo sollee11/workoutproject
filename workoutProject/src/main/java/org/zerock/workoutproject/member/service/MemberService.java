@@ -26,13 +26,6 @@ public interface MemberService {
 
     boolean midCheck(String mid);
 
-    void noticedelte(String mid, MemberSecurityDTO memberSecurityDTO);
-
-    void replydelete(String mid, MemberSecurityDTO memberSecurityDTO);
-
-    static class MidExistException extends Exception {
-        public MidExistException(String 이미_존재하는_id입니다) {
-        }
+    class MidExistException extends Exception {
     }
-
 }
