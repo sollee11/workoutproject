@@ -4,7 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 <th:blcok layout:fragment="link">
-    <!--    <link rel="stylesheet" href="/assets/css/main.css"/>-->
     <link rel="stylesheet" th:href="@{/assets/css/boardList.css}">
 </th:blcok>
 <div layout:fragment="content" id="main-wrapper">
@@ -81,31 +80,6 @@
                     </div>
                 </div>
 
-                <!-- 최신 글 및 인기 게시물 -->
-<!--                <div class="row">-->
-<!--                    <div class="recent-posts">-->
-<!--                        <section class="box">-->
-<!--                            <h2>최신 글</h2>-->
-<!--                            <article th:each="recent : ${recentPosts}">-->
-<!--                                <header>-->
-<!--                                    <h3 th:text="${recent.title}"></h3>-->
-<!--                                    <p th:text="${recent.content}"></p>-->
-<!--                                </header>-->
-<!--                            </article>-->
-<!--                        </section>-->
-<!--                    </div>-->
-<!--                    <div class="popular-posts">-->
-<!--                        <section class="box">-->
-<!--                            <h2>인기 게시물</h2>-->
-<!--                            <article th:if="${popularPost != null}">-->
-<!--                                <header>-->
-<!--                                    <h3 th:text="${popularPost.title}"></h3>-->
-<!--                                    <p th:text="'조회수: ' + ${popularPost.view}"></p>-->
-<!--                                </header>-->
-<!--                            </article>-->
-<!--                        </section>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
@@ -124,8 +98,8 @@
 
     // 페이지네이션 버튼 클릭 이벤트 설정
     function setupPaginationEvents() {
-        const paginationButtons = document.querySelectorAll('.pagination-btn'); // 페이지네이션 버튼 선택
-        console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`); // 디버깅: 버튼 개수 확인
+        const paginationButtons = document.querySelectorAll('.pagination-btn');
+        console.log(`페이지네이션 버튼 개수: ${paginationButtons.length}`);
 
         paginationButtons.forEach(button => {
             button.addEventListener('click', function (e) {

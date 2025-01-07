@@ -27,4 +27,6 @@ public class ReplyDTO {
     private LocalDateTime regDate;
     @JsonIgnore
     private LocalDateTime modDate;
+    private boolean flag;
+
 }
