@@ -94,38 +94,5 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.existsByMid(mid);
     }
 
-    @Override
-    public void noticedelte(String mid, MemberSecurityDTO memberSecurityDTO) {
-        Member member = memberRepository.findById(mid).orElseThrow();
-        if (memberSecurityDTO.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) || member.getMid().equals(memberSecurityDTO.getUsername())){
-            memberRepository.delete(member);
-        }
-    }
-
-
-    @Override
-    public void replydelete(String mid, MemberSecurityDTO memberSecurityDTOreply) {
-        Member member = memberRepository.findById(mid).orElseThrow();
-        if (memberSecurityDTOreply.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) || member.getMid().equals(memberSecurityDTOreply.getUsername())){
-
-            memberRepository.delete(member);
-        }
-    }
-
-
-    public MemberDTO getMember(MemberDTO dto) throws Exception{
-        Member member = memberRepository.findById(dto.getMid()).orElseThrow();
-        if(member == null || !member.getMpw().equals(dto.getMpw())){
-            throw new  Exception("아이디나 비밀번호가 일치하지 않습니다.");
-        }
-        return modelMapper.map(member, MemberDTO.class);
-    }
-    @Override
-    public boolean hasRole(String memberMid, String role) {
-        return memberRepository.findById(memberMid)
-                .map(member -> member.getRoleSet().contains(MemberRole.valueOf(role)))
-                .orElse(false);
-    }
-
 
 }
