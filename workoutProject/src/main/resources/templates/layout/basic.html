@@ -166,77 +166,107 @@
 
 							</section>
 						</div>
-						<div class="col-4 col-12-medium">
-
-							<!--&lt;!&ndash; Spotlight &ndash;&gt;
-							<section class="box spotlight">
-								<h2 class="icon fa-file-alt">Spotlight</h2>
-								<article>
-									<a href="#" class="image featured"><img src="images/pic07.jpg" alt=""></a>
-									<header>
-										<h3><a href="#">Neural Implants</a></h3>
-										<p>The pros and cons. Mostly cons.</p>
-									</header>
-									<p>Phasellus quam turpis, feugiat sit amet ornare in, hendrerit in lectus semper mod
-										quisturpis nisi consequat ornare in, hendrerit in lectus semper mod quis eget mi quat etiam
-										lorem. Phasellus quam turpis, feugiat sed et lorem ipsum dolor consequat dolor feugiat sed
-										et tempus consequat etiam.</p>
-									<p>Lorem ipsum dolor quam turpis, feugiat sit amet ornare in, hendrerit in lectus semper
-										mod quisturpis nisi consequat etiam lorem sed amet quam turpis.</p>
-									<footer>
-										<a href="#" class="button alt icon solid fa-file-alt">Continue Reading</a>
-									</footer>
-								</article>-->
-<!--							</section>-->
-
-						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Footer Wrapper -->
+
 	<div id="footer-wrapper">
 		<footer id="footer" class="container">
-			<div class="row">
-				<div class="col-3 col-6-medium col-12-small">
-
-					<!-- Contact -->
-					<section>
-						<h2>Get in touch</h2>
-							<div>
-								<div>
-									<dl class="contact">
-										<dt>Twitter</dt>
-										<dd><a href="#">@workout</a></dd>
-										<dt>Facebook</dt>
-										<dd><a href="#">facebook.com/workout</a></dd>
-										<dt>WWW</dt>
-										<dd><a href="#">workout.com</a></dd>
-										<dt>Email</dt>
-										<dd><a href="#">info@workout.com</a></dd>
-										<dt>Address</dt>
-										<dd>708, Jungang-daero, Busanjin-gu, Busan, Republic of Korea</dd>
-										<dt>Phone</dt>
-										<dd>(051) 111-2222</dd>
-									</dl>
-								</div>
-							</div>
-					</section>
-
+			<div class="footer-content">
+				<!-- Contact Info -->
+				<div class="contact-info">
+					<a href="mailto:info@workout.com">info@workout.com</a>
+					<span class="divider">|</span>
+					<span>(051) 111-2222</span>
+					<span class="divider">|</span>
+					<span>708, Jungang-daero, Busanjin-gu, Busan</span>
 				</div>
-				<div class="col-12">
-					<div id="copyright">
-						<ul class="menu">
-							<li>&copy; WorkOut. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-						</ul>
+
+				<!-- Social & Copyright -->
+				<div class="footer-right">
+					<div class="social-links">
+						<a href="#" title="Twitter">Twitter</a>
+						<a href="#" title="Facebook">Facebook</a>
+					</div>
+					<div class="copyright">
+						&copy; WorkOut. All rights reserved
 					</div>
 				</div>
 			</div>
 		</footer>
 	</div>
 
+	<style>
+		#footer-wrapper {
+			padding: 1.5em 0;
+			background: rgba(0, 0, 0, 0.1);
+		}
+
+		.footer-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 2em;
+			padding: 0 1em;
+		}
+
+		.contact-info {
+			display: flex;
+			align-items: center;
+			gap: 1em;
+			font-size: 0.9em;
+		}
+
+		.divider {
+			color: rgba(255, 255, 255, 0.3);
+		}
+
+		.footer-right {
+			display: flex;
+			align-items: center;
+			gap: 2em;
+		}
+
+		.social-links {
+			display: flex;
+			gap: 1em;
+		}
+
+		.social-links a {
+			text-decoration: none;
+			font-size: 0.9em;
+		}
+
+		.copyright {
+			font-size: 0.9em;
+			color: rgba(255, 255, 255, 0.5);
+		}
+
+		@media screen and (max-width: 768px) {
+			.footer-content {
+				flex-direction: column;
+				gap: 1em;
+				text-align: center;
+			}
+
+			.contact-info {
+				flex-direction: column;
+				gap: 0.5em;
+			}
+
+			.divider {
+				display: none;
+			}
+
+			.footer-right {
+				flex-direction: column;
+				gap: 1em;
+			}
+		}
+	</style>
 </div>
 
 <!-- Scripts -->

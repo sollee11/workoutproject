@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<script src="https://meet.jit.si/external_api.js"></script>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>원격 피티 게시판</title>
+    <link rel="stylesheet" href="/assets/css/room/room.css">
+</head>
+<body>
+<header>
+    <h1>원격 피티 게시판</h1>
+</header>
+<main>
+    <div class="create-room-section">
+        <button id="openCreateRoomModal" class="btn btn-primary">방 만들기</button>
+    </div>
+    <div class="room-list">
+        <div class="room-card" data-room-name="운동방">
+            <div class="thumbnail"></div>
+            <div class="room-info">
+                <h4>운동방</h4>
+                <p>다같이 운동해요!</p>
+            </div>
+            <button class="enter-room-btn" data-room-name="운동방">입장</button>
+        </div>
+    </div>
+</main>
+
+<div id="createRoomModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-modal="createRoomModal">&times;</span>
+        <h2>방 생성</h2>
+        <div class="form-group">
+            <label for="newRoomTitle">방 이름:</label>
+            <input id="newRoomTitle" type="text" placeholder="방 이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="newRoomPassword">비밀번호:</label>
+            <input id="newRoomPassword" type="password" placeholder="비밀번호를 입력하세요">
+        </div>
+        <button id="createRoomBtn">방 생성</button>
+    </div>
+</div>
+
+
+<div id="enterRoomModal" class="modal">
+    <div class="modal-content">
+        <span class="close" data-modal="enterRoomModal">&times;</span>
+        <h2>비밀번호 입력</h2>
+        <p id="selectedRoomName">방 이름: </p>
+        <div class="form-group">
+            <label>비밀번호:</label>
+            <label for="roomPasswordInput"></label><input id="roomPasswordInput" type="password" placeholder="비밀번호를 입력하세요">
+        </div>
+        <button id="confirmEnterRoomBtn">입장</button>
+    </div>
+</div>
+
+
+<footer>
+    <p>&copy; 2025 운동 게시판</p>
+</footer>
+<script>
+    const currentUser = '[[${#authentication.name}]]';
+</script>
+<script src="/js/room/roomList.js"></script>
+<script src="/js/room/modal.js"></script>
+<script src="/js/room/createRoom.js"></script>
+</body>
+</html>

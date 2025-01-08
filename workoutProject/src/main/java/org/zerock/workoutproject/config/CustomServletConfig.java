@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CustomServletConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //addResourceHandler("URL 경로").addResourceLocations("실제 파일 경로")
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/fonts/**")
@@ -21,10 +20,5 @@ public class CustomServletConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/assets/");
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/");
-
-        // template 폴더의 파일 불러오기 설정
-//        registry.addResourceHandler("/template/**").addResourceLocations("classpath:/template/");
-        // 외부 c드라이브의 download 폴더의 파일 불러오기 설정
-//        registry.addResourceHandler("/download/**").addResourceLocations("file:///c:/download/");
     }
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<script src="https://meet.jit.si/external_api.js"></script>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>방 만들기</title>
+</head>
+<body>
+<h2>방 만들기</h2>
+<div>
+    <div class="form-group">
+        <label>방 제목: <input id="roomTitle" type="text" placeholder="방 제목을 입력하세요"/></label>
+    </div>
+    <div class="form-group">
+        <label>비밀번호: <input id="roomPassword" type="password" placeholder="비밀번호를 입력하세요"/></label>
+    </div>
+    <button id="createRoomBtn">방 생성</button>
+</div>
+
+<script th:inline="javascript">
+    const currentUser = [[${#authentication.name}]];  // 현재 로그인된 사용자의 이름
+</script>
+<script src="/js/room/createRoom.js"></script>
+</body>
+</html>

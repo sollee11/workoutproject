@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<script src="https://meet.jit.si/external_api.js"></script>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>방 입장</title>
+</head>
+<body>
+<h1>방 목록</h1>
+<div class="room-list">
+    <ul>
+        <!-- 방 리스트 렌더링 -->
+        <li th:each="room : ${rooms}">
+            <p th:text="${room.title}">방 제목</p>
+            <p th:text="${room.description}">방 설명</p>
+            <button th:attr="data-room-name=${room.title}">입장</button>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

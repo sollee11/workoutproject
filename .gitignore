@@ -20,3 +20,5 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 .idea/
+workoutProject/src/main/resources/workoutproject.p12
+workoutProject/workoutproject.p12

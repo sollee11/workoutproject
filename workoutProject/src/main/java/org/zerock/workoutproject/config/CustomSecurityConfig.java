@@ -32,6 +32,21 @@ public class CustomSecurityConfig {
         log.info("---------------------configure-----------------------");
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/member/login").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/fonts/**").permitAll()
+                        .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/web/rtc/user/**").permitAll()
+                        .requestMatchers("/web/rtc/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/rooms/**").permitAll()
+                        .requestMatchers("/room/**").authenticated()
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form -> form
                         .loginPage("/member/login")
                         .successHandler(successHandler()))

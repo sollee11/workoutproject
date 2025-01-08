@@ -40,5 +40,19 @@ class QnaView {
 
 window.addEventListener('DOMContentLoaded', () => {
     const qnaView = new QnaView();
-    qnaView.initialize();
+    qnaView.initialize()
+        .then(() => {
+            console.log("초기화 완료");
+        })
+        .catch((error) => {
+            console.error("초기화 중 오류 발생:", error);
+        });
 });
+// window.addEventListener('DOMContentLoaded', async () => {
+//     try {
+//         const qnaView = new QnaView();
+//         await qnaView.initialize();
+//     } catch (error) {
+//         console.error("초기화 중 오류 발생:", error);
+//     }
+// });
