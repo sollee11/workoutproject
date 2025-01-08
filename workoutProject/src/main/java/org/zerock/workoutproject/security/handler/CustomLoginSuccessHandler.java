@@ -10,23 +10,24 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import java.io.IOException;
 
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-    public CustomLoginSuccessHandler(String url) {
-        setDefaultTargetUrl("/");
+
+    public CustomLoginSuccessHandler(String defaultTargetUrl) {
+        setDefaultTargetUrl(defaultTargetUrl);  // 전달받은 URL 사용
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication) throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("url");
             if (redirectUrl != null) {
                 session.removeAttribute("url");
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
-            } else {
-                super.onAuthenticationSuccess(request, response, authentication);
+                return;
             }
-        } else {
-            super.onAuthenticationSuccess(request, response, authentication);
         }
         super.onAuthenticationSuccess(request, response, authentication);
     }

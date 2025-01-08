@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.zerock.workoutproject.security.CustomUserDetailsService;
 import org.zerock.workoutproject.security.handler.CustomLoginSuccessHandler;
 
@@ -27,47 +27,27 @@ public class CustomSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //스프링 시큐리티 커스텀 설정 메서드
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("---------------------configure-----------------------");
-        SavedRequestAwareAuthenticationSuccessHandler successHandler =
-                new SavedRequestAwareAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/");
-
-
-        http.formLogin().loginPage("/member/login").successHandler(successHandler());
-        http.csrf().disable();
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .addLogoutHandler((request, response, authentication) -> {
-                    HttpSession session = request.getSession();
-                    session.invalidate();
-                })
-                .logoutSuccessHandler(((request, response, authentication) ->
-                        response.sendRedirect("/")))
-                .deleteCookies("id", "token"));
-
-        http.csrf().disable();
-
-
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .loginPage("/member/login")
+                        .successHandler(successHandler()))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            HttpSession session = request.getSession();
+                            session.invalidate();
+                        })
+                        .deleteCookies("id", "token"));
         return http.build();
     }
+
     @Bean
-    public AuthenticationSuccessHandler successHandler(){
+    public AuthenticationSuccessHandler successHandler() {
         return new CustomLoginSuccessHandler("/");
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
